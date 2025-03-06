@@ -478,7 +478,7 @@ class WebServicesService {
      * @param includeUser true to include the userId and email in the request headers and the ALA-Auth cookie.  If using JWTs sends the current user's access token, if false only sends a ClientCredentials grant token for this apps client id Default = false.
      * @return the object we request or an JSON object containing error info in case of error
      */
-    JSONElement getJsonElements(String url, Boolean wsAuth = false, Boolean includeUser = false) {
+    JSONElement getJsonElements(String url, Boolean wsAuth = true, Boolean includeUser = false) {
 
         log.debug "(internal) getJson URL = " + url
         def conn = new URL(url).openConnection()
