@@ -439,7 +439,7 @@
                                 <%--<input type="submit" name="action" value="Download" class="form-control">--%>
                                 <%--&nbsp;OR&nbsp;--%>
                                 <input type="hidden" name="redirectBase"
-                                       value="${serverName}${request.contextPath}/occurrences/search" class="form-control">
+                                       value="${serverName}/occurrences/search" class="form-control">
                                 <input type="hidden" name="action" value="Search" />
                                 <input type="submit"
                                        value="${g.message(code:"home.index.catalogupload.button01", default:"Search")}" class="btn btn-primary" />
@@ -461,7 +461,7 @@
                                 <%--<input type="submit" name="action" value="Download" class="form-control">--%>
                                 <%--&nbsp;OR&nbsp;--%>
                                 <input type="hidden" name="redirectBase"
-                                       value="${serverName}${request.contextPath}/occurrences/search" class="form-control">
+                                       value="${serverName}/occurrences/search" class="form-control">
                                 <input type="hidden" name="field" value="catalogue_number" class="form-control">
                                 <input type="hidden" name="action" value="Search" />
                                 <input type="submit"
@@ -487,7 +487,7 @@
                                     <textarea name="queries" id="event_keywords" class="form-control" rows="5" cols="60"></textarea>
                                 </div>
                                 <input type="hidden" name="redirectBase"
-                                       value="${serverName}${request.contextPath}/occurrences/search" class="form-control">
+                                       value="${serverName}/occurrences/search" class="form-control">
                                 <input type="hidden" name="field" value="text_eventID, text_parentEventID, text_fieldNumber, text_datasetName" class="form-control">
                                 <input type="hidden" name="action" value="Search" />
                                 <input type="submit"
@@ -506,7 +506,7 @@
                                     <textarea name="queries" id="event_ids" class="form-control" rows="5" cols="60"></textarea>
                                 </div>
                                 <input type="hidden" name="redirectBase"
-                                       value="${serverName}${request.contextPath}/occurrences/search" class="form-control">
+                                       value="${serverName}/occurrences/search" class="form-control">
                                 <input type="hidden" name="field" value="text_eventID" class="form-control">
                                 <input type="hidden" name="action" value="Search" />
                                 <input type="submit"
@@ -525,7 +525,7 @@
                                     <textarea name="queries" id="parent_event_ids" class="form-control" rows="5" cols="60"></textarea>
                                 </div>
                                 <input type="hidden" name="redirectBase"
-                                       value="${serverName}${request.contextPath}/occurrences/search" class="form-control">
+                                       value="${serverName}/occurrences/search" class="form-control">
                                 <input type="hidden" name="field" value="text_parentEventID" class="form-control">
                                 <input type="hidden" name="action" value="Search" />
                                 <input type="submit"
@@ -544,7 +544,7 @@
                                     <textarea name="queries" id="field_numbers" class="form-control" rows="5" cols="60"></textarea>
                                 </div>
                                 <input type="hidden" name="redirectBase"
-                                       value="${serverName}${request.contextPath}/occurrences/search" class="form-control">
+                                       value="${serverName}/occurrences/search" class="form-control">
                                 <input type="hidden" name="field" value="text_fieldNumber" class="form-control">
                                 <input type="hidden" name="action" value="Search" />
                                 <input type="submit"
@@ -563,7 +563,7 @@
                                     <textarea name="queries" id="dataset_name" class="form-control" rows="5" cols="60"></textarea>
                                 </div>
                                 <input type="hidden" name="redirectBase"
-                                       value="${serverName}${request.contextPath}/occurrences/search" class="form-control">
+                                       value="${serverName}/occurrences/search" class="form-control">
                                 <input type="hidden" name="field" value="text_datasetName" class="form-control">
                                 <input type="hidden" name="action" value="Search" />
                                 <input type="submit"
