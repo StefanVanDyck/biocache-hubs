@@ -74,6 +74,7 @@
                     <input type="hidden" name="url" id="downloadFieldGuideUrl" value="${request.contextPath}/occurrences/fieldguide/download"/>
                     <input type="hidden" name="extra" id="extraFields" value="${grailsApplication.config.getProperty('biocache.downloads.extra')}"/>
                     <input type="hidden" name="sourceTypeId" id="sourceTypeId" value="${alatag.getSourceId()}"/>
+                    <input type="hidden" name="hubName" id="hubName" value="${orgNameLong}"/>
                 </div>
                 <div class="modal-footer">
                 </div>
