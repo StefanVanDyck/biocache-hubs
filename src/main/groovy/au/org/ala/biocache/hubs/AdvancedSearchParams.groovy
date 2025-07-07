@@ -138,7 +138,8 @@ class AdvancedSearchParams implements Validateable {
         }
 
         if (institution_collection) {
-            String label = (StringUtils.startsWith(institution_collection, "in")) ? "institution_uid" : "collection_uid"
+//            String label = (StringUtils.startsWith(institution_collection, "in")) ? "institution_uid" : "collection_uid"
+            String label = "institution_code"
             queryItems.add(label + ":" + institution_collection)
         }
 
