@@ -227,10 +227,8 @@
                    title="<g:message code="search.filter.customise.title"/>">
                     <i class="fa fa-cog"></i>&nbsp;&nbsp;<g:message code="search.filter.customise"/>
                 </a>
-                <form action="${g.createLink(controller: 'occurrence', action: 'list')}" id="vbpForm" class="form-horizontal">
-                    <input type="hidden" id="vbpQuery" name="wkt" class="form-control" value="${vlaanderenWKT}"/>
-                    <input class="btn btn-default btn-sm" type="submit" id="vbpVlaanderenSubmit" value="${g.message(code:"list.vbp.vlaanderen.button.label", default:"Vlaanderen")}"/>
-                </form>
+                <a id="vlaanderenLink" class="btn btn-default btn-sm tooltips" href="${g.createLink(controller: 'occurrence', action: 'list')}?wkt=${vlaanderenWKT}" title="<g:message code="list.vbp.vlaanderen.button.label"/>">
+                    <g:message code="list.vbp.vlaanderen.button.label" default="Vlaanderen"/></a>
                 </div>
                 <!-- Modal -->
                 <div id="facetConfigDialog" class="modal fade" role="dialog" aria-labelledby="customiseFacetsLabel">
