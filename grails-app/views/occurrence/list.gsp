@@ -227,18 +227,11 @@
                    title="<g:message code="search.filter.customise.title"/>">
                     <i class="fa fa-cog"></i>&nbsp;&nbsp;<g:message code="search.filter.customise"/>
                 </a>
+                <form action="${g.createLink(controller: 'occurrence', action: 'list')}" id="vbpForm" class="form-horizontal">
+                    <input type="hidden" id="vbpQuery" name="wkt" class="form-control" value="${vlaanderenWKT}"/>
+                    <input class="btn btn-default btn-sm" type="submit" id="vbpVlaanderenSubmit" value="${g.message(code:"list.vbp.vlaanderen.button.label", default:"Vlaanderen")}"/>
+                </form>
                 </div>
-                <div style="margin-bottom: 10px;">
-                    <form action="${g.createLink(controller: 'occurrence', action: 'list')}" id="vbpForm" class="form-horizontal">
-                        <div class="input-group pull-right col-sm-7 col-md-7">
-                            <input type="hidden" id="vbpQuery" name="wkt" class="form-control" value="${vlaanderenWKT}"/>
-                            <span class="input-group-btn">
-                                <input class="form-control btn btn-default" type="submit" id="vbpVlaanderenSubmit" value="${g.message(code:"list.vbp.vlaanderen.button.label", default:"Enkel Vlaanderen")}"/>
-                            </span>
-                        </div>
-                    </form>
-                </div>
-
                 <!-- Modal -->
                 <div id="facetConfigDialog" class="modal fade" role="dialog" aria-labelledby="customiseFacetsLabel">
                     <div class="modal-dialog modal-lg">
