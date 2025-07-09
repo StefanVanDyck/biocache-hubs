@@ -227,10 +227,13 @@
                    title="<g:message code="search.filter.customise.title"/>">
                     <i class="fa fa-cog"></i>&nbsp;&nbsp;<g:message code="search.filter.customise"/>
                 </a>
-                <g:if test="${params.vlaanderen}"><a id="vlaanderenLink" class="btn btn-default btn-sm tooltips" href="${g.createLink(controller: 'occurrence', action: 'list')}?wkt=${vlaanderenWKT}&vlaanderen=true" title="<g:message code="list.vbp.vlaanderen.button.label"/>">
-                    <g:message code="list.vbp.vlaanderen.button.label" default="Vlaanderen"/></a></g:if>
-                <g:else><a id="worldLink" class="btn btn-default btn-xs tooltips" href="${g.createLink(controller: 'occurrence', action: 'list')}?q=" title="<g:message code="list.vbp.wereld.button.label"/>">
-                    <g:message code="list.vbp.wereld.button.label" default="Wereld"/></a></g:else>
+                <g:if test="${params.vlaanderen}">
+                    <a id="worldLink" class="btn btn-default btn-sm tooltips" href="${g.createLink(controller: 'occurrence', action: 'list')}?q=" title="<g:message code="list.vbp.wereld.button.label"/>">
+                        <g:message code="list.vbp.wereld.button.label" default="Terug"/></a></g:if>
+                <g:else>
+                    <a id="vlaanderenLink" class="btn btn-default btn-sm tooltips" href="${g.createLink(controller: 'occurrence', action: 'list')}?wkt=${vlaanderenWKT}&vlaanderen=true" title="<g:message code="list.vbp.vlaanderen.button.label"/>">
+                        <g:message code="list.vbp.vlaanderen.button.label" default="Vlaanderen"/></a>
+                </g:else>
                 </div>
                 <!-- Modal -->
                 <div id="facetConfigDialog" class="modal fade" role="dialog" aria-labelledby="customiseFacetsLabel">
