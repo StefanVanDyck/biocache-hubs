@@ -229,10 +229,10 @@
                 </a>
                 <g:if test="${params.vlaanderen}">
                     <a id="worldLink" class="btn btn-default btn-sm tooltips" href="${g.createLink(controller: 'occurrence', action: 'list')}?q=" title="<g:message code="list.vbp.wereld.button.label"/>">
-                        <g:message code="list.vbp.wereld.button.label" default="Terug"/></a></g:if>
+                        <g:message code="list.vbp.back.button.label" default="Back"/></a></g:if>
                 <g:else>
-                    <a id="vlaanderenLink" class="btn btn-default btn-sm tooltips" href="${g.createLink(controller: 'occurrence', action: 'list')}?wkt=${vlaanderenWKT}&vlaanderen=true" title="<g:message code="list.vbp.vlaanderen.button.label"/>">
-                        <g:message code="list.vbp.vlaanderen.button.label" default="Vlaanderen"/></a>
+                    <a id="vlaanderenLink" class="btn btn-primary btn-sm tooltips" href="${g.createLink(controller: 'occurrence', action: 'list')}?wkt=${vlaanderenWKT}&vlaanderen=true" title="<g:message code="list.vbp.vlaanderen.button.label"/>">
+                        <g:message code="list.vbp.flanders.button.label" default="Flanders"/></a>
                 </g:else>
                 </div>
                 <!-- Modal -->
