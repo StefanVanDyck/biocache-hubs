@@ -228,10 +228,11 @@
                     <i class="fa fa-cog"></i>&nbsp;&nbsp;<g:message code="search.filter.customise"/>
                 </a>
                 <g:if test="${params.vlaanderen}">
-                    <a id="worldLink" class="btn btn-default btn-sm tooltips" href="${g.createLink(controller: 'occurrence', action: 'list')}?q=" title="<g:message code="list.vbp.wereld.button.label"/>">
-                        <g:message code="list.vbp.back.button.label" default="Back"/></a></g:if>
+                    <a id="showAllButton" class="btn btn-primary btn-sm tooltips" href="${g.createLink(controller: 'occurrence', action: 'list')}?q=" title="<g:message code="list.vbp.flanders.button.label"/>">
+                        <g:message code="list.vbp.flanders.button.label" default="Flanders"/></a>
+                </g:if>
                 <g:else>
-                    <a id="vlaanderenLink" class="btn btn-primary btn-sm tooltips" href="${g.createLink(controller: 'occurrence', action: 'list')}?wkt=${vlaanderenWKT}&vlaanderen=true" title="<g:message code="list.vbp.vlaanderen.button.label"/>">
+                    <a id="showFlandersButton" class="btn btn-default btn-sm tooltips" href="${g.createLink(controller: 'occurrence', action: 'list')}?wkt=${vlaanderenWKT}&vlaanderen=true" title="<g:message code="list.vbp.flanders.button.label"/>">
                         <g:message code="list.vbp.flanders.button.label" default="Flanders"/></a>
                 </g:else>
                 </div>
