@@ -232,7 +232,7 @@
                         <g:message code="list.vbp.flanders.button.label" default="Flanders"/></a>
                 </g:if>
                 <g:else>
-                    <a id="showFlandersButton" class="btn btn-default btn-sm tooltips" href="${g.createLink(controller: 'occurrence', action: 'list')}?wkt=${vlaanderenWKT}&vlaanderen=true" title="<g:message code="list.vbp.flanders.button.label"/>">
+                    <a id="showFlandersButton" class="btn btn-default btn-sm tooltips" href="${g.createLink(controller: 'occurrence', action: 'list')}?q=*%3A*&fq=cl100%3A%22Vlaams+Gewest%22&vlaanderen=true" title="<g:message code="list.vbp.flanders.button.label"/>">
                         <g:message code="list.vbp.flanders.button.label" default="Flanders"/></a>
                 </g:else>
                 </div>
