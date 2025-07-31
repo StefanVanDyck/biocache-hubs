@@ -31,7 +31,7 @@
 
 
 var geocoder, marker, circle, markerInfowindow, lastInfoWindow, taxon, taxonGuid, alaWmsLayer, radius;
-var points = [], infoWindows = [], speciesGroup = "ALL_SPECIES";
+var points = [], infoWindows = [], speciesGroup = "ALL_SPECIES"; speciesListDrUid = "";
 var coordinatePrecision = 4; // roughly 11m at equator || 5 = 1.1 m at equator
 var zoomForRadius = {
     1000: 14,
@@ -96,6 +96,20 @@ function init() {
         // catch the link on the taxon groups table
         e.preventDefault(); // ignore the href text - used for data
         groupClicked(this);
+    });
+
+    // Register events for the species_list column
+    $('#taxa-level-0-sl').on("mouseover mouseout", "tbody tr",  function() {
+        // mouse hover on specieslists
+        if ( event.type === "mouseover" ) {
+            $(this).addClass('hoverRow');
+        } else {
+            $(this).removeClass('hoverRow');
+        }
+    }).on("click", "tbody tr", function(e) {
+        // catch the link on the taxon groups table
+        e.preventDefault(); // ignore the href text - used for data
+        speciesListClicked(this);
     });
 
     // register click event on "Search" button"
@@ -266,6 +280,7 @@ function init() {
 function initialize() {
     loadLeafletMap();
     loadGroups();
+    loadSpeciesLists();
 }
 
 /*
@@ -594,6 +609,7 @@ function addAddressToPage(response) {
 }
 
 var speciesJson
+var speciesListJson
 var globalSortOrder
 var globalOffset
 var dataRequest
@@ -660,17 +676,84 @@ function groupClicked(el) {
         speciesJson = data
         globalOffset = 0
 
-        sortSpeciesJson()
+        sortSpeciesJson(speciesJson)
 
         // process JSON data from request
-        if (data) processSpeciesJsonData(data, currentGroup);
+        if (data) processSpeciesJsonData(data, currentGroup, "rightList");
+    });
+}
+
+/**
+ * Species group was clicked
+ */
+function speciesListClicked(el) {
+
+    // Change the global var speciesGroup
+    speciesListDrUid = $(el).find('a.taxonBrowse').attr('id'); // TODO narrow down to a tab
+    // taxon = null; // clear any species click
+    // taxonGuid = null;
+    $('#taxa-level-0-sl tr').removeClass("activeRow");
+    $(el).addClass("activeRow");
+    // update records page link text
+    // if (speciesGroup === "ALL_SPECIES") {
+    //     $("#recordsGroupText").text("all");
+    // } else {
+    //     $("#recordsGroupText").text("selected");
+    // }
+    // update links to downloads and records list
+    if (MAP_VAR.map) loadRecordsLayer();
+    // AJAX...
+    var uri = MAP_VAR.biocacheServiceUrl + "/explore/specieslist/"+speciesListDrUid + "?includeRank=false";
+    var sortField = "count"
+    var params = {
+        lat: $('#latitude').val(),
+        lon: $('#longitude').val(),
+        radius: $('#radius').val(),
+        fq: "spatiallyValid:true",
+        qc: MAP_VAR.queryContext,
+        sort: sortField,
+        pageSize: -1
+    };
+
+    // clone params and speciesGroup
+    var allParameters = $.extend({speciesList: speciesListDrUid}, params)
+
+    // debounce to fix location.hash trigger issue
+    if (lastParameters && JSON.stringify(allParameters) === JSON.stringify(lastParameters)) {
+        return
+    } else {
+        lastParameters = allParameters
+        speciesJson = [] // flow continues, so clear out old data for AJAX call below
+    }
+
+    $('#rightListSL tbody').empty();
+    $(".scrollContent").scrollTop(0);
+
+    $('#spinnerRowSL').show();
+    $("div#rightListSL").data("sort", sortField); // save 'sort' value to the DOM
+    var currentSpeciesList = speciesListDrUid
+
+    if (dataRequest) {
+        dataRequest.abort();
+    }
+    dataRequest = $.getJSON(uri, params, function(data) {
+        $('#spinnerRowSL').hide();
+
+        // global store
+        speciesListJson = data
+        globalOffset = 0
+
+        sortSpeciesJson(speciesListJson)
+
+        // process JSON data from request
+        if (data) processSpeciesJsonData(data, currentSpeciesList, "rightListSL");
     });
 }
 
 /**
  * Process the JSON data from a species list AJAX request (species in area)
  */
-function processSpeciesJsonData(data, currentGroup) {
+function processSpeciesJsonData(data, currentSelection, rightListElementId) {
     var offset = globalOffset
     var pageSize = 50;
 
@@ -678,7 +761,7 @@ function processSpeciesJsonData(data, currentGroup) {
 
     // process JSON data
     if (data.length > 0) {
-        var lastRow = $('#rightList tbody tr').length;
+        var lastRow = $('#' + rightListElementId + ' tbody tr').length;
         var linkTitle = "display on map";
         var infoTitle = "view species page";
         var recsTitle = "view list of records";
@@ -725,7 +808,7 @@ function processSpeciesJsonData(data, currentGroup) {
 
         if (offset + pageSize < data.length) {
             // add load more link
-            var sortOrder = $("div#rightList").data("sort") ? $("div#rightList").data("sort") : "index";
+            var sortOrder = $("div#" + rightListElementId + "").data("sort") ? $("div#" + rightListElementId + "").data("sort") : "index";
             contents += '<tr id="loadMoreSpecies"><td>&nbsp;</td><td colspan="2"><a ' +
                 'data-sort="'+sortOrder+'" data-offset="' + (offset + pageSize) + '">Show more species</a></td></tr>';
         }
@@ -738,24 +821,24 @@ function processSpeciesJsonData(data, currentGroup) {
     }
 
     // only add to page if the group has not changed
-    if (currentGroup !== undefined && currentGroup !== speciesGroup) {
+    if (currentSelection !== undefined && currentSelection !== speciesGroup && currentSelection !== speciesListDrUid) {
         return
     }
 
-    $('#rightList tbody').append(contents);
+    $('#' + rightListElementId + ' tbody').append(contents);
 
     // Register clicks for the list of species links so that map changes
-    $('#rightList tbody tr').unbind('click.specieslink')
-    $('#rightList tbody tr').bind('click.specieslink', function(e) {
+    $('#' + rightListElementId + ' tbody tr').unbind('click.specieslink')
+    $('#' + rightListElementId + ' tbody tr').bind('click.specieslink', function(e) {
         e.preventDefault(); // ignore the href text - used for data
         var thisTaxonA = $(this).find('a.taxonBrowse2').attr('href').split('/');
         var thisTaxon = thisTaxonA[thisTaxonA.length-1].replace(/%20/g, ' ');
         var guid = $(this).find('a.taxonBrowse2').attr('id');
         taxonGuid = guid;
         taxon = thisTaxon; // global var so map can show just this taxon
-        $('#rightList tbody tr').removeClass("activeRow2"); // un-highlight previous current taxon
+        $('#' + rightListElementId + ' tbody tr').removeClass("activeRow2"); // un-highlight previous current taxon
         // remove previous species info row
-        $('#rightList tbody tr#info').detach();
+        $('#' + rightListElementId + ' tbody tr#info').detach();
         var info = $(this).find('.speciesInfo').html();
         // copy contents of species into a new (tmp) row
         if (info) {
@@ -782,7 +865,7 @@ function processSpeciesJsonData(data, currentGroup) {
 
             sortSpeciesJson();
 
-            $('#rightList tbody').empty();
+            $('#' + rightListElementId + ' tbody').empty();
             $(".scrollContent").scrollTop(0);
 
             globalOffset = 0
@@ -793,7 +876,7 @@ function processSpeciesJsonData(data, currentGroup) {
     );
 
     // add hover effect to table cell with scientific names
-    $('#rightList tbody tr').hover(
+    $('#' + rightListElementId + ' tbody tr').hover(
         function() {
             $(this).addClass('hoverCell');
         },
@@ -803,9 +886,9 @@ function processSpeciesJsonData(data, currentGroup) {
     );
 }
 
-function sortSpeciesJson() {
+function sortSpeciesJson(json) {
     if (globalSortOrder === "common") {
-        speciesJson.sort(function (a,b) {
+        json.sort(function (a,b) {
             if (a.commonName === b.commonName) return 0
 
             // sort missing common name to the end
@@ -814,11 +897,11 @@ function sortSpeciesJson() {
             return (a.commonName < b.commonName ? -1 : 1)
         })
     } else if (globalSortOrder === "taxa") {
-        speciesJson.sort(function (a,b) {
+        json.sort(function (a,b) {
             return (a.name === b.name) ? 0 : (a.name < b.name ? -1 : 1)
         })
     } else {
-        speciesJson.sort(function (a,b) {
+        json.sort(function (a,b) {
             return (a.count === b.count) ? 0 : (a.count < b.count ? 1 : -1)
         })
     }
@@ -841,6 +924,27 @@ function loadGroups() {
     $.getJSON(url, params, function(data) {
         if (data) {
             populateSpeciesGroups(data);
+        }
+    });
+}
+
+/*
+ * Perform normal spatial search for species lists and species counts per list
+ */
+function loadSpeciesLists() {
+    var url = MAP_VAR.biocacheServiceUrl + "/explore/specieslists";
+    var params = {
+        lat: $('#latitude').val(),
+        lon: $('#longitude').val(),
+        radius: $('#radius').val(),
+        fq: "spatiallyValid:true",
+        facets: "species_list_uid",
+        qc: MAP_VAR.queryContext
+    }
+
+    $.getJSON(url, params, function(data) {
+        if (data) {
+            populateSpeciesLists(data);
         }
     });
 }
@@ -872,6 +976,34 @@ function populateSpeciesGroups(data) {
         var h = "<tr"+rc+" title='click to view group on map'><td class='indent"+indent+"'><a href='#' id='"+group+"' " +
             "class='taxonBrowse' title='click to view group on map'>"+i18nLabel+"</a></td><td>"+count+"</td></tr>";
         $("#taxa-level-0 tbody").append(h);
+    }
+}
+
+/*
+ * Populate the species lists tab column (via callback from AJAX)
+ */
+function populateSpeciesLists(data) {
+    if (data.length > 0) {
+        $("#taxa-level-0-sl tbody").empty(); // clear existing values
+        $.each(data, function (i, n) {
+            addSpeciesListRow(n.drUid, n.name, n.speciesCount)
+        });
+
+        // Dynamically set height of #taxaDiv (to match containing div height)
+        var tableHeight = $('#taxa-level-0-sl').height();
+        $('.tableContainer').height(tableHeight+2);
+        var tbodyHeight = $('#taxa-level-0-sl tbody').height();
+        $('#rightList tbody').height(tbodyHeight);
+        $('#taxa-level-0-sl tbody tr.activeRow').click();
+    }
+
+    function addSpeciesListRow(speciesListDruid, speciesListName, count) {
+        var label = speciesListName;
+        var rc = (speciesListName === speciesGroup) ? " class='activeRow'" : ""; // TODO - highlight active species list
+
+        var h = "<tr"+rc+" title='click to view species list on map'><td class='indent0'><a href='#' id='"+speciesListDruid+"' " +
+            "class='taxonBrowse' title='click to view species list on map'>"+label+"</a></td><td>"+count+"</td></tr>";
+        $("#taxa-level-0-sl tbody").append(h);
     }
 }
 

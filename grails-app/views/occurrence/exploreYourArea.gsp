@@ -145,36 +145,81 @@
 </form>
 <div class="row">
     <div class="col-md-7 col-xs-12">
-        <div id="taxaBox">
-            <div id="leftList">
-                <table id="taxa-level-0">
-                    <thead>
-                    <tr>
-                        <th><g:message code="eya.table.01.th01" default="Group"/></th>
-                        <th><g:message code="eya.table.01.th02" default="Species"/></th>
-                    </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-            <div id="rightList" class="tableContainer">
-                <div id="spinnerRow" style="position:absolute;margin-top:40px;margin-left:40px">
-                    <span style="text-align: center;"><g:message code="facets.multiplefacets.tabletr01td01" default="loading data"/>... <asset:image src="spinner.gif" id="spinner2" class="spinner" alt="spinner icon"/></span>
+        <ul class="nav nav-tabs" id="eyaTabs">
+            <li class="active"><a href="#speciesGroupsTab" data-toggle="tab">
+                Species Groups <i
+                        class="fa fa-cog fa-spin fa-lg hidden"></i></a></li>
+            <li><a href="#speciesListsTab" data-toggle="tab">
+                Species Lists <i
+                        class="fa fa-cog fa-spin fa-lg hidden"></i></a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="speciesGroupsTab">
+                <div id="taxaBox">
+                    <div id="leftList">
+                        <table id="taxa-level-0">
+                            <thead>
+                            <tr>
+                                <th><g:message code="eya.table.01.th01" default="Group"/></th>
+                                <th><g:message code="eya.table.01.th02" default="Species"/></th>
+                            </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div id="rightList" class="tableContainer">
+                        <div id="spinnerRow" style="position:absolute;margin-top:40px;margin-left:40px">
+                            <span style="text-align: center;"><g:message code="facets.multiplefacets.tabletr01td01" default="loading data"/>... <asset:image src="spinner.gif" id="spinner2" class="spinner" alt="spinner icon"/></span>
+                        </div>
+                        <table>
+                            <thead class="fixedHeader">
+                            <tr>
+                                <th class="speciesIndex">&nbsp;&nbsp;</th>
+                                <th class="sciName"><a href="0" id="commonSort" data-sort="common" title="sort by common name"><g:message code="eya.table.02.th01.a" default="Common Name"/></a></th>
+                                <th class="sciName"><a href="0" id="speciesSort" data-sort="taxa" title="sort by scientific name"><g:message code="eya.table.02.th01" default="Scientific Name"/></a></th>
+                                <th class="rightCounts"><a href="0" data-sort="count" title="sort by record count"><g:message code="eya.table.02.th02" default="Records"/></a></th>
+                            </tr>
+                            </thead>
+                            <tbody class="scrollContent">
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <table>
-                    <thead class="fixedHeader">
-                    <tr>
-                        <th class="speciesIndex">&nbsp;&nbsp;</th>
-                        <th class="sciName"><a href="0" id="commonSort" data-sort="common" title="sort by common name"><g:message code="eya.table.02.th01.a" default="Common Name"/></a></th>
-                        <th class="sciName"><a href="0" id="speciesSort" data-sort="taxa" title="sort by scientific name"><g:message code="eya.table.02.th01" default="Scientific Name"/></a></th>
-                        <th class="rightCounts"><a href="0" data-sort="count" title="sort by record count"><g:message code="eya.table.02.th02" default="Records"/></a></th>
-                    </tr>
-                    </thead>
-                    <tbody class="scrollContent">
-                    </tbody>
-                </table>
+            </div>
+            <div class="tab-pane active" id="speciesListsTab">
+                <div id="speciesListsBox">
+                    <div id="leftListSL" class="tableContainer">
+                        <table id="taxa-level-0-sl">
+                            <thead>
+                            <tr>
+                                <th><g:message code="eya.table.03.th01" default="Species List"/></th>
+                                <th><g:message code="eya.table.03.th02" default="Species"/></th>
+                            </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div id="rightListSL" class="tableContainer">
+                        <div id="spinnerRowSL" style="position:absolute;margin-top:40px;margin-left:40px">
+                            <span style="text-align: center;"><g:message code="facets.multiplefacets.tabletr01td01" default="loading data"/>... <asset:image src="spinner.gif" id="spinner2" class="spinner" alt="spinner icon"/></span>
+                        </div>
+                        <table>
+                            <thead class="fixedHeader">
+                            <tr>
+                                <th class="speciesIndex">&nbsp;&nbsp;</th>
+                                <th class="sciName"><a href="0" id="commonSortSL" data-sort="common" title="sort by common name"><g:message code="eya.table.02.th01.a" default="Common Name"/></a></th>
+                                <th class="sciName"><a href="0" id="speciesSortSL" data-sort="taxa" title="sort by scientific name"><g:message code="eya.table.02.th01" default="Scientific Name"/></a></th>
+                                <th class="rightCounts"><a href="0" data-sort="count" title="sort by record count"><g:message code="eya.table.02.th02" default="Records"/></a></th>
+                            </tr>
+                            </thead>
+                            <tbody class="scrollContent" style="height: 600px">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
+
     </div><!-- .col-md-7 -->
     <div class="col-md-5 col-xs-12">
         <div id="mapCanvas" style="width: 100%; height: 490px;"></div>

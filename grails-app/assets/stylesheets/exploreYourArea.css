@@ -226,6 +226,23 @@ button#download {
     font-weight:bold;
 }
 
+#speciesListsBox {
+    display: flex;          /* make children go side by side */
+    gap: 1rem;              /* optional: space between them */
+    height: 100%;
+}
+
+#leftListSL {
+    flex: 1;
+    min-width: 0;
+}
+
+#rightListSL {
+    flex: 1;
+    min-width: 0;           /* allow to shrink if needed */
+    overflow: auto;
+}
+
 /* Your Localtion scrollable table from: http://www.imaputz.com/cssStuff/bigFourVersion.html */
 div.tableContainer {
     /*	clear: both;*/
