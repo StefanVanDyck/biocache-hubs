@@ -93,10 +93,12 @@ table#cellCountsLegend {
     padding-left: 20px;
 }
 
-#rightList tbody  {
+#rightList tbody,
+#rightListSL tbody  {
     background-color: #f0f0f0;
 }
-#rightList tbody td {
+#rightList tbody td,
+#rightListSL tbody td {
     height: auto;
     padding: 1px 2px 1px 5px;
 }
@@ -110,11 +112,14 @@ table#cellCountsLegend {
 #taxaDiv li span {
     font-size: 12px;
 }
-#taxa-level-0, #rightList table {
+#taxa-level-0, #taxa-level-0-sl,
+#rightList table,
+#rightListSL table {
     margin-bottom: 0!important;
     width: 100%;
 }
-#taxa-level-0  tbody{
+#taxa-level-0 tbody ,
+#taxa-level-0-sl  tbody {
     padding-bottom:3px!important;
 }
 
@@ -122,20 +127,30 @@ table#cellCountsLegend {
     margin: 0;
     padding: 0;
 }
-#rightList .speciesInfo {
+#rightList .speciesInfo,
+#rightListSL .speciesInfo
+{
     display: none;
 }
-#rightList tr#info a {
+#rightList tr#info a,
+#rightListSL tr#info a
+{
     text-decoration: none;
 }
-#rightList .speciesIndex {
+#rightList .speciesIndex,
+#rightListSL .speciesIndex
+{
     width: 5%;
 }
-#rightList .sciName {
+#rightList .sciName,
+#rightListSL .sciName
+{
     text-align: left;
     width: 50%;
 }
-#rightList .rightCounts {
+#rightList .rightCounts,
+#rightListSL .rightCounts
+{
     padding-right: 5px;
     width:10%;
 }
@@ -224,6 +239,23 @@ button#download {
 
 #markerAddress {
     font-weight:bold;
+}
+
+#speciesListsBox {
+    display: flex;          /* make children go side by side */
+    gap: 1rem;              /* optional: space between them */
+    height: 100%;
+}
+
+#leftListSL {
+    flex: 1;
+    min-width: 0;
+}
+
+#rightListSL {
+    flex: 1;
+    min-width: 0;           /* allow to shrink if needed */
+    overflow: auto;
 }
 
 /* Your Localtion scrollable table from: http://www.imaputz.com/cssStuff/bigFourVersion.html */
