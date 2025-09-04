@@ -228,11 +228,11 @@
                     <i class="fa fa-cog"></i>&nbsp;&nbsp;<g:message code="search.filter.customise"/>
                 </a>
                 <g:if test="${params.vlaanderen}">
-                    <a id="showAllButton" class="btn btn-primary btn-sm tooltips" href="${g.createLink(controller: 'occurrence', action: 'list')}?q=" title="<g:message code="list.vbp.flanders.button.label"/>">
+                    <a id="showAllButton" class="btn btn-primary btn-sm tooltips" href="${g.createLink(controller: 'occurrence', action: 'list', params: params)}" title="<g:message code="list.vbp.flanders.button.label"/>">
                         <g:message code="list.vbp.flanders.button.label" default="Flanders"/></a>
                 </g:if>
                 <g:else>
-                    <a id="showFlandersButton" class="btn btn-default btn-sm tooltips" href="${g.createLink(controller: 'occurrence', action: 'list')}?q=*%3A*&fq=${grailsApplication.config.getProperty('regionVlaanderen.query')}&vlaanderen=true" title="<g:message code="list.vbp.flanders.button.label"/>">
+                    <a id="showFlandersButton" class="btn btn-default btn-sm tooltips" href="${g.createLink(controller: 'occurrence', action: 'list', params: params + [vlaanderen: true, fq: grailsApplication.config.getProperty('regionVlaanderen.query')])}" title="<g:message code="list.vbp.flanders.button.label"/>">
                         <g:message code="list.vbp.flanders.button.label" default="Flanders"/></a>
                 </g:else>
                 </div>
