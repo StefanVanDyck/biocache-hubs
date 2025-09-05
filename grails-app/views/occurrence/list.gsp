@@ -33,6 +33,7 @@
     <g:set var="fqParams" value="${(params.fq) ? "&fq=" + params.list('fq')?.join('&fq=') : ''}"/>
     <g:set var="searchString" value="${raw(sr?.urlParameters).encodeAsURL()}"/>
     <g:set var="biocacheServiceUrl" value="${alatag.getBiocacheAjaxUrl()}"/>
+    <g:set var="regionVlaanderenFq" value="${grailsApplication.config.getProperty('regionVlaanderen.query')}"/>
     var BC_CONF = {
         contextPath: "${request.contextPath}",
             serverName: "<g:createLink absolute="true" uri="" />",
@@ -125,6 +126,10 @@
                 <div class="input-group pull-right col-sm-7 col-md-7">
                     <input type="text" id="taxaQuery" name="q" class="form-control"
                            value="${params.list(searchQuery).join(' OR ')}"/>
+                    <g:if test="${params.vlaanderen}">
+                        <input type="hidden" name="vlaanderen" value="true"/>
+                        <input type="hidden" name="fq" value="${regionVlaanderenFq}"/>
+                    </g:if>
                     <span class="input-group-btn">
                         <input class="form-control btn btn-default" type="submit" id="solrSubmit" value="${g.message(code:"list.advancedsearchlink.button.label", default:"Quick search")}"/>
                     </span>
@@ -228,11 +233,11 @@
                     <i class="fa fa-cog"></i>&nbsp;&nbsp;<g:message code="search.filter.customise"/>
                 </a>
                 <g:if test="${params.vlaanderen}">
-                    <a id="showAllButton" class="btn btn-primary btn-sm tooltips" href="${g.createLink(controller: 'occurrence', action: 'list', params: params)}" title="<g:message code="list.vbp.flanders.button.label"/>">
+                    <a id="showAllButton" class="btn btn-primary btn-sm tooltips" href="${createLink(uri: request.requestURL, params: params.findAll { k, v -> !(k in ['vlaanderen']) && !(v in [regionVlaanderenFq]) })}" title="<g:message code="list.vbp.flanders.button.label"/>">
                         <g:message code="list.vbp.flanders.button.label" default="Flanders"/></a>
                 </g:if>
                 <g:else>
-                    <a id="showFlandersButton" class="btn btn-default btn-sm tooltips" href="${g.createLink(controller: 'occurrence', action: 'list', params: params + [vlaanderen: true, fq: grailsApplication.config.getProperty('regionVlaanderen.query')])}" title="<g:message code="list.vbp.flanders.button.label"/>">
+                    <a id="showFlandersButton" class="btn btn-default btn-sm tooltips" href="${createLink(uri: request.requestURL, params: params + [vlaanderen: true, fq: regionVlaanderenFq])}" title="<g:message code="list.vbp.flanders.button.label"/>">
                         <g:message code="list.vbp.flanders.button.label" default="Flanders"/></a>
                 </g:else>
                 </div>
