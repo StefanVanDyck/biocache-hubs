@@ -856,7 +856,7 @@ function processSpeciesJsonData(data, currentSelection, rightListElementId) {
             e.preventDefault(); // ignore the href text - used for data
 
             // process JSON data from request
-            processSpeciesJsonData(speciesJson);
+            processSpeciesJsonData(speciesJson, currentSelection, rightListElementId);
         }
     );
     $('thead.fixedHeader a').bind('click.sort', function(e) {
@@ -871,7 +871,7 @@ function processSpeciesJsonData(data, currentSelection, rightListElementId) {
             globalOffset = 0
 
             // process JSON data from request
-            processSpeciesJsonData(speciesJson);
+            processSpeciesJsonData(speciesJson, currentSelection, rightListElementId);
         }
     );
 
