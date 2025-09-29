@@ -608,18 +608,41 @@ function addAddressToPage(response) {
     }
 }
 
-var speciesJson
-var speciesListJson
+var globalOffsetMap = new Map([
+    ['rightList', 0],
+    ['rightListSL', 0]
+]);
 var globalSortOrder
-var globalOffset
+var globalJsonMap = new Map([
+    ['rightList', []],
+    ['rightListSL', []]
+]);
 var dataRequest
 var lastParameters
+
+function getGlobalOffset(tab){
+    return globalOffsetMap.get(tab)
+}
+
+function setGlobalOffset(tab, value){
+    globalOffsetMap.set(tab, value)
+}
+
+function getJson(tab){
+    return globalJsonMap.get(tab)
+}
+
+function setJson(tab, value){
+    return globalJsonMap.set(tab, value)
+}
 
 /**
  * Species group was clicked
  */
 function groupClicked(el) {
 
+    var speciesJson = getJson('rightList')
+    var globalOffset = getGlobalOffset('rightList')
     // Change the global var speciesGroup
     speciesGroup = $(el).find('a.taxonBrowse').attr('id');
     taxon = null; // clear any species click
@@ -657,6 +680,7 @@ function groupClicked(el) {
     } else {
         lastParameters = allParameters
         speciesJson = [] // flow continues, so clear out old data for AJAX call below
+        setJson('rightList', speciesJson)
     }
 
     $('#rightList tbody').empty();
@@ -674,7 +698,9 @@ function groupClicked(el) {
 
         // global store
         speciesJson = data
+        setJson('rightList', speciesJson)
         globalOffset = 0
+        setGlobalOffset('rightList', globalOffset)
 
         sortSpeciesJson(speciesJson)
 
@@ -688,6 +714,8 @@ function groupClicked(el) {
  */
 function speciesListClicked(el) {
 
+    var speciesListJson = getJson('rightListSL')
+    var globalOffset = getGlobalOffset('rightListSL')
     // Change the global var speciesGroup
     speciesListDrUid = $(el).find('a.taxonBrowse').attr('id'); // TODO narrow down to a tab
     // taxon = null; // clear any species click
@@ -723,7 +751,8 @@ function speciesListClicked(el) {
         return
     } else {
         lastParameters = allParameters
-        speciesJson = [] // flow continues, so clear out old data for AJAX call below
+        speciesListJson = [] // flow continues, so clear out old data for AJAX call below
+        setJson('rightListSL', speciesListJson)
     }
 
     $('#rightListSL tbody').empty();
@@ -741,7 +770,9 @@ function speciesListClicked(el) {
 
         // global store
         speciesListJson = data
+        setJson('rightListSL', speciesListJson)
         globalOffset = 0
+        setGlobalOffset('rightListSL', globalOffset)
 
         sortSpeciesJson(speciesListJson)
 
@@ -754,7 +785,7 @@ function speciesListClicked(el) {
  * Process the JSON data from a species list AJAX request (species in area)
  */
 function processSpeciesJsonData(data, currentSelection, rightListElementId) {
-    var offset = globalOffset
+    var offset = getGlobalOffset(rightListElementId)
     var pageSize = 50;
 
     var contents = ""
@@ -813,7 +844,8 @@ function processSpeciesJsonData(data, currentSelection, rightListElementId) {
                 'data-sort="'+sortOrder+'" data-offset="' + (offset + pageSize) + '">Show more species</a></td></tr>';
         }
 
-        globalOffset += pageSize
+        // globalOffset += pageSize
+        setGlobalOffset(rightListElementId, getGlobalOffset(rightListElementId) + pageSize)
     } else {
         // no species were found (either via paging or clicking on taxon group
         var text = '<tr><td></td><td colspan="2">[no species found]</td></tr>';
@@ -856,7 +888,7 @@ function processSpeciesJsonData(data, currentSelection, rightListElementId) {
             e.preventDefault(); // ignore the href text - used for data
 
             // process JSON data from request
-            processSpeciesJsonData(speciesJson, currentSelection, rightListElementId);
+            processSpeciesJsonData(getJson(rightListElementId), currentSelection, rightListElementId);
         }
     );
     $('thead.fixedHeader a').bind('click.sort', function(e) {
@@ -868,10 +900,11 @@ function processSpeciesJsonData(data, currentSelection, rightListElementId) {
             $('#' + rightListElementId + ' tbody').empty();
             $(".scrollContent").scrollTop(0);
 
-            globalOffset = 0
+            // globalOffset = 0
+            setGlobalOffset(rightListElementId, 0)
 
             // process JSON data from request
-            processSpeciesJsonData(speciesJson, currentSelection, rightListElementId);
+            processSpeciesJsonData(getJson(rightListElementId), currentSelection, rightListElementId);
         }
     );
 
