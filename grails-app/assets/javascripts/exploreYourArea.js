@@ -449,13 +449,23 @@ function updateMarkerPosition(latLng) {
     MAP_VAR.query = "?q=*%3A*&lat=" + lat + "&lon=" + lng + "&radius=" + MAP_VAR.radius;
 }
 
+function loadRecordsLayerForSpeciesGroup(retry){
+    var speciesGroupParam = "species_group:" + (speciesGroup === "ALL_SPECIES" ? "*" : speciesGroup);
+    loadRecordsLayer(retry, speciesGroupParam);
+}
+
+function loadRecordsLayerForSpeciesList(retry){
+    var speciesListParam = "species_list_uid:" + (speciesListDrUid.length === 0 ? "*" : speciesListDrUid);
+    loadRecordsLayer(retry, speciesListParam);
+}
+
 /**
  * Load (reload) geoJSON data into vector layer
  */
-function loadRecordsLayer(retry) {
+function loadRecordsLayer(retry, fqParam) {
     if (!MAP_VAR.map && !retry) {
         // in case a callback calls this function before map has initialised
-        setTimeout(function() {if (!points || points.length === 0) {loadRecordsLayer(true)}}, 2000);
+        setTimeout(function() {if (!points || points.length === 0) {loadRecordsLayer(true, fqParam)}}, 2000);
         return;
     } else if (!MAP_VAR.map) {
         return;
@@ -472,20 +482,19 @@ function loadRecordsLayer(retry) {
     }
 
     // URL for GeoJSON web service
-    var speciesGroupParam = "species_group:" + (speciesGroup === "ALL_SPECIES" ? "*" : speciesGroup);
     var alaParams = jQuery.param({
         q: (taxon) ? "taxon_name:\"" + taxon + "\"" : "*:*",
         lat: $('#latitude').val(),
         lon: $('#longitude').val(),
         radius: $('#radius').val(),
         fq: [ "spatiallyValid:true",
-              speciesGroupParam
+              fqParam
         ],
         qc: MAP_VAR.queryContext
     }, true);
 
     // records popups need to know the species group
-    MAP_VAR.removeFqs = "&fq=species_group:" + (speciesGroup === "ALL_SPECIES" ? "*" : speciesGroup) + "&fq=taxon_name:" + (taxon ? ("\"" + taxon + "\""): "*");
+    MAP_VAR.removeFqs = "&fq=" + fqParam + "&fq=taxon_name:" + (taxon ? ("\"" + taxon + "\""): "*");
 
     var alaMapUrl = MAP_VAR.biocacheServiceUrl + "/ogc/wms/reflect?" + alaParams;
     var pointColour = MAP_VAR.pointColour;
@@ -567,7 +576,7 @@ function geocodeAddress(reverseGeocode) {
             updateMarkerPosition(latLng);
             // reload map pin, etc
             initialize();
-            loadRecordsLayer();
+            loadRecordsLayerForSpeciesGroup(false);
         }
 
     }
@@ -582,7 +591,7 @@ function geocodeAddress(reverseGeocode) {
                 updateMarkerPosition(latLng);
                 // reload map pin, etc
                 initialize();
-                loadRecordsLayer();
+                loadRecordsLayerForSpeciesGroup(false);
             } else {
                 alert("Geocode was not successful for the following reason: " + status);
             }
@@ -657,7 +666,7 @@ function groupClicked(el) {
         $("#recordsGroupText").text("selected");
     }
     // update links to downloads and records list
-    if (MAP_VAR.map) loadRecordsLayer();
+    if (MAP_VAR.map) loadRecordsLayerForSpeciesGroup(false)
     // AJAX...
     var uri = MAP_VAR.biocacheServiceUrl + "/explore/group/"+speciesGroup + "?includeRank=false";
     var sortField = "count"
@@ -718,8 +727,8 @@ function speciesListClicked(el) {
     var globalOffset = getGlobalOffset('rightListSL')
     // Change the global var speciesGroup
     speciesListDrUid = $(el).find('a.taxonBrowse').attr('id'); // TODO narrow down to a tab
-    // taxon = null; // clear any species click
-    // taxonGuid = null;
+    taxon = null; // clear any species click
+    taxonGuid = null;
     $('#taxa-level-0-sl tr').removeClass("activeRow");
     $(el).addClass("activeRow");
     // update records page link text
@@ -729,7 +738,9 @@ function speciesListClicked(el) {
     //     $("#recordsGroupText").text("selected");
     // }
     // update links to downloads and records list
-    if (MAP_VAR.map) loadRecordsLayer();
+    if (MAP_VAR.map) {
+        loadRecordsLayerForSpeciesList(false)
+    }
     // AJAX...
     var uri = MAP_VAR.biocacheServiceUrl + "/explore/specieslist/"+speciesListDrUid + "?includeRank=false";
     var sortField = "count"
@@ -879,7 +890,11 @@ function processSpeciesJsonData(data, currentSelection, rightListElementId) {
         // hide previous selected spceies info box
         $(this).addClass("activeRow2"); // highloght current taxon
         // show the links for current selected species
-        loadRecordsLayer();
+        if (rightListElementId.endsWith('SL')) {
+            loadRecordsLayerForSpeciesList(false)
+        } else {
+            loadRecordsLayerForSpeciesGroup(false)
+        }
     });
 
     // Register onClick for "load more species" link & sort headers
