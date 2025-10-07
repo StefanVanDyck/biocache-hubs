@@ -27,7 +27,7 @@
     <meta name="layout" content="${grailsApplication.config.getProperty('skin.layout')}"/>
     <meta name="section" content="yourArea"/>
     <meta name="breadcrumbParent" content="${grailsApplication.config.getProperty('skin.exploreUrl')},${message(code:"eya.parent.title")}"/>
-    <meta name="breadcrumb" content="Explore your area"/>
+    <meta name="breadcrumb" content="${message(code:"eya.title")}"/>
     <title><g:message code="eya.title01" default="Explore Your Area"/> | ${grailsApplication.config.getProperty('skin.orgNameLong')} </title>
 
     <g:if test="${grailsApplication.config.getProperty('google.apikey')}">
