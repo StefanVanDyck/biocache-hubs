@@ -995,6 +995,7 @@ function loadSpeciesLists() {
             populateSpeciesLists(data);
         }
     });
+    $('#spinnerRowSL').hide(); // hide spinner on first load as there's no default species list to load
 }
 
 /*
@@ -1042,7 +1043,6 @@ function populateSpeciesLists(data) {
         $('.tableContainer').height(tableHeight+2);
         var tbodyHeight = $('#taxa-level-0-sl tbody').height();
         $('#rightList tbody').height(tbodyHeight);
-        $('#taxa-level-0-sl tbody tr.activeRow').click();
     }
 
     function addSpeciesListRow(speciesListDruid, speciesListName, count) {
