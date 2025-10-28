@@ -792,6 +792,12 @@ class OccurrenceTagLib {
                     } else if (occurrence.country) {
                         outputResultsLabel('country', alatag.message(code:"record.country.label"), alatag.message(code:occurrence.country), true)
                     }
+                    if(occurrence.municipality) {
+                        outputResultsLabel('state', alatag.message(code:"record.municipality.label"), alatag.message(code:occurrence.municipality), true)
+                    }
+                    if(occurrence.coordinateUncertaintyInMeters) {
+                        outputResultsLabel('state', alatag.message(code:"record.coordinateUncertaintyInMeters.label"), alatag.message(code:occurrence.coordinateUncertaintyInMeters), true)
+                    }
                 }
 
                 // display dynamic fields

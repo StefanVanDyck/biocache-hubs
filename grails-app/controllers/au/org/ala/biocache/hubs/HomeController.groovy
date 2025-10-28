@@ -39,6 +39,16 @@ class HomeController {
         redirect(controller: "occurrences", action: "search", params: params)
     }
 
+    def occurrenceIDSearch(OccurrenceIDSearchParams requestParams) {
+        log.debug("Home controller occurrenceIDSearch page")
+        def id = ""
+        if (requestParams.occurrenceID != null && requestParams.occurrenceID.trim().length() > 0) {
+            id = requestParams.occurrenceID.trim()
+        }
+        params.q = String.format("occurrenceID:%s", id)
+        redirect(controller: "occurrences", action: "search", params: params)
+    }
+
     /**
      * Loads some model attributes into the page for advanced search tab.
      * Fields appearing should be specified in config var facets.cached and

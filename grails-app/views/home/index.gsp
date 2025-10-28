@@ -361,14 +361,18 @@
                                                                                       default="Advanced search"/></a></li>
                     <li><a id="t3" href="#taxaUpload" data-toggle="tab"><g:message code="home.index.navigator03"
                                                                                    default="Batch taxon search"/></a></li>
-                    <li><a id="t4" href="#catalogUpload" data-toggle="tab"><g:message code="home.index.navigator04"
-                                                                                      default="Catalogue number search"/></a>
-                    </li>
+                    <g:if test="${grailsApplication.config.getProperty('searchTabs.catalogUpload') == 'true'}">
+                        <li><a id="t4" href="#catalogUpload" data-toggle="tab"><g:message code="home.index.navigator04"
+                                                                                      default="Catalogue number search"/></a></li>
+                    </g:if>
                     <li><a id="t6" href="#eventSearch" data-toggle="tab"><g:message code="home.index.navigator06"
                                                                                       default="Event search"/></a>
                     </li>
                     <li><a id="t5" href="#spatialSearch" data-toggle="tab"><g:message code="home.index.navigator05"
                                                                                       default="Spatial search"/></a></li>
+                    <li><a id="t7" href="#occurrenceIDSearch" data-toggle="tab"><g:message code="home.index.navigator07"
+                                                                                      default="Occurrence ID search"/></a>
+                    </li>
                 </ul>
             </div>
 
@@ -435,7 +439,7 @@
                                 <%--<input type="submit" name="action" value="Download" class="form-control">--%>
                                 <%--&nbsp;OR&nbsp;--%>
                                 <input type="hidden" name="redirectBase"
-                                       value="${serverName}${request.contextPath}/occurrences/search" class="form-control">
+                                       value="${serverName}/occurrences/search" class="form-control">
                                 <input type="hidden" name="action" value="Search" />
                                 <input type="submit"
                                        value="${g.message(code:"home.index.catalogupload.button01", default:"Search")}" class="btn btn-primary" />
@@ -457,7 +461,7 @@
                                 <%--<input type="submit" name="action" value="Download" class="form-control">--%>
                                 <%--&nbsp;OR&nbsp;--%>
                                 <input type="hidden" name="redirectBase"
-                                       value="${serverName}${request.contextPath}/occurrences/search" class="form-control">
+                                       value="${serverName}/occurrences/search" class="form-control">
                                 <input type="hidden" name="field" value="catalogue_number" class="form-control">
                                 <input type="hidden" name="action" value="Search" />
                                 <input type="submit"
@@ -483,7 +487,7 @@
                                     <textarea name="queries" id="event_keywords" class="form-control" rows="5" cols="60"></textarea>
                                 </div>
                                 <input type="hidden" name="redirectBase"
-                                       value="${serverName}${request.contextPath}/occurrences/search" class="form-control">
+                                       value="${serverName}/occurrences/search" class="form-control">
                                 <input type="hidden" name="field" value="text_eventID, text_parentEventID, text_fieldNumber, text_datasetName" class="form-control">
                                 <input type="hidden" name="action" value="Search" />
                                 <input type="submit"
@@ -502,7 +506,7 @@
                                     <textarea name="queries" id="event_ids" class="form-control" rows="5" cols="60"></textarea>
                                 </div>
                                 <input type="hidden" name="redirectBase"
-                                       value="${serverName}${request.contextPath}/occurrences/search" class="form-control">
+                                       value="${serverName}/occurrences/search" class="form-control">
                                 <input type="hidden" name="field" value="text_eventID" class="form-control">
                                 <input type="hidden" name="action" value="Search" />
                                 <input type="submit"
@@ -521,7 +525,7 @@
                                     <textarea name="queries" id="parent_event_ids" class="form-control" rows="5" cols="60"></textarea>
                                 </div>
                                 <input type="hidden" name="redirectBase"
-                                       value="${serverName}${request.contextPath}/occurrences/search" class="form-control">
+                                       value="${serverName}/occurrences/search" class="form-control">
                                 <input type="hidden" name="field" value="text_parentEventID" class="form-control">
                                 <input type="hidden" name="action" value="Search" />
                                 <input type="submit"
@@ -540,7 +544,7 @@
                                     <textarea name="queries" id="field_numbers" class="form-control" rows="5" cols="60"></textarea>
                                 </div>
                                 <input type="hidden" name="redirectBase"
-                                       value="${serverName}${request.contextPath}/occurrences/search" class="form-control">
+                                       value="${serverName}/occurrences/search" class="form-control">
                                 <input type="hidden" name="field" value="text_fieldNumber" class="form-control">
                                 <input type="hidden" name="action" value="Search" />
                                 <input type="submit"
@@ -559,7 +563,7 @@
                                     <textarea name="queries" id="dataset_name" class="form-control" rows="5" cols="60"></textarea>
                                 </div>
                                 <input type="hidden" name="redirectBase"
-                                       value="${serverName}${request.contextPath}/occurrences/search" class="form-control">
+                                       value="${serverName}/occurrences/search" class="form-control">
                                 <input type="hidden" name="field" value="text_datasetName" class="form-control">
                                 <input type="hidden" name="action" value="Search" />
                                 <input type="submit"
@@ -614,6 +618,20 @@
                         </div>
                     </div>
                 </div><!-- end #spatialSearch  -->
+                <div id="occurrenceIDSearch" class="tab-pane">
+                <form name="occurrenceIDSearchForm" id="occurrenceIDSearchForm" action="${request.contextPath}/occurrenceIDSearch"
+                      method="GET">
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <div class="form-group">
+                                <label for="occurrenceID"><g:message code="home.index.occurrenceidsearch.des01" default="Enter occurrence ID"/></label>
+                                <input type="text" class="form-control" name="occurrenceID" id="occurrenceID"/>
+                            </div>
+                            <input class="btn btn-primary" id="occurrenceIDSearchButton"  type="submit" value="${g.message(code:"home.index.simsplesearch.button", default:"Search")}"/>
+                        </div>
+                    </div>
+                </form>
+                </div><!-- end #occurrenceIDSearch div -->
             </div><!-- end .tab-content -->
         </div><!-- end .span12 -->
     </div><!-- end .row -->

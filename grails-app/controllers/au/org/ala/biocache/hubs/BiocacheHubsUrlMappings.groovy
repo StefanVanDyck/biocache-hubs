@@ -32,6 +32,7 @@ class BiocacheHubsUrlMappings {
         "/search"(controller: 'home')
         "/advancedSearch"(controller: 'home', action: 'advancedSearch')
         "/simpleSearch"(controller: 'home', action: 'simpleSearch')
+        "/occurrenceIDSearch"(controller: 'home', action: 'occurrenceIDSearch')
         "/proxy/$path**" (controller: 'proxy'){
             action = [POST:'doPost']
         }

@@ -461,7 +461,7 @@ class WebServicesService {
      * @param includeUser true to include the userId and email in the request headers and the ALA-Auth cookie.  If using JWTs sends the current user's access token, if false only sends a ClientCredentials grant token for this apps client id Default = false.
      * @return the object we request or an JSON object containing error info in case of error
      */
-    JSONElement getJsonElements(String url, Boolean wsAuth = false, Boolean includeUser = false) {
+    JSONElement getJsonElements(String url, Boolean wsAuth = true, Boolean includeUser = true) {
 
         log.debug "(internal) getJson URL = " + url
         def conn = new URL(url).openConnection()
@@ -693,13 +693,13 @@ class WebServicesService {
 
         /**
          * Internal used method to map from full country name to its iso code.
-         * Mapping comes from userdetails.baseUrl/ws/registration/countries.json
+         * Mapping comes from userdetails.url/ws/registration/countries.json
          *
          * @return a list of String representing the names of states of that country
          */
         @Cacheable('longTermCache')
         def getCountryNameMap() {
-            def countryUrl = "${grailsApplication.config.getProperty('userdetails.baseUrl')}/ws/registration/countries.json"
+            def countryUrl = "${grailsApplication.config.getProperty('userdetails.url')}/ws/registration/countries.json"
             def countries = getJsonElements(countryUrl)
             return countries?.findAll { it -> beAValidCountryOrState(it as JSONObject) }?.collectEntries { [(String) it.get("name"), (String) it.get("isoCode")] }
         }
@@ -722,7 +722,7 @@ class WebServicesService {
                 Map countryNameMap = grailsApplication.mainContext.getBean('webServicesService').getCountryNameMap()
                 // if a known country name
                 if (countryNameMap?.containsKey(countryName)) {
-                    def states = getJsonElements("${grailsApplication.config.getProperty('userdetails.baseUrl')}/ws/registration/states.json?country=" + countryNameMap.get(countryName))
+                    def states = getJsonElements("${grailsApplication.config.getProperty('userdetails.url')}/ws/registration/states.json?country=" + countryNameMap.get(countryName))
                     if (states) {
                         // only return valid states
                         matchingStates = states.findAll { it -> beAValidCountryOrState(it as JSONObject) }.collect { it -> (String) it.get("name") }

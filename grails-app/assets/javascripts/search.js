@@ -175,7 +175,7 @@ function init() {
         // alert("about to reload with new facets...");
         var selectedFacets = [];
         // iterate over seleted facet options
-        $(":input.facetOpts:checked").each(function(i, el) {
+        $('input.facetOpts:checkbox:checked').each(function(i, el) {
             selectedFacets.push($(el).val());
         });
 

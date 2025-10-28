@@ -32,8 +32,8 @@ class UserDataService {
         if (userId) {
             try {
                 String url;
-                if (USERDETAILS.equals(grailsApplication.config.getProperty("userproperties.provider")) && grailsApplication.config.userdetails.baseUrl) {
-                    url = grailsApplication.config.getProperty('userdetails.baseUrl') + '/property/getProperty';
+                if (USERDETAILS.equals(grailsApplication.config.getProperty("userproperties.provider")) && grailsApplication.config.userdetails.url) {
+                    url = grailsApplication.config.getProperty('userdetails.url') + '/property/getProperty';
                 } else if (BIOCACHE.equals(grailsApplication.config.getProperty("userproperties.provider")) && grailsApplication.config.biocache.baseUrl)    {
                     url = grailsApplication.config.getProperty('biocache.baseUrl') + '/user/property'
                 }
@@ -60,8 +60,8 @@ class UserDataService {
     boolean set(userId, type, data) {
         if (userId) {
             String url;
-            if (USERDETAILS.equals(grailsApplication.config.getProperty("userproperties.provider")) && grailsApplication.config.userdetails.baseUrl) {
-                url = grailsApplication.config.getProperty('userdetails.baseUrl') + '/property/saveProperty';
+            if (USERDETAILS.equals(grailsApplication.config.getProperty("userproperties.provider")) && grailsApplication.config.userdetails.url) {
+                url = grailsApplication.config.getProperty('userdetails.url') + '/property/saveProperty';
             } else if (BIOCACHE.equals(grailsApplication.config.getProperty("userproperties.provider")) && grailsApplication.config.biocache.baseUrl)    {
                 url = grailsApplication.config.getProperty('biocache.baseUrl') + '/user/property'
             }

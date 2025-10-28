@@ -47,9 +47,9 @@
     <div class="form-group">
         <label class="col-md-2 control-label" for="institution_collection"><g:message code="advancedsearch.table05col01.title" default="Institution or Collection"/></label>
         <div class="col-md-6">
-            <select class="institution_uid collection_uid form-control" name="institution_collection" id="institution_collection">
+            <select class="institution_code collection_uid form-control" name="institution_collection" id="institution_collection">
                 <option value=""><g:message code="advancedsearch.table05col01.option01.label" default="-- select an institution or collection --"/></option>
-                <g:each var="inst" in="${request.getAttribute("institution_uid")}">
+                <g:each var="inst" in="${request.getAttribute("institution_code")}">
                     %{-- Stops 'Not Supplied' institution from being rendered --}%
                     <g:if test="${inst.key != "*"}">
                         <optgroup label="${inst.value}">

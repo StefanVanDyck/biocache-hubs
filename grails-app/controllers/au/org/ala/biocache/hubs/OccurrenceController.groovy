@@ -188,7 +188,8 @@ class OccurrenceController {
                             userId              : authService?.getUserId(),
                             userEmail           : authService?.getEmail(),
                             processingTime      : (System.currentTimeMillis() - start),
-                            wsTime              : wsTime
+                            wsTime              : wsTime,
+                            vlaanderenWKT       : grailsApplication.config.getProperty('vbp.vlaanderenWKT', String, '')
                     ]
 
             if (dataQualityEnabled) {

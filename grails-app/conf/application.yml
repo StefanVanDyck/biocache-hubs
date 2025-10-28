@@ -50,3 +50,6 @@ environments:
             use-forward-headers: true
         grails:
             serverURL: "http://devt.ala.org.au:8081"
+
+searchTabs:
+    catalogUpload: true
