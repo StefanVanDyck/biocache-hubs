@@ -1,6 +1,6 @@
 buildscript {
     version "8.1.0-SNAPSHOT"
-    group "au.org.ala.plugins.grails"
+    group "be.inbo.plugins.grails"
 }
 
 plugins {
