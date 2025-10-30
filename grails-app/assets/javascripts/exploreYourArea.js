@@ -996,6 +996,7 @@ function loadSpeciesLists() {
         }
     });
     $('#spinnerRowSL').hide(); // hide spinner on first load as there's no default species list to load
+    $('#taxa-level-0-sl tbody tr:first td:first a').click(); // select first species list by default
 }
 
 /*
