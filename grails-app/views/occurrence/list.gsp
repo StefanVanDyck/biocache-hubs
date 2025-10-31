@@ -80,7 +80,7 @@
             autocompleteUseBie: ${grailsApplication.config.getProperty('skin.useAlaBie', Boolean)},
             groupedFacets: ${(groupedFacets as grails.converters.JSON).toString().encodeAsRaw()},
             groupedFacetsRequested: ${(groupedFacetsRequested as grails.converters.JSON).toString().encodeAsRaw()},
-            groupedFacetsMap: ${(groupedFacetsMap as grails.converters.JSON).toString().encodeAsRaw()}
+            groupedFacetsMap: ${(groupedFacetsMap as grails.converters.JSON).toString().encodeAsRaw()},
             pointColour: "${grailsApplication.config.getProperty('map.pointColour')}"
         };
 </script>
