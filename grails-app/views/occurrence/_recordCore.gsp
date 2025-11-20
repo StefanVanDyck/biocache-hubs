@@ -831,7 +831,7 @@
 <!-- verbatimCoordinateSystem -->
 <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="verbatimCoordinateSystem" fieldName="Verbatim coordinate system">
     ${fieldsMap.put("verbatimCoordinateSystem", true)}
-    ${record.raw.location.verbatimCoordinateSystem}
+    <a href="${g.createLink(uri:'/occurrences/search')}?q=*%3A*&radius=5&lat=${record.processed.location.decimalLatitude}&lon=${record.processed.location.decimalLongitude}">${record.raw.location.verbatimCoordinateSystem}</a>
 </alatag:occurrenceTableRow>
 <!-- Verbatim locality -->
 <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="verbatimLocality" fieldName="Verbatim locality">
