@@ -88,7 +88,7 @@
                     var latLng = L.latLng(${latLngStr.trim()});
                     var map = L.map('occurrenceMap', {
                         center: latLng,
-                        zoom: 5,
+                        zoom: 9,
                         scrollWheelZoom: false
                     });
 
