@@ -769,4 +769,17 @@ class WebServicesService {
                 requestParams.qualityProfile = qualityService.activeProfile()?.shortName
             }
         }
+
+    def getThumbnailImageURL(String taxonConceptId) {
+        def url = grailsApplication.config.getProperty('bieService.baseUrl') + "/species/" + taxonConceptId
+        JSONObject responseJson = getJsonElements(url)
+        if (responseJson) {
+            String imageIdentifier = responseJson.taxonConcept.imageIdentifier
+            if (imageIdentifier) {
+                return grailsApplication.config.getProperty('images.baseUrl') + "/image/" + imageIdentifier + "/thumbnail"
+            }
+        }
+        return null
     }
+
+}

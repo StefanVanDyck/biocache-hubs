@@ -24,6 +24,7 @@
 <g:set var="userId" value="${alatag.loggedInUserId()}"/>
 <g:set var="isUnderAuth" value="${grailsApplication.config.getProperty('security.cas.enabled', Boolean, false) || grailsApplication.config.getProperty('security.oidc.enabled', Boolean, false)}"/>
 <g:set var="showVernacularName" value="${grailsApplication.config.getProperty('vernacularName.show', Boolean, true)}"/>
+<g:set var="fieldsMap" value="${[:]}"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -136,13 +137,21 @@
                 </div>
                 <div class="centre">
                     <h1>
-                        <g:message code="show.headingbar01.title" default="Occurrence record"/>
-                        <span id="recordId">${recordId}</span>
-                    </h1>
-                    <g:if test="${record.raw.classification}">
-                        <div id="recordHeadingLine2">
                             <g:message code="basisOfRecord.${record.processed.occurrence?.basisOfRecord}" default="${record.processed.occurrence?.basisOfRecord}"/>
-                            <g:message code="show.heading.of" default="of"/>
+                            <g:if test="${showVernacularName && (record.processed.classification.vernacularName || record.raw.classification.vernacularName)}">
+                                <g:message code="show.heading.of" default="of"/>
+                                <g:if test="${record.processed.classification.vernacularName}">
+                                    <span>${record.processed.classification.vernacularName}</span>
+                                </g:if>
+                                <g:elseif test="${record.raw.classification.vernacularName}">
+                                    <span>${record.raw.classification.vernacularName}</span>
+                                </g:elseif>
+                            </g:if>
+                    <g:if test="${record.raw.classification}">
+                        <div>
+                            <g:if test="${taxaLinks.baseUrl && record.processed.classification.taxonConceptID}">
+                                <a href="${taxaLinks.baseUrl}${record.processed.classification.taxonConceptID}">
+                            </g:if>
                             <g:if test="${record.processed.classification.scientificName}">
                                 <alatag:formatSciName rankId="${record.processed.classification.taxonRankID}" name="${record.processed.classification.scientificName}"/>
                                 ${record.processed.classification.scientificNameAuthorship}
@@ -155,17 +164,33 @@
                                 <i>${record.raw.classification.genus} ${record.raw.classification.specificEpithet}</i>
                                 ${record.raw.classification.scientificNameAuthorship}
                             </g:else>
-                            <g:if test="${showVernacularName && record.processed.classification.vernacularName}">
-                                | ${record.processed.classification.vernacularName}
+                            <g:if test="${taxaLinks.baseUrl && record.processed.classification.taxonConceptID}">
+                                </a>
                             </g:if>
-                            <g:elseif test="${showVernacularName && record.raw.classification.vernacularName}">
-                                | ${record.raw.classification.vernacularName}
-                            </g:elseif>
+                        </div>
+                        <div>
                             <g:if test="${record.processed.event?.eventDate || record.raw.event?.eventDate}">
                                 <g:message code="show.heading.recordedOn" default="recorded on"/> ${record.processed.event?.eventDate ?: record.raw.event?.eventDate}
                             </g:if>
                         </div>
                     </g:if>
+                        <g:if test="${record.processed.identification.identificationVerificationStatus}">
+                            <div>
+                                <g:message code="show.headingbar04.title" default="Identification Verification Status:"/>
+                                <span id="identificationVerificationStatus">${record.processed.identification.identificationVerificationStatus}</span>
+                            </div>
+                        </g:if>
+                        <g:elseif test="${record.raw.identification.identificationVerificationStatus}">
+                            <div>
+                                <g:message code="show.headingbar04.title" default="Identification Verification Status:"/>
+                                <span id="identificationVerificationStatus">${record.raw.identification.identificationVerificationStatus}</span>
+                            </div>
+                        </g:elseif>
+                    </h1>
+                    <div id="recordHeadingLine2">
+                        <g:message code="show.headingbar01.title" default="Occurrence record"/>
+                        <span id="recordId">${recordId}</span>
+                    </div>
                 </div>
             </div>
             <div class="row">
@@ -213,6 +238,214 @@
                             </div>
                         </div>
                     </div>
+                <g:if test="${record.images}">
+                    <div class="sidebar">
+                        <h3 id="images"><g:message code="show.sidebar03.title" default="Images"/></h3>
+                        <div id="occurrenceImages" style="margin-top:5px;">
+                            <g:each in="${record.images}" var="image">
+                                <div style="margin-bottom:10px;">
+                                    <g:if test="${grailsApplication.config.getProperty('skin.useAlaImageService', Boolean)}">
+                                        <a href="${grailsApplication.config.getProperty('images.viewerUrl')}${image.filePath}" target="_blank">
+                                            <img src="${image.alternativeFormats.smallImageUrl}" style="max-width: 100%;" alt="Click to view this image in a large viewer"/>
+                                        </a>
+                                    </g:if>
+                                    <g:else>
+                                        <a href="${image.alternativeFormats.largeImageUrl}" target="_blank">
+                                            <img src="${image.alternativeFormats.smallImageUrl}" style="max-width: 100%;"/>
+                                        </a>
+                                    </g:else>
+                                    <br/>
+                                    <g:if test="${record.raw.miscProperties?.TITLE}">
+                                        <cite><b><g:message code="show.sidebar03.image.title" default="Title"/>:</b> <alatag:sanitizeContent>${raw(record.raw.miscProperties.TITLE)}</alatag:sanitizeContent></cite><br/>
+                                    </g:if>
+                                    <g:if test="${record.raw.occurrence.photographer || image.metadata?.creator}">
+                                        <cite><b><g:message code="show.sidebar03.cite01" default="Photographer"/>:</b> ${image.metadata?.creator ?: record.raw.occurrence.photographer}</cite><br/>
+                                    </g:if>
+                                    <g:if test="${record.raw.occurrence.rights || image.metadata?.rights}">
+                                        <cite><b><g:message code="show.sidebar03.cite02" default="Rights"/>:</b> ${image.metadata?.rights ?: record.raw.occurrence.rights}</cite><br/>
+                                    </g:if>
+                                    <g:if test="${record.raw.occurrence.rightsholder || image.metadata?.rightsHolder}">
+                                        <cite><b><g:message code="show.sidebar03.cite03" default="Rights holder"/>:</b> ${image.metadata?.rightsHolder ?: record.raw.occurrence.rightsholder}</cite><br/>
+                                    </g:if>
+                                    <g:if test="${record.raw.miscProperties.rightsHolder}">
+                                        <cite><b><g:message code="show.sidebar03.cite03" default="Rights holder"/>:</b> ${record.raw.miscProperties.rightsHolder}</cite><br/>
+                                    </g:if>
+                                    <g:if test="${image.metadata?.license}">
+                                        <cite><b><g:message code="show.sidebar03.image.license" default="License"/>:</b> ${image.metadata?.license}</cite><br/>
+                                    </g:if>
+                                    <g:if test="${record.raw.miscProperties?.DESCRIPTION}">
+                                        <cite><b><g:message code="show.sidebar03.caption" default="Caption"/>:</b> <alatag:sanitizeContent>${raw(record.raw.miscProperties.DESCRIPTION)}</alatag:sanitizeContent></cite><br/>
+                                    </g:if>
+                                    <g:if test="${grailsApplication.config.getProperty('skin.useAlaImageService', Boolean)}">
+                                        <a href="${grailsApplication.config.getProperty('images.metadataUrl')}${image.filePath}" target="_blank"><g:message code="show.sidebardiv.occurrenceimages.navigator01" default="View image details"/></a>
+                                    </g:if>
+                                    <g:else>
+                                        <a href="${image.alternativeFormats.imageUrl}" target="_blank"><g:message code="show.sidebardiv.occurrenceimages.navigator02" default="Original image"/></a>
+                                    </g:else>
+                                </div>
+                            </g:each>
+                        </div>
+                    </div>
+                </g:if>
+                <g:else> <!-- what if no image available ? -->
+                    <h3 id="images">Species image</h3>
+                    <div id="occurrenceImages" style="margin-top:5px; margin-bottom: 10px">
+                        <img id="taxonImage"/>
+                    </div>
+                </g:else>
+                    <table class="occurrenceTable table table-bordered table-striped table-condensed" id="summaryTable">
+                        <tbody>
+                        <!-- Family -->
+                        <alatag:occurrenceTableRow fieldCode="family" fieldName="Family">
+                            ${fieldsMap.put("family", true)}
+                            ${fieldsMap.put("familyID", true)}
+                            <g:if test="${record.processed.classification.familyID}">
+                                <g:if test="${taxaLinks.baseUrl}">
+                                    <a href="${taxaLinks.baseUrl}${record.processed.classification.familyID}">
+                                </g:if>
+                            </g:if>
+                            <g:if test="${record.processed.classification.family}">
+                                ${record.processed.classification.family}
+                            </g:if>
+                            <g:if test="${!record.processed.classification.family && record.raw.classification.family}">
+                                ${record.raw.classification.family}
+                            </g:if>
+                            <g:if test="${taxaLinks.baseUrl && record.processed.classification.familyID}">
+                                </a>
+                            </g:if>
+                            <g:if test="${record.processed.classification.family && record.raw.classification.family && (record.processed.classification.family.toLowerCase() != record.raw.classification.family.toLowerCase())}">
+                                <br/><span class="originalValue"><g:message code="recordcore.family.01" default="Supplied as"/> "${record.raw.classification.family}"</span>
+                            </g:if>
+                        </alatag:occurrenceTableRow>
+                        <!-- Scientific name -->
+                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="scientificName" fieldName="Scientific name">
+                            ${fieldsMap.put("taxonConceptID", true)}
+                            ${fieldsMap.put("scientificName", true)}
+                            <g:if test="${taxaLinks.baseUrl && record.processed.classification.taxonConceptID}">
+                                <a href="${taxaLinks.baseUrl}${record.processed.classification.taxonConceptID}">
+                            </g:if>
+                            <g:if test="${record.processed.classification.taxonRankID?.toInteger() > 5000}"><i></g:if>
+                            ${record.processed.classification.scientificName?:''}
+                            <g:if test="${record.processed.classification.taxonRankID?.toInteger() > 5000}"></i></g:if>
+                            <g:if test="${taxaLinks.baseUrl && record.processed.classification.taxonConceptID}">
+                                </a>
+                            </g:if>
+                            <g:if test="${record.processed.classification.scientificName && record.raw.classification.scientificName && (record.processed.classification.scientificName.toLowerCase() != record.raw.classification.scientificName.toLowerCase())}">
+                                <br/><span class="originalValue">Supplied scientific name "${record.raw.classification.scientificName}"</span>
+                            </g:if>
+                            <g:if test="${!record.processed.classification.scientificName && record.raw.classification.scientificName}">
+                                ${record.raw.classification.scientificName}
+                            </g:if>
+                        </alatag:occurrenceTableRow>
+                        <!-- Presence/Absence -->
+                        <tr>
+                            <td>
+                                <g:message code="show.summarytable03.presence" default="Presence/Absence"/>
+                            </td>
+                            <td>
+                                ${record.raw.occurrence.occurrenceStatus}
+                            </td>
+                        </tr>
+                        <!-- Coordinate Uncertainty -->
+                        <alatag:occurrenceTableRow fieldCode="coordinateUncertaintyInMeters" fieldName="Coordinate uncertainty in metres">
+                            ${fieldsMap.put("coordinateUncertaintyInMeters", true)}
+                            <g:if test="${record.processed.location.coordinateUncertaintyInMeters}">
+                                ${record.processed.location.coordinateUncertaintyInMeters ? record.processed.location.coordinateUncertaintyInMeters : 'Unknown'}
+                            </g:if>
+                        </alatag:occurrenceTableRow>
+                        <!-- Individual count -->
+                        <tr>
+                            <td>
+                                <g:message code="show.summarytable05.count" default="Individuele telling (dwc:individualCount)"/>
+                            </td>
+                            <td>
+                                ${record.raw.occurrence.individualCount}
+                            </td>
+                        </tr>
+                        <!-- Life stage -->
+                        <tr>
+                            <td>
+                                <g:message code="show.summarytable05.lifestage" default="Life stage"/>
+                            </td>
+                            <td>
+                                todo - what dwc attribute?
+                            </td>
+                        </tr>
+                        <!-- Municipality -->
+                        <tr>
+                            <td>
+                                <g:message code="show.summarytable05.municipality" default="Gemeenten Vlaanderen"/>
+                            </td>
+                            <td>
+                                ${record.raw.location.municipality}
+                            </td>
+                        </tr>
+                        <!-- Locality -->
+                        <tr>
+                            <td>
+                                <g:message code="show.summarytable05.locality" default="Plaats (dwc:locality)"/>
+                            </td>
+                            <td>
+                                todo - what solr attribute?
+                            </td>
+                        </tr>
+                        <!-- Sampling protocol -->
+                        <tr>
+                            <td>
+                                <g:message code="show.summarytable05.samplingprotocol" default="Bemonsteringsprotocol (dwc:samplingProtocol)"/>
+                            </td>
+                            <td>
+                                <g:if test="${record.raw.occurrence.samplingProtocol}">
+                                    <g:each in="${record.raw.occurrence.samplingProtocol}">
+                                        ${it}<br/>
+                                    </g:each>
+                                </g:if>
+                            </td>
+                        </tr>
+                        <!-- Data Resource -->
+                        <alatag:occurrenceTableRow annotate="false" section="dataset" fieldCode="dataResource" fieldName="Data resource">
+                            <g:if test="${record.raw.attribution.dataResourceUid != null && record.raw.attribution.dataResourceUid && collectionsWebappContext}">
+                                ${fieldsMap.put("dataResourceUid", true)}
+                                ${fieldsMap.put("dataResourceName", true)}
+                                <a href="${collectionsWebappContext}/public/show/${record.raw.attribution.dataResourceUid}">
+                                    <g:if test="${record.processed.attribution.dataResourceName}">
+                                        ${record.processed.attribution.dataResourceName}
+                                    </g:if>
+                                    <g:else>
+                                        ${record.raw.attribution.dataResourceUid}
+                                    </g:else>
+                                </a>
+                            </g:if>
+                            <g:else>
+                                ${fieldsMap.put("dataResourceName", true)}
+                                ${record.processed.attribution.dataResourceName}
+                            </g:else>
+                        </alatag:occurrenceTableRow>
+                        <!-- Publisher -->
+                        <alatag:occurrenceTableRow annotate="false" section="dataset" fieldCode="dataProvider" fieldName="Data provider">
+                            <g:if test="${record.processed.attribution.dataProviderUid && collectionsWebappContext}">
+                                ${fieldsMap.put("dataProviderUid", true)}
+                                ${fieldsMap.put("dataProviderName", true)}
+                                <a href="${collectionsWebappContext}/public/show/${record.processed.attribution.dataProviderUid}">
+                                    ${record.processed.attribution.dataProviderName}
+                                </a>
+                            </g:if>
+                            <g:else>
+                                ${fieldsMap.put("dataProviderName", true)}
+                                ${record.processed.attribution.dataProviderName}
+                            </g:else>
+                        </alatag:occurrenceTableRow>
+                        <!-- License -->
+                        <tr>
+                            <td>
+                                <g:message code="show.summarytable05.license" default="License"/>
+                            </td>
+                            <td>
+                                ${record.processed.attribution.license}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
                     <g:render template="recordCore" />
                 </div><!-- end of div#content2 -->
             </div>

@@ -11,6 +11,7 @@
 </g:if>
 %{--<div class="nav-affix" data-spy="affix" data-offset-top="236" data-offset-bottom="1080">--}%
 <div class="">
+    <div id="occurrenceMap" class="google-maps"></div>
     <ul id="navBox" class="nav nav-pills nav-stacked">
         <li><a href="#occurrenceDataset"><g:message code="recordcore.occurencedataset.title" default="Dataset"/></a></li>
         <li><a href="#occurrenceEvent"><g:message code="recordcore.occurenceevent.title" default="Event"/></a></li>
@@ -138,7 +139,6 @@
                 });
             </asset:script>
             %{--<h3><g:message code="show.occurrencemap.title" default="Location of record"/></h3>--}%
-            <div id="occurrenceMap" class="google-maps"></div>
         </div>
     </g:if>
 
@@ -161,55 +161,6 @@
         </div>
     </g:if>
 
-    <g:if test="${record.images}">
-        <div class="sidebar">
-            <h3 id="images"><g:message code="show.sidebar03.title" default="Images"/></h3>
-            <div id="occurrenceImages" style="margin-top:5px;">
-                <g:each in="${record.images}" var="image">
-                    <div style="margin-bottom:10px;">
-                        <g:if test="${grailsApplication.config.getProperty('skin.useAlaImageService', Boolean)}">
-                            <a href="${grailsApplication.config.getProperty('images.viewerUrl')}${image.filePath}" target="_blank">
-                                <img src="${image.alternativeFormats.smallImageUrl}" style="max-width: 100%;" alt="Click to view this image in a large viewer"/>
-                            </a>
-                        </g:if>
-                        <g:else>
-                            <a href="${image.alternativeFormats.largeImageUrl}" target="_blank">
-                                <img src="${image.alternativeFormats.smallImageUrl}" style="max-width: 100%;"/>
-                            </a>
-                        </g:else>
-                        <br/>
-                        <g:if test="${record.raw.miscProperties?.TITLE}">
-                            <cite><b><g:message code="show.sidebar03.image.title" default="Title"/>:</b> <alatag:sanitizeContent>${raw(record.raw.miscProperties.TITLE)}</alatag:sanitizeContent></cite><br/>
-                        </g:if>
-                        <g:if test="${record.raw.occurrence.photographer || image.metadata?.creator}">
-                            <cite><b><g:message code="show.sidebar03.cite01" default="Photographer"/>:</b> ${image.metadata?.creator ?: record.raw.occurrence.photographer}</cite><br/>
-                        </g:if>
-                        <g:if test="${record.raw.occurrence.rights || image.metadata?.rights}">
-                            <cite><b><g:message code="show.sidebar03.cite02" default="Rights"/>:</b> ${image.metadata?.rights ?: record.raw.occurrence.rights}</cite><br/>
-                        </g:if>
-                        <g:if test="${record.raw.occurrence.rightsholder || image.metadata?.rightsHolder}">
-                            <cite><b><g:message code="show.sidebar03.cite03" default="Rights holder"/>:</b> ${image.metadata?.rightsHolder ?: record.raw.occurrence.rightsholder}</cite><br/>
-                        </g:if>
-                        <g:if test="${record.raw.miscProperties.rightsHolder}">
-                            <cite><b><g:message code="show.sidebar03.cite03" default="Rights holder"/>:</b> ${record.raw.miscProperties.rightsHolder}</cite><br/>
-                        </g:if>
-                        <g:if test="${image.metadata?.license}">
-                            <cite><b><g:message code="show.sidebar03.image.license" default="License"/>:</b> ${image.metadata?.license}</cite><br/>
-                        </g:if>
-                        <g:if test="${record.raw.miscProperties?.DESCRIPTION}">
-                                <cite><b><g:message code="show.sidebar03.caption" default="Caption"/>:</b> <alatag:sanitizeContent>${raw(record.raw.miscProperties.DESCRIPTION)}</alatag:sanitizeContent></cite><br/>
-                        </g:if>
-                        <g:if test="${grailsApplication.config.getProperty('skin.useAlaImageService', Boolean)}">
-                            <a href="${grailsApplication.config.getProperty('images.metadataUrl')}${image.filePath}" target="_blank"><g:message code="show.sidebardiv.occurrenceimages.navigator01" default="View image details"/></a>
-                        </g:if>
-                        <g:else>
-                            <a href="${image.alternativeFormats.imageUrl}" target="_blank"><g:message code="show.sidebardiv.occurrenceimages.navigator02" default="Original image"/></a>
-                        </g:else>
-                    </div>
-                </g:each>
-            </div>
-        </div>
-    </g:if>
     <g:if test="${record.sounds}">
         <div class="sidebar">
             <h3 id="soundsHeader" style="margin: 20px 0 0 0;"><g:message code="show.soundsheader.title" default="Sounds"/></h3>
