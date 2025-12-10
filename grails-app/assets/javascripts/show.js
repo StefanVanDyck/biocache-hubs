@@ -494,6 +494,8 @@ function init() {
         }
     });
 
+    fillImageThumbnailUrl();
+
 }
 
 /**
@@ -919,4 +921,18 @@ function sendEmail(strEncoded) {
         event.cancelBubble = true;
     }
     return false;
+}
+
+function fillImageThumbnailUrl() {
+    var url = OCC_REC.contextPath + "/occurrences/thumbnailImageURL/" + OCC_REC.taxonConceptID;
+    $.ajax({
+        type: 'GET',
+        url: url,
+        dataType: 'json',
+        success: function (data) {
+            if (data) {
+                $("#taxonImage").attr('src', data.url);
+            }
+        }
+    });
 }

@@ -758,4 +758,11 @@ class OccurrenceController {
 
         return userPref.expand
     }
+
+    def thumbnailImageURL(String taxonConceptID){
+        def thumbnailImageUrl = webServicesService.getThumbnailImageURL(taxonConceptID)
+        def result = [:]
+        result.url = thumbnailImageUrl
+        render result as JSON
+    }
 }
