@@ -318,7 +318,7 @@
                             </g:if>
                         </alatag:occurrenceTableRow>
                         <!-- Scientific name -->
-                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="scientificName" fieldName="Scientific name">
+                        <alatag:occurrenceTableRow fieldCode="scientificName" fieldName="Scientific name">
                             ${fieldsMap.put("taxonConceptID", true)}
                             ${fieldsMap.put("scientificName", true)}
                             <g:if test="${taxaLinks.baseUrl && record.processed.classification.taxonConceptID}">
@@ -338,14 +338,12 @@
                             </g:if>
                         </alatag:occurrenceTableRow>
                         <!-- Presence/Absence -->
-                        <tr>
-                            <td>
-                                <g:message code="show.summarytable03.presence" default="Presence/Absence"/>
-                            </td>
-                            <td>
-                                ${record.raw.occurrence.occurrenceStatus}
-                            </td>
-                        </tr>
+                        <alatag:occurrenceTableRow fieldName="occurrenceStatus" fieldCode="occurrenceStatus">
+                            ${fieldsMap.put("occurrenceStatus", true)}
+                            <g:if test="${record.raw.occurrence.occurrenceStatus}">
+                                ${record.raw.occurrence.occurrenceStatus ? record.raw.occurrence.occurrenceStatus : 'Unknown'}
+                            </g:if>
+                        </alatag:occurrenceTableRow>
                         <!-- Coordinate Uncertainty -->
                         <alatag:occurrenceTableRow fieldCode="coordinateUncertaintyInMeters" fieldName="Coordinate uncertainty in metres">
                             ${fieldsMap.put("coordinateUncertaintyInMeters", true)}
@@ -354,41 +352,33 @@
                             </g:if>
                         </alatag:occurrenceTableRow>
                         <!-- Individual count -->
-                        <tr>
-                            <td>
-                                <g:message code="show.summarytable05.count" default="Individuele telling (dwc:individualCount)"/>
-                            </td>
-                            <td>
+                        <alatag:occurrenceTableRow fieldName="individualCount" fieldCode="individualCount">
+                            ${fieldsMap.put("individualCount", true)}
+                            <g:if test="${record.raw.occurrence.individualCount}">
                                 ${record.raw.occurrence.individualCount}
-                            </td>
-                        </tr>
+                            </g:if>
+                        </alatag:occurrenceTableRow>
                         <!-- Life stage -->
-                        <tr>
-                            <td>
-                                <g:message code="show.summarytable05.lifestage" default="Life stage"/>
-                            </td>
-                            <td>
-                                todo - what dwc attribute?
-                            </td>
-                        </tr>
+                        <alatag:occurrenceTableRow fieldName="lifeStage" fieldCode="lifeStage">
+                            ${fieldsMap.put("lifeStage", true)}
+                            <g:if test="${record.raw.occurrence.lifeStage}">
+                                ${record.raw.occurrence.lifeStage}
+                            </g:if>
+                        </alatag:occurrenceTableRow>
                         <!-- Municipality -->
-                        <tr>
-                            <td>
-                                <g:message code="show.summarytable05.municipality" default="Gemeenten Vlaanderen"/>
-                            </td>
-                            <td>
+                        <alatag:occurrenceTableRow fieldName="municipality" fieldCode="municipality">
+                            ${fieldsMap.put("municipality", true)}
+                            <g:if test="${record.raw.location.municipality}">
                                 ${record.raw.location.municipality}
-                            </td>
-                        </tr>
+                            </g:if>
+                        </alatag:occurrenceTableRow>
                         <!-- Locality -->
-                        <tr>
-                            <td>
-                                <g:message code="show.summarytable05.locality" default="Plaats (dwc:locality)"/>
-                            </td>
-                            <td>
-                                todo - what solr attribute?
-                            </td>
-                        </tr>
+                        <alatag:occurrenceTableRow fieldName="locality" fieldCode="locality">
+                            ${fieldsMap.put("locality", true)}
+                            <g:if test="${record.raw.occurrence.locality}">
+                                ${record.raw.occurrence.locality}
+                            </g:if>
+                        </alatag:occurrenceTableRow>
                         <!-- Sampling protocol -->
                         <tr>
                             <td>
@@ -403,7 +393,7 @@
                             </td>
                         </tr>
                         <!-- Data Resource -->
-                        <alatag:occurrenceTableRow annotate="false" section="dataset" fieldCode="dataResource" fieldName="Data resource">
+                        <alatag:occurrenceTableRow fieldCode="dataResource" fieldName="Data resource">
                             <g:if test="${record.raw.attribution.dataResourceUid != null && record.raw.attribution.dataResourceUid && collectionsWebappContext}">
                                 ${fieldsMap.put("dataResourceUid", true)}
                                 ${fieldsMap.put("dataResourceName", true)}
@@ -422,7 +412,7 @@
                             </g:else>
                         </alatag:occurrenceTableRow>
                         <!-- Publisher -->
-                        <alatag:occurrenceTableRow annotate="false" section="dataset" fieldCode="dataProvider" fieldName="Data provider">
+                        <alatag:occurrenceTableRow fieldCode="dataProvider" fieldName="Data provider">
                             <g:if test="${record.processed.attribution.dataProviderUid && collectionsWebappContext}">
                                 ${fieldsMap.put("dataProviderUid", true)}
                                 ${fieldsMap.put("dataProviderName", true)}
@@ -436,14 +426,12 @@
                             </g:else>
                         </alatag:occurrenceTableRow>
                         <!-- License -->
-                        <tr>
-                            <td>
-                                <g:message code="show.summarytable05.license" default="License"/>
-                            </td>
-                            <td>
+                        <alatag:occurrenceTableRow fieldName="license" fieldCode="license">
+                            ${fieldsMap.put("license", true)}
+                            <g:if test="${record.processed.attribution.license}">
                                 ${record.processed.attribution.license}
-                            </td>
-                        </tr>
+                            </g:if>
+                        </alatag:occurrenceTableRow>
                         </tbody>
                     </table>
                     <g:render template="recordCore" />
