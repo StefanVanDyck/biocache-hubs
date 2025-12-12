@@ -446,7 +446,7 @@
                         $(document).ready(function() {
                             var latlng1 = new google.maps.LatLng(${latLngStr});
                             var mapOptions = {
-                                zoom: 4,
+                                zoom: 7,
                                 center: latlng1,
                                 scrollwheel: false,
                                 scaleControl: true,
