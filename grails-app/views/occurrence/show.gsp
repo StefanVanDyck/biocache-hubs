@@ -93,6 +93,11 @@
         }); // end $(document).ready()
 
     </asset:script>
+    <style type="text/css">
+        h1 span {
+          font-weight: 300;
+        }
+    </style>
 
 </head>
 <body class="occurrence-record">
@@ -380,18 +385,12 @@
                             </g:if>
                         </alatag:occurrenceTableRow>
                         <!-- Sampling protocol -->
-                        <tr>
-                            <td>
-                                <g:message code="show.summarytable05.samplingprotocol" default="Bemonsteringsprotocol (dwc:samplingProtocol)"/>
-                            </td>
-                            <td>
-                                <g:if test="${record.raw.occurrence.samplingProtocol}">
-                                    <g:each in="${record.raw.occurrence.samplingProtocol}">
-                                        ${it}<br/>
-                                    </g:each>
-                                </g:if>
-                            </td>
-                        </tr>
+                        <alatag:occurrenceTableRow fieldName="samplingProtocol" fieldCode="samplingProtocol">
+                            ${fieldsMap.put("samplingProtocol", true)}
+                            <g:if test="${record.raw.occurrence.samplingProtocol}">
+                                ${record.raw.occurrence.samplingProtocol}
+                            </g:if>
+                        </alatag:occurrenceTableRow>
                         <!-- Data Resource -->
                         <alatag:occurrenceTableRow fieldCode="dataResource" fieldName="Data resource">
                             <g:if test="${record.raw.attribution.dataResourceUid != null && record.raw.attribution.dataResourceUid && collectionsWebappContext}">
