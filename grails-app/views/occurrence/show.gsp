@@ -94,9 +94,14 @@
 
     </asset:script>
     <style type="text/css">
-        h1 span {
-          font-weight: 300;
+        h1 {
+          font-weight: 400;
         }
+
+        h1 span {
+          font-weight: 500;
+        }
+
     </style>
 
 </head>
@@ -191,6 +196,12 @@
                                 <span id="identificationVerificationStatus">${record.raw.identification.identificationVerificationStatus}</span>
                             </div>
                         </g:elseif>
+                        <g:if test="${record.processed.location.coordinateUncertaintyInMeters}">
+                            <div>
+                                <g:message code="show.headingbar05.title" default="Coordinate uncertainty:"/>
+                                <span id="coordinateUncertaintyInMeters">${record.processed.location.coordinateUncertaintyInMeters}</span>
+                            </div>
+                        </g:if>
                     </h1>
                     <div id="recordHeadingLine2">
                         <g:message code="show.headingbar01.title" default="Occurrence record"/>
