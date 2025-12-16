@@ -43,6 +43,7 @@
             <a href="${g.createLink(action:'clearLongTermCache')}" class="btn btn-default">Clear long term cache</a>
             <a href="${g.createLink(action:'clearPropertiesCache')}" class="btn btn-default">Clear i18n messages cache</a>
             <a href="${g.createLink(action:'clearRecordCountCache')}" class="btn btn-default">Clear record count cache</a>
+            <a href="${g.createLink(action:'clearDataQualityProfileCache')}" class="btn btn-default">Clear data quality profiles cache</a>
         </div>
 
         <alatag:ifDataQualityEnabled>

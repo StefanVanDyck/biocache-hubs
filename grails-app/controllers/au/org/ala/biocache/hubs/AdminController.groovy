@@ -70,6 +70,11 @@ class AdminController {
         redirect(action: 'index')
     }
 
+    def clearDataQualityProfileCache() {
+        flash.message = doClearDataQualityProfilesCache()
+        redirect(action: 'index')
+    }
+
     def doClearFacetsCache() {
         facetsCacheService.clearCache()
         "facetsCache cache cleared\n"
@@ -82,5 +87,10 @@ class AdminController {
 
     def doClearRecordCountCache() {
         qualityService.clearRecordCountCache()
+    }
+
+    def doClearDataQualityProfilesCache() {
+        webServicesService.doClearDataQualityProfilesCache();
+        "dataQualityProfiles cache cleared\n"
     }
 }
