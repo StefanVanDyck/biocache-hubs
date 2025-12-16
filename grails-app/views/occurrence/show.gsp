@@ -180,7 +180,8 @@
                         </div>
                         <div>
                             <g:if test="${record.processed.event?.eventDate || record.raw.event?.eventDate}">
-                                <g:message code="show.heading.recordedOn" default="recorded on"/> ${record.processed.event?.eventDate ?: record.raw.event?.eventDate}
+                                <g:message code="show.heading.recordedOn" default="recorded on"/>
+                                <span id="eventDate">${record.processed.event?.eventDate ?: record.raw.event?.eventDate}</span>
                             </g:if>
                         </div>
                     </g:if>
