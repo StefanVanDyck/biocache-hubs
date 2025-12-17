@@ -784,6 +784,6 @@ class WebServicesService {
 
     def Object doClearDataQualityProfilesCache() {
         def url = "${grailsApplication.config.getProperty('biocache.baseUrl')}/cache/dqf/refresh"
-        return getText(url, true, true)
+        return getJsonElements(url, true, true)
     }
 }
