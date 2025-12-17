@@ -774,7 +774,7 @@ class WebServicesService {
         def url = grailsApplication.config.getProperty('bieService.baseUrl') + "/species/" + taxonConceptId
         JSONObject responseJson = getJsonElements(url)
         if (responseJson) {
-            String imageIdentifier = responseJson.taxonConcept.imageIdentifier
+            String imageIdentifier = responseJson.imageIdentifier
             if (imageIdentifier) {
                 return grailsApplication.config.getProperty('images.baseUrl') + "/image/" + imageIdentifier + "/thumbnail"
             }
