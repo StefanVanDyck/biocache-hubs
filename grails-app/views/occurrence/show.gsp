@@ -304,9 +304,8 @@
                         </div>
                     </div>
                 </g:if>
-                <g:else> <!-- what if no image available ? -->
-                    <h3 id="images">Species image</h3>
-                    <div id="occurrenceImages" style="margin-top:5px; margin-bottom: 10px">
+                <g:else>
+                    <div id="occurrenceImages" style="margin-top:10px; margin-bottom: 10px">
                         <img id="taxonImage"/>
                     </div>
                 </g:else>
