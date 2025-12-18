@@ -185,6 +185,8 @@
                             </g:if>
                         </div>
                     </g:if>
+                    </h1>
+                    <div id="recordHeadingLine2">
                         <g:if test="${record.processed.identification.identificationVerificationStatus}">
                             <div>
                                 <g:message code="show.headingbar04.title" default="Identification Verification Status:"/>
@@ -203,8 +205,6 @@
                                 <span id="coordinateUncertaintyInMeters">${record.processed.location.coordinateUncertaintyInMeters}</span>
                             </div>
                         </g:if>
-                    </h1>
-                    <div id="recordHeadingLine2">
                         <g:message code="show.headingbar01.title" default="Occurrence record"/>
                         <span id="recordId">${recordId}</span>
                     </div>
