@@ -185,7 +185,7 @@
 
 </alatag:occurrenceTableRow>
 <!-- Identified Date -->
-<alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="identifierRole"  fieldNameIsMsgCode="true" fieldName="Identifier role">
+<alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="identifierRole" fieldNameIsMsgCode="true" fieldName="Identifier role">
     ${fieldsMap.put("identifierRole", true)}
     ${record.raw.identification.identifierRole}
 </alatag:occurrenceTableRow>
@@ -274,7 +274,7 @@
 <!-- Identification Qualifier -->
 <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="identificationQualifier" fieldName="Identification qualifier" 
     infoLink="http://dwc.tdwg.org/terms/#dwc:identificationQualifier" 
-    infoMessage="A brief phrase or a standard term (\"cf.\", \"aff.\") to express the determiner's doubts about the Identification.">
+    infoMessage="A brief phrase or a standard term (&quot;cf.&quot;, &quot;aff.&quot;) to express the determiner's doubts about the Identification.">
     ${fieldsMap.put("identificationQualifier", true)}
     ${record.raw.identification.identificationQualifier}
 </alatag:occurrenceTableRow>
