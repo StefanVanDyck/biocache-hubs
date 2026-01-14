@@ -604,6 +604,8 @@ class OccurrenceTagLib {
         def path = attrs.path
         def fieldCode = attrs.fieldCode
         def fieldName = attrs.fieldName
+        def infoLink = attrs.infoLink
+        def infoMessage = attrs.infoMessage
         def fieldNameIsMsgCode = attrs.fieldNameIsMsgCode
         def userDetails
 
@@ -618,9 +620,14 @@ class OccurrenceTagLib {
             def mb = new MarkupBuilder(out)
 
             mb.tr(id:"${fieldCode}") {
-                td(class:"dwcLabel " + fieldCode) {
+                td(class:"dwcLabel " + fieldCode, title:infoMessage) {
                     mkp.yieldUnescaped(formatFieldName(fieldCode, fieldName))
-                }
+                    if (infoLink) {
+                        a(href:infoLink) {
+                            i(class:"fa-solid fa-circle-info") {}
+                        }
+                    }
+                } 
                 td(class:"value") {
                     if (link) {
                         a(href: link) {
