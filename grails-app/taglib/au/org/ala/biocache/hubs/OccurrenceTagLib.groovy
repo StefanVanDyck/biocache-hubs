@@ -623,8 +623,8 @@ class OccurrenceTagLib {
                 td(class:"dwcLabel " + fieldCode, title:infoMessage) {
                     mkp.yieldUnescaped(formatFieldName(fieldCode, fieldName))
                     if (infoLink) {
-                        a(href:infoLink) {
-                            i(class:"fa-solid fa-circle-info") 
+                        a(href: infoLink) {
+                            i(class: "fa-solid fa-circle-info") 
                         }
                     }
                 } 
