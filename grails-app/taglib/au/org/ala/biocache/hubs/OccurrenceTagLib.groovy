@@ -624,7 +624,7 @@ class OccurrenceTagLib {
                     mkp.yieldUnescaped(formatFieldName(fieldCode, fieldName))
                     if (infoLink) {
                         a(href: infoLink) {
-                            i(class: "fa-solid fa-circle-info") 
+                            i(class: "fa-solid fa-circle-info", value="")
                         }
                     }
                 } 
