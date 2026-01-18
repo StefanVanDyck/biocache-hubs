@@ -69,7 +69,7 @@
         ${fieldsMap.put("collectionUid", true)}
         <a href="${collectionsWebappContext}/public/show/${record.processed.attribution.collectionUid}">
     </g:if>
-    <g:if tesqt="${record.processed.attribution.collectionName}">
+    <g:if test="${record.processed.attribution.collectionName}">
         ${fieldsMap.put("collectionName", true)}
         ${record.processed.attribution.collectionName}
     </g:if>
