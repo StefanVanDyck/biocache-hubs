@@ -604,7 +604,7 @@ class OccurrenceTagLib {
         def path = attrs.path
         def fieldCode = attrs.fieldCode
         def fieldName = attrs.fieldName
-        def infoLink = attrs.infoLink
+        def isDwcTerm = attrs.isDwcTerm
         def infoMessage = attrs.infoMessage
         def fieldNameIsMsgCode = attrs.fieldNameIsMsgCode
         def userDetails
@@ -622,10 +622,9 @@ class OccurrenceTagLib {
             mb.tr(id:"${fieldCode}") {
                 td(class:"dwcLabel " + fieldCode, title:infoMessage) {
                     mkp.yieldUnescaped(formatFieldName(fieldCode, fieldName))
-                    if (infoLink) {
-                        a(href: infoLink) {
-                            
-                            i(class: "fa-solid fa-circle-info", "")
+                    if (isDwcTerm) {
+                        a(href: "http://dwc.tdwg.org/terms/#dwc:${fieldCode}") {
+                            i(class: "dwc-logo", "")
                         }
                     }
                 } 

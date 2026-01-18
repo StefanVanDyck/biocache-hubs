@@ -4,3 +4,12 @@
  *=require leaflet/leaflet.css
  *=require record.css
  */
+
+ i.dwc-logo {
+     mask-image: url(../images/dwc-logo.svg);
+     background-color: black;
+     background-size: cover;
+     display: inline-block;
+     width: 1em;
+     height: 1em;
+ }

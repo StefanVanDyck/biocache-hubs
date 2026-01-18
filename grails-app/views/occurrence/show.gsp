@@ -335,7 +335,7 @@
                         </alatag:occurrenceTableRow>
                         <!-- Scientific name -->
                         <alatag:occurrenceTableRow fieldCode="scientificName" fieldName="Scientific name" 
-                            infoLink="http://dwc.tdwg.org/terms/#dwc:scientificName" 
+                            isDwcTerm
                             infoMessage="The full scientific name, with authorship and date information if known. When forming part of an Identification, this should be the name in lowest level taxonomic rank that can be determined. This term should not contain identification qualifications, which should instead be supplied in the IdentificationQualifier term.">
                             ${fieldsMap.put("taxonConceptID", true)}
                             ${fieldsMap.put("scientificName", true)}
@@ -357,7 +357,7 @@
                         </alatag:occurrenceTableRow>
                         <!-- Presence/Absence -->
                         <alatag:occurrenceTableRow fieldName="occurrenceStatus" fieldCode="occurrenceStatus" 
-                            infoLink="http://dwc.tdwg.org/terms/#dwc:occurrenceStatus" 
+                            isDwcTerm
                             infoMessage="A statement about the presence or absence of a Taxon at a Location. For Occurrences, the default vocabulary is recommended to consist of present and absent, but can be extended by implementers with good justification.">
                             ${fieldsMap.put("occurrenceStatus", true)}
                             <g:if test="${record.raw.occurrence.occurrenceStatus}">
@@ -366,7 +366,7 @@
                         </alatag:occurrenceTableRow>
                         <!-- Coordinate Uncertainty -->
                         <alatag:occurrenceTableRow fieldCode="coordinateUncertaintyInMeters" fieldName="Coordinate uncertainty in metres" 
-                            infoLink="http://dwc.tdwg.org/terms/#dwc:coordinateUncertaintyInMeters" 
+                            isDwcTerm
                             infoMessage="The horizontal distance (in meters) from the given decimalLatitude and decimalLongitude describing the smallest circle containing the whole of the Location. Leave the value empty if the uncertainty is unknown, cannot be estimated, or is not applicable (because there are no coordinates).">
                             ${fieldsMap.put("coordinateUncertaintyInMeters", true)}
                             <g:if test="${record.processed.location.coordinateUncertaintyInMeters}">
@@ -375,7 +375,7 @@
                         </alatag:occurrenceTableRow>
                         <!-- Individual count -->
                         <alatag:occurrenceTableRow fieldName="individualCount" fieldCode="individualCount" 
-                            infoLink="http://dwc.tdwg.org/terms/#dwc:individualCount" 
+                            isDwcTerm
                             infoMessage="The number of individuals present at the time of the Occurrence.">
                             ${fieldsMap.put("individualCount", true)}
                             <g:if test="${record.raw.occurrence.individualCount}">
@@ -384,7 +384,7 @@
                         </alatag:occurrenceTableRow>
                         <!-- Life stage -->
                         <alatag:occurrenceTableRow fieldName="lifeStage" fieldCode="lifeStage" 
-                            infoLink="http://dwc.tdwg.org/terms/#dwc:lifeStage" 
+                            isDwcTerm
                             infoMessage="The age class or life stage of the Organism(s) at the time the Occurrence was recorded. Recommended best practice is to use a controlled vocabulary.">
                             ${fieldsMap.put("lifeStage", true)}
                             <g:if test="${record.raw.occurrence.lifeStage}">
@@ -393,7 +393,7 @@
                         </alatag:occurrenceTableRow>
                         <!-- Municipality -->
                         <alatag:occurrenceTableRow fieldName="municipality" fieldCode="municipality" 
-                            infoLink="http://dwc.tdwg.org/terms/#dwc:municipality" 
+                            isDwcTerm
                             infoMessage="The full, unabbreviated name of the next smaller administrative region than county (city, municipality, etc.) in which the Location occurs. Do not use this term for a nearby named place that does not contain the actual location.">
                             ${fieldsMap.put("municipality", true)}
                             <g:if test="${record.raw.location.municipality}">
@@ -402,7 +402,7 @@
                         </alatag:occurrenceTableRow>
                         <!-- Locality -->
                         <alatag:occurrenceTableRow fieldName="locality" fieldCode="locality" 
-                            infoLink="http://dwc.tdwg.org/terms/#dwc:locality" 
+                            isDwcTerm
                             infoMessage="The specific description of the place. Less specific geographic information can be provided in other geographic terms (higherGeography, continent, country, stateProvince, county, municipality, waterBody, island, islandGroup). This term may contain information modified from the original to correct obvious errors or standardize the description.">
                             ${fieldsMap.put("locality", true)}
                             <g:if test="${record.raw.occurrence.locality}">
@@ -411,7 +411,7 @@
                         </alatag:occurrenceTableRow>
                         <!-- Sampling protocol -->
                         <alatag:occurrenceTableRow fieldName="samplingProtocol" fieldCode="samplingProtocol" 
-                            infoLink="http://dwc.tdwg.org/terms/#dwc:samplingProtocol" 
+                            isDwcTerm
                             infoMessage="The names of, references to, or descriptions of the methods or protocols used during an Event.">
                             ${fieldsMap.put("samplingProtocol", true)}
                             <g:if test="${record.raw.occurrence.samplingProtocol}">
