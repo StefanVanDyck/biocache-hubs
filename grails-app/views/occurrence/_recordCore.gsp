@@ -383,7 +383,9 @@
             </a>
         </g:if>
         <g:else>
-            ${record.raw.event.eventID}
+            <a href="search?q=*%3A*&fq=event_id%3A${record.raw.event.eventID}%22">
+                ${record.raw.event.eventID}
+            </a>
         </g:else>
     </alatag:occurrenceTableRow>
     <alatag:occurrenceTableRow annotate="true" section="parentEventID" fieldCode="parentEventID" fieldName="Parent Event ID" 
@@ -396,7 +398,9 @@
             </a>
         </g:if>
         <g:else>
-            ${record.raw.event.parentEventID}
+            <a href="search?q=*%3A*&fq=event_id%3A${record.raw.event.parentEventID}%22">
+                ${record.raw.event.parentEventID}
+            </a>
         </g:else>
     </alatag:occurrenceTableRow>
     <!-- event hierarchy -->
