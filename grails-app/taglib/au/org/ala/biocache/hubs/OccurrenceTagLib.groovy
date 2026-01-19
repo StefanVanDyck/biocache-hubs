@@ -631,7 +631,7 @@ class OccurrenceTagLib {
                 td(class:"value") {
                     if (link) {
                         a(href: link) {
-                            mkp.yieldUnescaped(bodyText)
+                            mkp.yieldUnescaped(sanitizeBodyText(bodyText))
                         }
                     } else {
                         // allow sanitized HTML to be rendered in output
