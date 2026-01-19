@@ -7,7 +7,7 @@
 
  i.dwc-logo {
      mask-image: url(../images/dwc-logo.svg);
-     background-color: black;
+     background-color: currentColor;
      background-size: cover;
      display: inline-block;
      width: 1.25em;
