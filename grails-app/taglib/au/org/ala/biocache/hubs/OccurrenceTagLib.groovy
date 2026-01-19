@@ -617,7 +617,7 @@ class OccurrenceTagLib {
 
         if (StringUtils.isNotBlank(bodyText)) {
 
-            def link = (href) ? href : (guid) ? "${path}${guid}" : ""
+            def link = (guid) ? "${path}${guid}" : ""
             def mb = new MarkupBuilder(out)
 
             mb.tr(id:"${fieldCode}") {
@@ -632,6 +632,10 @@ class OccurrenceTagLib {
                 td(class:"value") {
                     if (link) {
                         a(href: link) {
+                            mkp.yieldUnescaped(bodyText)
+                        }
+                    } else if(href) {
+                        a(href: href, target: "_blank") {
                             mkp.yieldUnescaped(bodyText)
                         }
                     } else {

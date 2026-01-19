@@ -384,21 +384,20 @@
     <alatag:occurrenceTableRow annotate="true" section="eventID" fieldCode="eventID" fieldName="Event ID" 
         dwcTerm="true"
         infoMessage="${message(code:'dwc.eventID.info')}"
-        href="search?q=*%3A*&fq=event_id%3A${URLEncoder.encode(record.raw.event.eventID, "UTF-8")}%22">
-            </a>
+        href="search?q=*%3A*&fq=event_id%3A%22${URLEncoder.encode(record.raw.event.eventID, "UTF-8")}%22">
         <g:if test="${eventHierarchy}">
             <a href="${grailsApplication.config.events.eventUrl}${record.raw.event.eventID}">
             ${record.raw.event.eventID}
             </a>
         </g:if>
         <g:else>
-                ${record.raw.event.eventID}
+            ${record.raw.event.eventID}
         </g:else>
     </alatag:occurrenceTableRow>
     <alatag:occurrenceTableRow annotate="true" section="parentEventID" fieldCode="parentEventID" fieldName="Parent Event ID" 
         dwcTerm="true"
         infoMessage="${message(code:'dwc.parentEventID.info')}"
-        href="search?q=*%3A*&fq=event_id%3A${URLEncoder.encode(record.raw.event.parentEventID, "UTF-8")}%22">
+        href="search?q=*%3A*&fq=parent_event_id%3A%22${URLEncoder.encode(record.raw.event.parentEventID, "UTF-8")}%22">
         ${fieldsMap.put("parentEventID", true)}
         <g:if test="${eventHierarchy}">
             <a href="${grailsApplication.config.events.eventUrl}${record.raw.event.parentEventID}">
