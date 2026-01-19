@@ -602,6 +602,7 @@ class OccurrenceTagLib {
         String bodyText = (String) body()
         def guid = attrs.guid
         def path = attrs.path
+        def href = attrs.href
         def fieldCode = attrs.fieldCode
         def fieldName = attrs.fieldName
         def dwcTerm = attrs.dwcTerm
@@ -616,7 +617,7 @@ class OccurrenceTagLib {
 
         if (StringUtils.isNotBlank(bodyText)) {
 
-            def link = (guid) ? "${path}${guid}" : ""
+            def link = (href) ? href : (guid) ? "${path}${guid}" : ""
             def mb = new MarkupBuilder(out)
 
             mb.tr(id:"${fieldCode}") {
@@ -631,7 +632,7 @@ class OccurrenceTagLib {
                 td(class:"value") {
                     if (link) {
                         a(href: link) {
-                            mkp.yieldUnescaped(sanitizeBodyText(bodyText))
+                            mkp.yieldUnescaped(bodyText)
                         }
                     } else {
                         // allow sanitized HTML to be rendered in output

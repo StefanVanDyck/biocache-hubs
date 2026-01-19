@@ -383,26 +383,24 @@
     <!-- event ID -->
     <alatag:occurrenceTableRow annotate="true" section="eventID" fieldCode="eventID" fieldName="Event ID" 
         dwcTerm="true"
-        infoMessage="${message(code:'dwc.eventID.info')}">
+        infoMessage="${message(code:'dwc.eventID.info')}"
+        href="search?q=*%3A*&fq=event_id%3A${record.raw.event.eventID}%22">
             <a href="search?q=*%3A*&fq=event_id%3A${record.raw.event.eventID}%22">
         ${fieldsMap.put("eventID", true)}
             </a>
-        test outside
         <g:if test="${eventHierarchy}">
             <a href="${grailsApplication.config.events.eventUrl}${record.raw.event.eventID}">
             ${record.raw.event.eventID}
             </a>
         </g:if>
         <g:else>
-        Test inside
-            <a href="search?q=*%3A*&fq=event_id%3A${record.raw.event.eventID}%22">
                 ${record.raw.event.eventID}
-            </a>
         </g:else>
     </alatag:occurrenceTableRow>
     <alatag:occurrenceTableRow annotate="true" section="parentEventID" fieldCode="parentEventID" fieldName="Parent Event ID" 
         dwcTerm="true"
-        infoMessage="${message(code:'dwc.parentEventID.info')}">
+        infoMessage="${message(code:'dwc.parentEventID.info')}"
+        href="search?q=*%3A*&fq=event_id%3A${record.raw.event.parentEventID}%22">
         ${fieldsMap.put("parentEventID", true)}
         <g:if test="${eventHierarchy}">
             <a href="${grailsApplication.config.events.eventUrl}${record.raw.event.parentEventID}">
@@ -410,9 +408,7 @@
             </a>
         </g:if>
         <g:else>
-            <a href="search?q=*%3A*&fq=event_id%3A${record.raw.event.parentEventID}%22">
-                ${record.raw.event.parentEventID}
-            </a>
+            ${record.raw.event.parentEventID}
         </g:else>
     </alatag:occurrenceTableRow>
     <!-- event hierarchy -->
@@ -651,7 +647,9 @@
     </g:if>
 </alatag:occurrenceTableRow>
 <!-- Order -->
-<alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="order" fieldName="Order">
+<alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="order" fieldName="Order"
+    dwcTerm="true"
+    infoMessage="${message(code:'dwc.order.info')}">
     ${fieldsMap.put("order", true)}
     ${fieldsMap.put("orderID", true)}
     <g:if test="${record.processed.classification.orderID}">
