@@ -384,13 +384,17 @@
     <alatag:occurrenceTableRow annotate="true" section="eventID" fieldCode="eventID" fieldName="Event ID" 
         dwcTerm="true"
         infoMessage="${message(code:'dwc.eventID.info')}">
+            <a href="search?q=*%3A*&fq=event_id%3A${record.raw.event.eventID}%22">
         ${fieldsMap.put("eventID", true)}
+            </a>
+        test outside
         <g:if test="${eventHierarchy}">
             <a href="${grailsApplication.config.events.eventUrl}${record.raw.event.eventID}">
             ${record.raw.event.eventID}
             </a>
         </g:if>
         <g:else>
+        Test inside
             <a href="search?q=*%3A*&fq=event_id%3A${record.raw.event.eventID}%22">
                 ${record.raw.event.eventID}
             </a>
