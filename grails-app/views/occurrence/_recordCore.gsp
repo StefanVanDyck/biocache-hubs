@@ -8,7 +8,9 @@
 <h3><g:message code="recordcore.occurencedataset.title" default="Dataset"/></h3>
 <table class="occurrenceTable table table-bordered table-striped table-condensed" id="datasetTable">
 <!-- Data Provider -->
-    <alatag:occurrenceTableRow annotate="false" section="dataset" fieldCode="dataProvider" fieldName="Data provider">
+    <alatag:occurrenceTableRow annotate="false" section="dataset" fieldCode="dataProvider" fieldName="Data provider"
+        dwcTerm="true"
+        infoMessage="${message(code:'dwc.dataProvider.info')}">
         <g:if test="${record.processed.attribution.dataProviderUid && collectionsWebappContext}">
             ${fieldsMap.put("dataProviderUid", true)}
             ${fieldsMap.put("dataProviderName", true)}
@@ -22,7 +24,9 @@
         </g:else>
     </alatag:occurrenceTableRow>
     <!-- Data Resource -->
-    <alatag:occurrenceTableRow annotate="false" section="dataset" fieldCode="dataResource" fieldName="Data resource">
+    <alatag:occurrenceTableRow annotate="false" section="dataset" fieldCode="dataResource" fieldName="Data resource"
+        dwcTerm="true"
+        infoMessage="${message(code:'dwc.dataResource.info')}">
         <g:if test="${record.raw.attribution.dataResourceUid != null && record.raw.attribution.dataResourceUid && collectionsWebappContext}">
             ${fieldsMap.put("dataResourceUid", true)}
             ${fieldsMap.put("dataResourceName", true)}
@@ -43,7 +47,7 @@
 <!-- Institution -->
     <alatag:occurrenceTableRow annotate="false" section="dataset" fieldCode="institutionCode" fieldName="Institution" 
         dwcTerm="true"
-        infoMessage="The name (or acronym) in use by the institution having custody of the object(s) or information referred to in the record.">
+        infoMessage="${message(code:'dwc.institutionCode.info')}">
         <g:if test="${record.processed.attribution.institutionUid && collectionsWebappContext}">
             ${fieldsMap.put("institutionUid", true)}
             ${fieldsMap.put("institutionName", true)}
@@ -64,7 +68,7 @@
 <!-- Collection -->
 <alatag:occurrenceTableRow annotate="false" section="dataset" fieldNameIsMsgCode="true" fieldCode="collectionCode" fieldName="Collection" 
     dwcTerm="true"
-    infoMessage="The name, acronym, coden, or initialism identifying the collection or data set from which the record was derived.">
+    infoMessage="${message(code:'dwc.collectionCode.info')}">
     <g:if test="${record.processed.attribution.collectionUid && collectionsWebappContext}">
         ${fieldsMap.put("collectionUid", true)}
         <a href="${collectionsWebappContext}/public/show/${record.processed.attribution.collectionUid}">
@@ -89,7 +93,7 @@
 <!-- Catalog Number -->
 <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="catalogNumber" fieldName="Catalogue Number" 
     dwcTerm="true"
-    infoMessage="An identifier (preferably unique) for the record within the data set or collection.">
+    infoMessage="${message(code:'dwc.catalogNumber.info')}">
     ${fieldsMap.put("catalogNumber", true)}
     <g:if test="${record.processed.occurrence.catalogNumber && record.raw.occurrence.catalogNumber}">
         ${record.processed.occurrence.catalogNumber}
@@ -102,14 +106,14 @@
 <!-- Other Catalog Number -->
 <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="otherCatalogNumbers" fieldName="Other catalogue numbers" 
     dwcTerm="true"
-    infoMessage="A list (concatenated and separated) of previous or alternate fully qualified catalog numbers or other human-used identifiers for the same Occurrence, whether in the current or any other data set or collection.">
+    infoMessage="${message(code:'dwc.otherCatalogNumbers.info')}">
     ${fieldsMap.put("otherCatalogNumbers", true)}
     ${record.raw.occurrence.otherCatalogNumbers}
 </alatag:occurrenceTableRow>
 <!-- Occurrence ID -->
 <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="occurrenceID" fieldName="Occurrence ID" 
     dwcTerm="true"
-    infoMessage="An identifier for the Occurrence (as opposed to a particular digital record of the Occurrence). In the absence of a persistent global unique identifier, construct one from a combination of identifiers in the record that will most closely make the occurrenceID globally unique.">
+    infoMessage="${message(code:'dwc.occurrenceID.info')}">
     ${fieldsMap.put("occurrenceID", true)}
     <g:if test="${record.processed.occurrence.occurrenceID && record.raw.occurrence.occurrenceID}">
         <g:set var="hasProcessedUrl" value="${StringUtils.startsWith(record.processed.occurrence.occurrenceID,'http://') ||
@@ -145,7 +149,7 @@
 <!-- Basis of Record -->
 <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="basisOfRecord" fieldName="Basis of record" 
     dwcTerm="true"
-    infoMessage="The specific nature of the data record. Recommended best practice is to use a controlled vocabulary such as the set of local names of the identifiers for classes in Darwin Core.">
+    infoMessage="${message(code:'dwc.basisOfRecord.info')}">
     ${fieldsMap.put("basisOfRecord", true)}
     <g:if test="${record.processed.occurrence.basisOfRecord && record.raw.occurrence.basisOfRecord && record.processed.occurrence.basisOfRecord == record.raw.occurrence.basisOfRecord}">
         <g:message code="${record.processed.occurrence.basisOfRecord}"/>
@@ -167,14 +171,14 @@
 <!-- Preparations -->
 <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="preparations" fieldName="Preparations" 
     dwcTerm="true"
-    infoMessage="A list (concatenated and separated) of preparations and preservation methods for a MaterialEntity.">
+    infoMessage="${message(code:'dwc.preparations.info')}">
     ${fieldsMap.put("preparations", true)}
     ${record.raw.occurrence.preparations}
 </alatag:occurrenceTableRow>
 <!-- Identifier Name -->
 <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="identifiedBy" fieldName="Identified by" 
     dwcTerm="true"
-    infoMessage="A list (concatenated and separated) of names of people, groups, or organizations who assigned the Taxon to the subject.">
+    infoMessage="${message(code:'dwc.identifiedBy.info')}">
     ${fieldsMap.put("identifiedBy", true)}
     <g:each status="i" in="${record.raw.identification.identifiedBy}" var="identifiedBy">
         <g:if test="${record.raw.identification.identifiedBy.size() > 1}">
@@ -195,7 +199,9 @@
     <g:elseif test="${StringUtils.containsIgnoreCase(record.processed.occurrence.basisOfRecord, 'observation')}"><g:message code="recordcore.collectornamelabel.02" default="Observer"/></g:elseif>
     <g:else><g:message code="recordcore.collectornamelabel.03" default="Collector/Observer"/></g:else>
 </g:set>
-<alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="collectorName" fieldName="${collectorNameLabel}">
+<alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="collectorName" fieldName="${collectorNameLabel}"
+    dwcTerm="true"
+    infoMessage="${message(code:'dwc.collectorName.info')}">
     <g:set var="recordedByField">
         <g:if test="${record.raw.occurrence.recordedBy}">
             <g:message code="recordcore.recorededbyfield.01" default="recordedBy"/>
@@ -234,7 +240,7 @@
 </g:set>
 <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="recordNumber" fieldName="${recordNumberLabel}" 
     dwcTerm="true"
-    infoMessage="An identifier given to the Occurrence at the time it was recorded. Often serves as a link between field notes and a Occurrence record, such as a specimen collector's number.">
+    infoMessage="${message(code:'dwc.recordNumber.info')}">
     ${fieldsMap.put("recordNumber", true)}
     <g:if test="${record.processed.occurrence.recordNumber && record.raw.occurrence.recordNumber}">
             ${record.processed.occurrence.recordNumber}
@@ -253,7 +259,7 @@
 <!-- Type Status -->
 <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="typeStatus" fieldName="Type status" 
     dwcTerm="true"
-    infoMessage="A list (concatenated and separated) of nomenclatural types (type status, typified scientific name, publication) applied to the subject.">
+    infoMessage="${message(code:'dwc.typeStatus.info')}">
     ${fieldsMap.put("typeStatus", true)}
     <g:if test="${record.processed.identification.typeStatus}">
         <span style="text-transform: capitalize;">
@@ -274,47 +280,49 @@
 <!-- Identification Qualifier -->
 <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="identificationQualifier" fieldName="Identification qualifier" 
     dwcTerm="true"
-    infoMessage="A brief phrase or a standard term (&quot;cf.&quot;, &quot;aff.&quot;) to express the determiner's doubts about the Identification.">
+    infoMessage="${message(code:'dwc.identificationQualifier.info')}">
     ${fieldsMap.put("identificationQualifier", true)}
     ${record.raw.identification.identificationQualifier}
 </alatag:occurrenceTableRow>
 <!-- Reproductive Condition -->
 <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="reproductiveCondition" fieldName="Reproductive condition" 
     dwcTerm="true"
-    infoMessage="The reproductive condition of the biological individual(s) represented in the Occurrence. Recommended best practice is to use a controlled vocabulary.">
+    infoMessage="${message(code:'dwc.reproductiveCondition.info')}">
     ${fieldsMap.put("reproductiveCondition", true)}
     ${record.raw.occurrence.reproductiveCondition}
 </alatag:occurrenceTableRow>
 <!-- Sex -->
 <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="sex" fieldName="Sex" 
     dwcTerm="true"
-    infoMessage="The sex of the biological individual(s) represented in the Occurrence. Recommended best practice is to use a controlled vocabulary.">
+    infoMessage="${message(code:'dwc.sex.info')}">
     ${fieldsMap.put("sex", true)}
     ${record.raw.occurrence.sex}
 </alatag:occurrenceTableRow>
 <!-- Behavior -->
 <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="behavior" fieldName="Behaviour" 
     dwcTerm="true"
-    infoMessage="The behavior shown by the subject at the time the Occurrence was recorded.">
+    infoMessage="${message(code:'dwc.behavior.info')}">
     ${fieldsMap.put("behavior", true)}
     ${record.raw.occurrence.behavior}
 </alatag:occurrenceTableRow>
 <!-- Individual count -->
 <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="individualCount" fieldName="Individual count" 
     dwcTerm="true"
-    infoMessage="The number of individuals present at the time of the Occurrence.">
+    infoMessage="${message(code:'dwc.individualCount.info')}">
     ${fieldsMap.put("individualCount", true)}
     ${record.raw.occurrence.individualCount}
 </alatag:occurrenceTableRow>
 <!-- Life stage -->
 <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="lifeStage" fieldName="Life stage" 
     dwcTerm="true"
-    infoMessage="The age class or life stage of the Organism(s) at the time the Occurrence was recorded. Recommended best practice is to use a controlled vocabulary.">
+    infoMessage="${message(code:'dwc.lifeStage.info')}">
     ${fieldsMap.put("lifeStage", true)}
     ${record.raw.occurrence.lifeStage}
 </alatag:occurrenceTableRow>
 <!-- Rights -->
-<alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="rights" fieldName="Rights">
+<alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="rights" fieldName="Rights"
+    dwcTerm="true"
+    infoMessage="${message(code:'dwc.rights.info')}">
     ${fieldsMap.put("rights", true)}
     ${record.raw.occurrence.rights}
 </alatag:occurrenceTableRow>
@@ -345,7 +353,7 @@
     <g:if test="${record.raw.occurrence.associatedOccurrences }">
         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="associatedOccurrences" fieldName="Associated Occurrences" 
         dwcTerm="true"
-        infoMessage="A list (concatenated and separated) of identifiers of other Occurrence records and their associations to this Occurrence.">
+        infoMessage="${message(code:'dwc.associatedOccurrences.info')}">
             ${record.raw.occurrence.associatedOccurrences }
         </alatag:occurrenceTableRow>
     </g:if>
@@ -363,7 +371,7 @@
     <!-- dataset -->
     <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="datasetName" fieldName="Dataset / Survey Name" 
         dwcTerm="true"
-        infoMessage="The name identifying the data set from which the record was derived.">
+        infoMessage="${message(code:'dwc.datasetName.info')}">
         ${fieldsMap.put("datasetName", true)}
         <g:each status="i" in="${record.raw.event.datasetName}" var="datasetName">
             <g:if test="${record.raw.event.datasetName.size() > 1}">
@@ -375,7 +383,7 @@
     <!-- event ID -->
     <alatag:occurrenceTableRow annotate="true" section="eventID" fieldCode="eventID" fieldName="Event ID" 
         dwcTerm="true"
-        infoMessage="An identifier for the set of information associated with an Event (something that occurs at a place and time). May be a global unique identifier or an identifier specific to the data set.">
+        infoMessage="${message(code:'dwc.eventID.info')}">
         ${fieldsMap.put("eventID", true)}
         <g:if test="${eventHierarchy}">
             <a href="${grailsApplication.config.events.eventUrl}${record.raw.event.eventID}">
@@ -390,7 +398,7 @@
     </alatag:occurrenceTableRow>
     <alatag:occurrenceTableRow annotate="true" section="parentEventID" fieldCode="parentEventID" fieldName="Parent Event ID" 
         dwcTerm="true"
-        infoMessage="An identifier for the broader Event that groups this and potentially other Events.">
+        infoMessage="${message(code:'dwc.parentEventID.info')}">
         ${fieldsMap.put("parentEventID", true)}
         <g:if test="${eventHierarchy}">
             <a href="${grailsApplication.config.events.eventUrl}${record.raw.event.parentEventID}">
@@ -420,7 +428,9 @@
     </alatag:occurrenceTableRow>
 
     <!-- identificationRemarks -->
-    <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="identificationRemarks" fieldNameIsMsgCode="true" fieldName="Identification remarks">
+    <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="identificationRemarks" fieldNameIsMsgCode="true" fieldName="Identification remarks"
+        dwcTerm="true"
+        infoMessage="${message(code:'dwc.identificationRemarks.info')}">
         ${fieldsMap.put("identificationRemarks", true)}
         ${record.raw.identification.identificationRemarks}
     </alatag:occurrenceTableRow>
@@ -429,7 +439,9 @@
         <g:if test="${StringUtils.containsIgnoreCase(record.processed.occurrence.basisOfRecord, 'specimen')}"><g:message code="recordcore.occurrencedatelabel.01" default="Collecting date"/></g:if>
         <g:else><g:message code="recordcore.occurrencedatelabel.02" default="Record date"/></g:else>
     </g:set>
-    <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="occurrenceDate" fieldName="${occurrenceDateLabel}">
+    <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="eventDate" fieldName="${occurrenceDateLabel}"
+        dwcTerm="true"
+        infoMessage="${message(code:'dwc.eventDate.info')}">
         ${fieldsMap.put("eventDate", true)}
         <g:if test="${!record.processed.event.eventDate && record.raw.event.eventDate && !record.raw.event.year && !record.raw.event.month && !record.raw.event.day}">
             [<g:message code="recordcore.occurrencedatelabel.03" default="date not supplied"/>]
@@ -458,7 +470,9 @@
         </g:elseif>
     </alatag:occurrenceTableRow>
     <!-- Sampling Protocol -->
-    <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="samplingProtocol" fieldName="Sampling protocol">
+    <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="samplingProtocol" fieldName="Sampling protocol"
+        dwcTerm="true"
+        infoMessage="${message(code:'dwc.samplingProtocol.info')}">
         ${fieldsMap.put("samplingProtocol", true)}
         <g:each status="i" in="${record.raw.occurrence.samplingProtocol}" var="samplingProtocol">
             <g:if test="${record.raw.occurrence.samplingProtocol.size() > 1}">
@@ -474,12 +488,16 @@
 <h3><g:message code="recordcore.occurencetaxonomy.title" default="Taxonomy"/></h3>
 <table class="occurrenceTable table table-bordered table-striped table-condensed" id="taxonomyTable">
 <!-- Higher classification -->
-<alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="higherClassification" fieldName="Higher classification">
+<alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="higherClassification" fieldName="Higher classification"
+    dwcTerm="true"
+    infoMessage="${message(code:'dwc.higherClassification.info')}">
     ${fieldsMap.put("higherClassification", true)}
     ${record.raw.classification.higherClassification}
 </alatag:occurrenceTableRow>
 <!-- Scientific name -->
-<alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="scientificName" fieldName="Scientific name">
+<alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="scientificName" fieldName="Scientific name"
+    dwcTerm="true"
+    infoMessage="${message(code:'dwc.scientificName.info')}">
     ${fieldsMap.put("taxonConceptID", true)}
     ${fieldsMap.put("scientificName", true)}
     <g:if test="${taxaLinks.baseUrl && record.processed.classification.taxonConceptID}">
@@ -499,7 +517,9 @@
     </g:if>
 </alatag:occurrenceTableRow>
 <!-- original name usage -->
-<alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="originalNameUsage" fieldName="Original name">
+<alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="originalNameUsage" fieldName="Original name"
+    dwcTerm="true"
+    infoMessage="${message(code:'dwc.originalNameUsage.info')}">
     ${fieldsMap.put("originalNameUsage", true)}
     ${fieldsMap.put("originalNameUsageID", true)}
     <g:if test="${record.processed.classification.originalNameUsageID}">
@@ -521,7 +541,9 @@
     </g:if>
 </alatag:occurrenceTableRow>
 <!-- Taxon Rank -->
-<alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="taxonRank" fieldName="Taxon rank">
+<alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="taxonRank" fieldName="Taxon rank"
+    dwcTerm="true"
+    infoMessage="${message(code:'dwc.taxonRank.info')}">
     ${fieldsMap.put("taxonRank", true)}
     ${fieldsMap.put("taxonRankID", true)}
     <g:if test="${record.processed.classification.taxonRank}">
@@ -553,7 +575,9 @@
 </alatag:occurrenceTableRow>
 </g:if>
 <!-- Kingdom -->
-<alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="kingdom" fieldName="Kingdom">
+<alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="kingdom" fieldName="Kingdom"
+    dwcTerm="true"
+    infoMessage="${message(code:'dwc.kingdom.info')}">
     ${fieldsMap.put("kingdom", true)}
     ${fieldsMap.put("kingdomID", true)}
     <g:if test="${record.processed.classification.kingdomID}">
@@ -575,7 +599,9 @@
     </g:if>
 </alatag:occurrenceTableRow>
 <!-- Phylum -->
-<alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="phylum" fieldName="Phylum">
+<alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="phylum" fieldName="Phylum"
+    dwcTerm="true"
+    infoMessage="${message(code:'dwc.phylum.info')}">
     ${fieldsMap.put("phylum", true)}
     ${fieldsMap.put("phylumID", true)}
     <g:if test="${record.processed.classification.phylumID}">
@@ -597,7 +623,9 @@
     </g:if>
 </alatag:occurrenceTableRow>
 <!-- Class -->
-<alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="classs" fieldName="Class">
+<alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="class" fieldName="Class"
+    dwcTerm="true"
+    infoMessage="${message(code:'dwc.class.info')}">
     ${fieldsMap.put("classs", true)}
     ${fieldsMap.put("classID", true)}
     <g:if test="${record.processed.classification.classID}">
@@ -641,7 +669,9 @@
     </g:if>
 </alatag:occurrenceTableRow>
 <!-- Family -->
-<alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="family" fieldName="Family">
+<alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="family" fieldName="Family"
+    dwcTerm="true"
+    infoMessage="${message(code:'dwc.family.info')}">
     ${fieldsMap.put("family", true)}
     ${fieldsMap.put("familyID", true)}
     <g:if test="${record.processed.classification.familyID}">
@@ -663,7 +693,9 @@
     </g:if>
 </alatag:occurrenceTableRow>
 <!-- Genus -->
-<alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="genus" fieldName="Genus">
+<alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="genus" fieldName="Genus"
+    dwcTerm="true"
+    infoMessage="${message(code:'dwc.genus.info')}">
     ${fieldsMap.put("genus", true)}
     ${fieldsMap.put("genusID", true)}
     <g:if test="${record.processed.classification.genusID}">
@@ -685,7 +717,9 @@
     </g:if>
 </alatag:occurrenceTableRow>
 <!-- Species -->
-<alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="species" fieldName="Species">
+<alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="species" fieldName="Species"
+    dwcTerm="true"
+    infoMessage="${message(code:'dwc.species.info')}">
     ${fieldsMap.put("species", true)}
     ${fieldsMap.put("speciesID", true)}
     ${fieldsMap.put("specificEpithet", true)}
@@ -817,7 +851,9 @@
     </g:if>
 </alatag:occurrenceTableRow>
 <!-- Habitat -->
-<alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="habitat" fieldName="Habitat">
+<alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="habitat" fieldName="Habitat"
+    dwcTerm="true"
+    infoMessage="${message(code:'dwc.habitat.info')}">
     ${fieldsMap.put("habitat", true)}
     ${record.processed.location.habitat}
     <g:if test="${record.raw.location.habitat && record.raw.location.habitat != record.processed.location.habitat}">
@@ -825,7 +861,9 @@
     </g:if>
 </alatag:occurrenceTableRow>
 <!-- Latitude -->
-<alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="latitude" fieldName="Latitude">
+<alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="decimalLatitude" fieldName="Latitude"
+    dwcTerm="true"
+    infoMessage="${message(code:'dwc.decimalLatitude.info')}">
     ${fieldsMap.put("decimalLatitude", true)}
     <g:if test="${clubView && record.sensitive && record.raw.location.decimalLatitude}">
         ${record.raw.location.decimalLatitude}
@@ -841,7 +879,9 @@
     </g:elseif>
 </alatag:occurrenceTableRow>
 <!-- Longitude -->
-<alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="longitude" fieldName="Longitude">
+<alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="decimalLongitude" fieldName="Longitude"
+    dwcTerm="true"
+    infoMessage="${message(code:'dwc.decimalLongitude.info')}">
     ${fieldsMap.put("decimalLongitude", true)}
     <g:if test="${clubView && record.sensitive && record.raw.location.decimalLongitude}">
         ${record.raw.location.decimalLongitude}
@@ -890,47 +930,65 @@
     ${record.raw.location.verbatimLocality}
 </alatag:occurrenceTableRow>
 <!-- Water Body -->
-<alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="waterBody" fieldName="Water body">
+<alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="waterBody" fieldName="Water body"
+    dwcTerm="true"
+    infoMessage="${message(code:'dwc.waterBody.info')}">
     ${fieldsMap.put("waterBody", true)}
     ${record.raw.location.waterBody}
 </alatag:occurrenceTableRow>
 <!-- Min depth -->
-<alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="minimumDepthInMeters" fieldName="Minimum depth in metres">
+<alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="minimumDepthInMeters" fieldName="Minimum depth in metres"
+    dwcTerm="true"
+    infoMessage="${message(code:'dwc.minimumDepthInMeters.info')}">
     ${fieldsMap.put("minimumDepthInMeters", true)}
     ${record.raw.location.minimumDepthInMeters}
 </alatag:occurrenceTableRow>
 <!-- Max depth -->
-<alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="maximumDepthInMeters" fieldName="Maximum depth in metres">
+<alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="maximumDepthInMeters" fieldName="Maximum depth in metres"
+    dwcTerm="true"
+    infoMessage="${message(code:'dwc.maximumDepthInMeters.info')}">
     ${fieldsMap.put("maximumDepthInMeters", true)}
     ${record.raw.location.maximumDepthInMeters}
 </alatag:occurrenceTableRow>
 <!-- Min elevation -->
-<alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="minimumElevationInMeters" fieldName="Minimum elevation in metres">
+<alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="minimumElevationInMeters" fieldName="Minimum elevation in metres"
+    dwcTerm="true"
+    infoMessage="${message(code:'dwc.minimumElevationInMeters.info')}">
     ${fieldsMap.put("minimumElevationInMeters", true)}
     ${record.raw.location.minimumElevationInMeters}
 </alatag:occurrenceTableRow>
 <!-- Max elevation -->
-<alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="maximumElevationInMeters" fieldName="Maximum elevation in metres">
+<alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="maximumElevationInMeters" fieldName="Maximum elevation in metres"
+    dwcTerm="true"
+    infoMessage="${message(code:'dwc.maximumElevationInMeters.info')}">
     ${fieldsMap.put("maximumElevationInMeters", true)}
     ${record.raw.location.maximumElevationInMeters}
 </alatag:occurrenceTableRow>
 <!-- Island -->
-<alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="island" fieldName="Island">
+<alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="island" fieldName="Island"
+    dwcTerm="true"
+    infoMessage="${message(code:'dwc.island.info')}">
     ${fieldsMap.put("island", true)}
     ${record.raw.location.island}
 </alatag:occurrenceTableRow>
 <!-- Island Group-->
-<alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="islandGroup" fieldName="Island group">
+<alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="islandGroup" fieldName="Island group"
+    dwcTerm="true"
+    infoMessage="${message(code:'dwc.islandGroup.info')}">
     ${fieldsMap.put("islandGroup", true)}
     ${record.raw.location.islandGroup}
 </alatag:occurrenceTableRow>
 <!-- Location remarks -->
-<alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="locationRemarks" fieldName="Location remarks">
+<alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="locationRemarks" fieldName="Location remarks"
+    dwcTerm="true"
+    infoMessage="${message(code:'dwc.locationRemarks.info')}">
     ${fieldsMap.put("locationRemarks", true)}
     ${record.raw.location.locationRemarks}
 </alatag:occurrenceTableRow>
 <!-- Field notes -->
-<alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="fieldNotes" fieldName="Field notes">
+<alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="fieldNotes" fieldName="Field notes"
+    dwcTerm="true"
+    infoMessage="${message(code:'dwc.fieldNotes.info')}">
     ${fieldsMap.put("fieldNotes", true)}
     ${record.raw.occurrence.fieldNotes}
 </alatag:occurrenceTableRow>
