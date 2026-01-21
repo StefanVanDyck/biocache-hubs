@@ -602,8 +602,11 @@ class OccurrenceTagLib {
         String bodyText = (String) body()
         def guid = attrs.guid
         def path = attrs.path
+        def href = attrs.href
         def fieldCode = attrs.fieldCode
         def fieldName = attrs.fieldName
+        def dwcTerm = attrs.dwcTerm
+        def infoMessage = attrs.infoMessage
         def fieldNameIsMsgCode = attrs.fieldNameIsMsgCode
         def userDetails
 
@@ -618,12 +621,21 @@ class OccurrenceTagLib {
             def mb = new MarkupBuilder(out)
 
             mb.tr(id:"${fieldCode}") {
-                td(class:"dwcLabel " + fieldCode) {
+                td(class:"dwcLabel " + fieldCode, title:infoMessage) {
                     mkp.yieldUnescaped(formatFieldName(fieldCode, fieldName))
-                }
+                    if (dwcTerm == "true") {
+                        a(href: "http://dwc.tdwg.org/terms/#dwc:${fieldCode}") {
+                            i(class: "dwc-logo", "")
+                        }
+                    }
+                } 
                 td(class:"value") {
                     if (link) {
                         a(href: link) {
+                            mkp.yieldUnescaped(bodyText)
+                        }
+                    } else if(href) {
+                        a(href: href, target: "_blank") {
                             mkp.yieldUnescaped(bodyText)
                         }
                     } else {
