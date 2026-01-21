@@ -456,9 +456,7 @@
                             </g:else>
                         </alatag:occurrenceTableRow>
                         <!-- License -->
-                        <alatag:occurrenceTableRow fieldName="license" fieldCode="license"
-                            dwcTerm="true"
-                            infoMessage="${message(code:'dwc.license.info')}">
+                        <alatag:occurrenceTableRow fieldName="license" fieldCode="license">
                             ${fieldsMap.put("license", true)}
                             <g:if test="${record.processed.attribution.license}">
                                 ${record.processed.attribution.license}
