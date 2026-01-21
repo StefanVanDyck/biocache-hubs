@@ -385,6 +385,7 @@
         dwcTerm="true"
         infoMessage="${message(code:'dwc.eventID.info')}"
         href="${record.raw.event.eventID ? "search?q=*%3A*&fq=event_id%3A%22${URLEncoder.encode(record.raw.event.eventID, "UTF-8")}%22" : ""}">
+        ${fieldsMap.put("eventID", true)}
         <g:if test="${eventHierarchy}">
             <a href="${grailsApplication.config.events.eventUrl}${record.raw.event.eventID}">
             ${record.raw.event.eventID}
