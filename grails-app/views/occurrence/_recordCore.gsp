@@ -197,8 +197,9 @@
     <g:elseif test="${StringUtils.containsIgnoreCase(record.processed.occurrence.basisOfRecord, 'observation')}"><g:message code="recordcore.collectornamelabel.02" default="Observer"/></g:elseif>
     <g:else><g:message code="recordcore.collectornamelabel.03" default="Collector/Observer"/></g:else>
 </g:set>
-<alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="collectorName" fieldName="${collectorNameLabel}"
-    infoMessage="${message(code:'dwc.collectorName.info')}">
+<alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="recordedBy" fieldName="${collectorNameLabel}"
+    dwcTerm="true"
+    infoMessage="${message(code:'dwc.recordedBy.info')}">
     <g:set var="recordedByField">
         <g:if test="${record.raw.occurrence.recordedBy}">
             <g:message code="recordcore.recorededbyfield.01" default="recordedBy"/>
@@ -786,7 +787,9 @@
     ${record.raw.location.higherGeography}
 </alatag:occurrenceTableRow>
 <!-- Country -->
-<alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="country" fieldName="Country">
+<alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="country" fieldName="Country"
+    dwcTerm="true"
+    infoMessage="${message(code:'dwc.country.info')}">
     ${fieldsMap.put("country", true)}
     <g:if test="${record.processed.location.country}">
         ${record.processed.location.country}
@@ -802,7 +805,9 @@
     </g:if>
 </alatag:occurrenceTableRow>
 <!-- State/Province -->
-<alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="state" fieldName="State or territory">
+<alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="stateProvince" fieldName="State or territory"
+    dwcTerm="true"
+    infoMessage="${message(code:'dwc.stateProvince.info')}">  
     ${fieldsMap.put("stateProvince", true)}
     <g:set var="stateValue" value="${record.processed.location.stateProvince ? record.processed.location.stateProvince : record.raw.location.stateProvince}" />
     <g:if test="${stateValue}">
@@ -815,7 +820,9 @@
     </g:if>
 </alatag:occurrenceTableRow>
 <!-- Local Govt Area -->
-<alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="locality" fieldName="Local government area">
+<alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="locality" fieldName="Local government area"
+    dwcTerm="true"
+    infoMessage="${message(code:'dwc.locality.info')}">   
     ${fieldsMap.put("lga", true)}
     <g:if test="${record.processed.location.lga}">
         ${record.processed.location.lga}
@@ -825,7 +832,9 @@
     </g:if>
 </alatag:occurrenceTableRow>
 <!-- Locality -->
-<alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="locality" fieldName="Locality">
+<alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="locality" fieldName="Locality"
+    dwcTerm="true"
+    infoMessage="${message(code:'dwc.locality.info')}">
     ${fieldsMap.put("locality", true)}
     <g:if test="${record.processed.location.locality}">
         ${record.processed.location.locality}
@@ -848,7 +857,7 @@
     </g:if>
 </alatag:occurrenceTableRow>
 <!-- Habitat -->
-<alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="habitat" fieldName="Habitat"
+<alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="habitat" fieldName="/Habitat"
     dwcTerm="true"
     infoMessage="${message(code:'dwc.habitat.info')}">
     ${fieldsMap.put("habitat", true)}
@@ -894,7 +903,9 @@
     </g:elseif>
 </alatag:occurrenceTableRow>
 <!-- Geodetic datum -->
-<alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="geodeticDatum" fieldName="Geodetic datum">
+<alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="geodeticDatum" fieldName="Geodetic datum"
+    dwcTerm="true"
+    infoMessage="${message(code:'dwc.geodeticDatum.info')}">
     ${fieldsMap.put("geodeticDatum", true)}
     <g:if test="${clubView && record.raw.location.geodeticDatum != record.processed.location.geodeticDatum}">
         ${record.raw.location.geodeticDatum}
@@ -910,7 +921,10 @@
     </g:elseif>
 </alatag:occurrenceTableRow>
 <!-- verbatimCoordinateSystem -->
-<alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="verbatimCoordinateSystem" fieldName="Verbatim coordinate system">
+<alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="verbatimCoordinateSystem" fieldName="Verbatim coordinate system"
+    dwcTerm="true"
+    infoMessage="${message(code:'dwc.verbatimCoordinateSystem.info')}">
+
     ${fieldsMap.put("verbatimCoordinateSystem", true)}
     <%def params = [
                 q : '*:*',
@@ -922,7 +936,9 @@
     </a>
 </alatag:occurrenceTableRow>
 <!-- Verbatim locality -->
-<alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="verbatimLocality" fieldName="Verbatim locality">
+<alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="verbatimLocality" fieldName="Verbatim locality"
+    dwcTerm="true"
+    infoMessage="${message(code:'dwc.verbatimLocality.info')}">
     ${fieldsMap.put("verbatimLocality", true)}
     ${record.raw.location.verbatimLocality}
 </alatag:occurrenceTableRow>
@@ -990,21 +1006,27 @@
     ${record.raw.occurrence.fieldNotes}
 </alatag:occurrenceTableRow>
 <!-- Coordinate Precision -->
-<alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="coordinatePrecision" fieldName="Coordinate precision">
+<alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="coordinatePrecision" fieldName="Coordinate precision"
+    dwcTerm="true"
+    infoMessage="${message(code:'dwc.coordinatePrecision.info')}">
     ${fieldsMap.put("coordinatePrecision", true)}
     <g:if test="${record.raw.location.decimalLatitude || record.raw.location.decimalLongitude}">
         ${record.raw.location.coordinatePrecision ? record.raw.location.coordinatePrecision : 'Unknown'}
     </g:if>
 </alatag:occurrenceTableRow>
 <!-- Coordinate Uncertainty -->
-<alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="coordinateUncertaintyInMeters" fieldName="Coordinate uncertainty in metres">
+<alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="coordinateUncertaintyInMeters" fieldName="Coordinate uncertainty in metres"
+    dwcTerm="true"
+    infoMessage="${message(code:'dwc.coordinateUncertaintyInMeters.info')}">
     ${fieldsMap.put("coordinateUncertaintyInMeters", true)}
     <g:if test="${record.processed.location.coordinateUncertaintyInMeters}">
         ${record.processed.location.coordinateUncertaintyInMeters ? record.processed.location.coordinateUncertaintyInMeters : 'Unknown'}
     </g:if>
 </alatag:occurrenceTableRow>
 <!-- Data Generalizations -->
-<alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="generalisedInMetres" fieldName="Coordinates generalised">
+<alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="dataGeneralizations" fieldName="Coordinates generalised"
+    dwcTerm="true"
+    infoMessage="${message(code:'dwc.dataGeneralizations.info')}">
     ${fieldsMap.put("generalisedInMetres", true)}
     <g:if test="${record.processed.occurrence.dataGeneralizations && StringUtils.contains(record.processed.occurrence.dataGeneralizations, 'is already generalised')}">
         ${record.processed.occurrence.dataGeneralizations}
@@ -1031,17 +1053,23 @@
     ${record.raw.location.georeferenceVerificationStatus}
 </alatag:occurrenceTableRow>
 <!-- georeferenceSources -->
-<alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="georeferenceSources" fieldName="Georeference sources">
+<alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="georeferenceSources" fieldName="Georeference sources"
+    dwcTerm="true"
+    infoMessage="${message(code:'dwc.georeferenceSources.info')}">
     ${fieldsMap.put("georeferenceSources", true)}
     ${record.raw.location.georeferenceSources}
 </alatag:occurrenceTableRow>
 <!-- georeferenceProtocol -->
-<alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="georeferenceProtocol" fieldName="Georeference protocol">
+<alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="georeferenceProtocol" fieldName="Georeference protocol"
+    dwcTerm="true"
+    infoMessage="${message(code:'dwc.georeferenceProtocol.info')}">
     ${fieldsMap.put("georeferenceProtocol", true)}
     ${record.raw.location.georeferenceProtocol}
 </alatag:occurrenceTableRow>
 <!-- georeferenceProtocol -->
-<alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="georeferencedBy" fieldName="Georeferenced by">
+<alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="georeferencedBy" fieldName="Georeferenced by"
+    dwcTerm="true"
+    infoMessage="${message(code:'dwc.georeferencedBy.info')}">
     ${fieldsMap.put("georeferencedBy", true)}
     ${record.raw.location.georeferencedBy}
 </alatag:occurrenceTableRow>
