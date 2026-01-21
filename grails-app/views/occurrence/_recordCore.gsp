@@ -9,7 +9,6 @@
 <table class="occurrenceTable table table-bordered table-striped table-condensed" id="datasetTable">
 <!-- Data Provider -->
     <alatag:occurrenceTableRow annotate="false" section="dataset" fieldCode="dataProvider" fieldName="Data provider"
-        dwcTerm="true"
         infoMessage="${message(code:'dwc.dataProvider.info')}">
         <g:if test="${record.processed.attribution.dataProviderUid && collectionsWebappContext}">
             ${fieldsMap.put("dataProviderUid", true)}
@@ -25,7 +24,6 @@
     </alatag:occurrenceTableRow>
     <!-- Data Resource -->
     <alatag:occurrenceTableRow annotate="false" section="dataset" fieldCode="dataResource" fieldName="Data resource"
-        dwcTerm="true"
         infoMessage="${message(code:'dwc.dataResource.info')}">
         <g:if test="${record.raw.attribution.dataResourceUid != null && record.raw.attribution.dataResourceUid && collectionsWebappContext}">
             ${fieldsMap.put("dataResourceUid", true)}
@@ -200,7 +198,6 @@
     <g:else><g:message code="recordcore.collectornamelabel.03" default="Collector/Observer"/></g:else>
 </g:set>
 <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="collectorName" fieldName="${collectorNameLabel}"
-    dwcTerm="true"
     infoMessage="${message(code:'dwc.collectorName.info')}">
     <g:set var="recordedByField">
         <g:if test="${record.raw.occurrence.recordedBy}">
@@ -321,7 +318,6 @@
 </alatag:occurrenceTableRow>
 <!-- Rights -->
 <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="rights" fieldName="Rights"
-    dwcTerm="true"
     infoMessage="${message(code:'dwc.rights.info')}">
     ${fieldsMap.put("rights", true)}
     ${record.raw.occurrence.rights}
@@ -718,7 +714,6 @@
 </alatag:occurrenceTableRow>
 <!-- Species -->
 <alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="species" fieldName="Species"
-    dwcTerm="true"
     infoMessage="${message(code:'dwc.species.info')}">
     ${fieldsMap.put("species", true)}
     ${fieldsMap.put("speciesID", true)}
@@ -746,7 +741,9 @@
 </alatag:occurrenceTableRow>
 <!-- Associated Taxa -->
 <g:if test="${record.raw.occurrence.associatedTaxa}">
-    <alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="associatedTaxa" fieldName="Associated species">
+    <alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="associatedTaxa" fieldName="Associated species"
+        dwcTerm="true"
+        infoMessage="${message(code:'dwc.associatedTaxa.info')}">
         ${fieldsMap.put("associatedTaxa", true)}
         <g:set var="colon" value=":"/>
         <g:if test="${taxaLinks.baseUrl && StringUtils.contains(record.raw.occurrence.associatedTaxa,colon)}">
@@ -1018,14 +1015,18 @@
     </g:elseif>
 </alatag:occurrenceTableRow>
 <!-- Information Withheld -->
-<alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="informationWithheld" fieldName="Information withheld">
+<alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="informationWithheld" fieldName="Information withheld"
+    dwcTerm="true"
+    infoMessage="${message(code:'dwc.informationWithheld.info')}">
     ${fieldsMap.put("informationWithheld", true)}
     <g:if test="${record.processed.occurrence.informationWithheld}">
         <span class="dataGeneralizations">${record.processed.occurrence.informationWithheld}</span>
     </g:if>
 </alatag:occurrenceTableRow>
 <!-- GeoreferenceVerificationStatus -->
-<alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="georeferenceVerificationStatus" fieldName="Georeference verification status">
+<alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="georeferenceVerificationStatus" fieldName="Georeference verification status"
+    dwcTerm="true"
+    infoMessage="${message(code:'dwc.georeferenceVerificationStatus.info')}">
     ${fieldsMap.put("georeferenceVerificationStatus", true)}
     ${record.raw.location.georeferenceVerificationStatus}
 </alatag:occurrenceTableRow>

@@ -422,7 +422,6 @@
                         </alatag:occurrenceTableRow>
                         <!-- Data Resource -->
                         <alatag:occurrenceTableRow fieldCode="dataResource" fieldName="Data resource"
-                            dwcTerm="true"
                             infoMessage="${message(code:'dwc.dataResource.info')}">
                             <g:if test="${record.raw.attribution.dataResourceUid != null && record.raw.attribution.dataResourceUid && collectionsWebappContext}">
                                 ${fieldsMap.put("dataResourceUid", true)}
@@ -443,7 +442,6 @@
                         </alatag:occurrenceTableRow>
                         <!-- Publisher -->
                         <alatag:occurrenceTableRow fieldCode="dataProvider" fieldName="Data provider"
-                            dwcTerm="true"
                             infoMessage="${message(code:'dwc.dataProvider.info')}">
                             <g:if test="${record.processed.attribution.dataProviderUid && collectionsWebappContext}">
                                 ${fieldsMap.put("dataProviderUid", true)}
