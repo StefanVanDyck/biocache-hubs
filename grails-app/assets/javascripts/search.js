@@ -2356,7 +2356,7 @@ function loadFacetsContent(
         BC_CONF.searchString +
         "&facets=" +
         facetName +
-        "&flimit=1000&pageSize=0";
+        "&flimit=200&pageSize=0";
 
     if (reSort) {
         // remove any facet values in table
