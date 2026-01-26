@@ -51,6 +51,65 @@ class OccurrenceTagLib {
     def maxDynamicProperties = 8
     def maxDynamicPropertyLength = 25
 
+    // Official Darwin Core terms with dwc: prefix
+    // Terms from https://dwc.tdwg.org/list/
+    static final Set<String> DWC_TERMS = [
+        'acceptednameusage', 'acceptednameusageid', 'accordingto', 'accuracy', 'associatedmedia',
+        'associatedoccurrences', 'associatedorganisms', 'associatedreferences', 'associatedsequences',
+        'associatedtaxa', 'basionym', 'basionymid', 'basisofrecord', 'bed', 'behavior', 'bibliographiccitation',
+        'catalognumber', 'class', 'collectioncode', 'collectionid', 'continent', 'coordinateprecision',
+        'coordinateuncertaintyinmeters', 'country', 'countrycode', 'county', 'datageneralizations',
+        'datasetid', 'datasetname', 'dateidentified', 'day', 'decimallatitude', 'decimallongitude',
+        'disposition', 'dynamicproperties', 'earliestageorloweststage', 'earliesteonorlowesteonothem',
+        'earliestepochorlowestseries', 'earliesteraorlowesterathem', 'earliestperiodorlowestsystem',
+        'enddayofyear', 'establishmentmeans', 'event', 'eventattributes', 'eventdate', 'eventid',
+        'eventremarks', 'eventtime', 'family', 'fieldnotes', 'fieldnumber', 'footprintspatialfit',
+        'footprintsrs', 'footprintwkt', 'formation', 'genus', 'geologicalcontextid', 'georeferencedby',
+        'georeferenceddate', 'georeferenceprotocol', 'georeferenceremarks', 'georeferencesources',
+        'georeferenceverificationstatus', 'group', 'habitat', 'higherclassification', 'highergeography',
+        'highergeographyid', 'highestbiostratigraphiczone', 'identificationattributes', 'identificationid',
+        'identificationqualifier', 'identificationreferences', 'identificationremarks',
+        'identificationverificationstatus', 'identifiedby', 'identifiedbyid', 'individualcount',
+        'informationwithheld', 'infraspecificepithet', 'institutioncode', 'institutionid', 'island',
+        'islandgroup', 'kingdom', 'latestageorhigheststage', 'latesteonorhighesteonothem',
+        'latestepochorhighestseries', 'latesteraorhighesterathem', 'latestperiodorhighestsystem',
+        'lifestage', 'lithostratigraphicterms', 'livingspecimen', 'locality', 'locationaccordingto',
+        'locationattributes', 'locationid', 'locationremarks', 'lowestbiostratigraphiczone',
+        'machineobservation', 'materialentity', 'materialsample', 'materialsampleid',
+        'maximumdepthinmeters', 'maximumdistanceabovesurfaceinmeters', 'maximumelevationinmeters',
+        'measurementaccuracy', 'measurementdeterminedby', 'measurementdetermineddate', 'measurementid',
+        'measurementmethod', 'measurementremarks', 'measurementtype', 'measurementunit', 'measurementvalue',
+        'member', 'minimumdepthinmeters', 'minimumdistanceabovesurfaceinmeters', 'minimumelevationinmeters',
+        'modified', 'month', 'municipality', 'nameaccordingto', 'nameaccordingtoid', 'namepublishedin',
+        'namepublishedinid', 'namepublishedinyear', 'nomenclaturalcode', 'nomenclaturalstatus',
+        'occurrence', 'occurrenceattributes', 'occurrenceid', 'occurrenceremarks', 'occurrencestatus',
+        'order', 'organism', 'organismattributes', 'organismid', 'organismname', 'organismquantity',
+        'organismquantitytype', 'organismremarks', 'organismscope', 'originalnameid', 'originalnameusuage',
+        'originalnameusage', 'originalnameusageid', 'othercatalognumbers', 'ownerinstitutioncode',
+        'parenteventid', 'parentnameusage', 'parentnameusageid', 'pathway', 'phylum', 'pointradiusspatialfit',
+        'preparations', 'preservedspecimen', 'previousidentifications', 'recordedby', 'recordedbyid',
+        'recordnumber', 'relatedresourceid', 'relationshipaccordingto', 'relationshipestablisheddate',
+        'relationshipofresource', 'relationshipofresourceid', 'relationshipremarks', 'reproductivecondition',
+        'resourceid', 'resourcerelationship', 'resourcerelationshipid', 'samplingeffort', 'samplingprotocol',
+        'scientificname', 'scientificnameauthorship', 'scientificnameid', 'sex', 'specificepithet',
+        'startdayofyear', 'stateprovince', 'subgenus', 'taxon', 'taxonattributes', 'taxonconceptid',
+        'taxonid', 'taxonomicstatus', 'taxonrank', 'taxonremarks', 'typestatus', 'verbatimcoordinates',
+        'verbatimcoordinatesystem', 'verbatimdepth', 'verbatimelevation', 'verbatimeventdate', 'verbatimlatitude',
+        'verbatimlocality', 'verbatimlongitude', 'verbatimsrs', 'verbatimtaxonrank', 'vernacularname',
+        'vitality', 'waterbody', 'year', 'acceptedscientificname', 'acceptedscientificnameid',
+        'binomial', 'caste', 'classs', 'collectorlist', 'commonname', 'coordinateuncertainty',
+        'dataresourceid', 'dateprecision', 'dayidentified', 'enddayofyear', 'eventattribute',
+        'geodeticdatum', 'georeferenceverificationstatus', 'higherrank', 'higherranks', 'humanobservation',
+        'identificationattribute', 'identificationqualifier', 'identifiedbyid', 'infraspecificrank',
+        'isinvasive', 'language', 'locationattribute', 'maximumdate', 'minimumdate', 'monthidentified',
+        'observationtype', 'occurrenceattribute', 'occurrencedatatype', 'occurrencedetails', 'order',
+        'organismattribute', 'originalscientificname', 'originaltaxonname', 'originaltaxonnameid',
+        'peerreview', 'preferredscientificname', 'preferredvernacularname', 'rank', 'relationshipaccordingto',
+        'relationshipremarks', 'specieshabitat', 'taxonaccordingto', 'taxonattribute', 'taxonname',
+        'taxonnameid', 'threatstatus', 'trinomial', 'typificationstatus', 'verbatimidentification',
+        'yearidentified'
+    ].collect { it.toLowerCase() }.toSet().asImmutable()
+
     /**
      * Formats the display of dynamic facet names in Sandbox (facet options popup)
      *
@@ -605,7 +664,6 @@ class OccurrenceTagLib {
         def href = attrs.href
         def fieldCode = attrs.fieldCode
         def fieldName = attrs.fieldName
-        def dwcTerm = attrs.dwcTerm
         def infoMessage = attrs.infoMessage
         def fieldNameIsMsgCode = attrs.fieldNameIsMsgCode
         def userDetails
@@ -619,11 +677,14 @@ class OccurrenceTagLib {
 
             def link = (guid) ? "${path}${guid}" : ""
             def mb = new MarkupBuilder(out)
+            
+            // Check if fieldCode is an official Darwin Core term
+            def isDwcTerm = DWC_TERMS.contains(fieldCode?.toLowerCase())
 
             mb.tr(id:"${fieldCode}") {
                 td(class:"dwcLabel " + fieldCode, title:infoMessage) {
                     mkp.yieldUnescaped(formatFieldName(fieldCode, fieldName))
-                    if (dwcTerm == "true") {
+                    if (isDwcTerm) {
                         a(href: "http://dwc.tdwg.org/terms/#dwc:${fieldCode}") {
                             i(class: "dwc-logo", "")
                         }

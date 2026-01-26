@@ -313,7 +313,6 @@
                         <tbody>
                         <!-- Family -->
                         <alatag:occurrenceTableRow fieldCode="family" fieldName="Family"
-                            dwcTerm="true"
                             infoMessage="${message(code:'dwc.family.info')}">
                             ${fieldsMap.put("family", true)}
                             ${fieldsMap.put("familyID", true)}
@@ -337,7 +336,6 @@
                         </alatag:occurrenceTableRow>
                         <!-- Scientific name -->
                         <alatag:occurrenceTableRow fieldCode="scientificName" fieldName="Scientific name" 
-                            dwcTerm="true"
                             infoMessage="${message(code:'dwc.scientificName.info')}">
                             ${fieldsMap.put("taxonConceptID", true)}
                             ${fieldsMap.put("scientificName", true)}
@@ -359,7 +357,6 @@
                         </alatag:occurrenceTableRow>
                         <!-- Presence/Absence -->
                         <alatag:occurrenceTableRow fieldName="occurrenceStatus" fieldCode="occurrenceStatus" 
-                            dwcTerm="true"
                             infoMessage="${message(code:'dwc.occurrenceStatus.info')}">
                             ${fieldsMap.put("occurrenceStatus", true)}
                             <g:if test="${record.raw.occurrence.occurrenceStatus}">
@@ -368,7 +365,6 @@
                         </alatag:occurrenceTableRow>
                         <!-- Coordinate Uncertainty -->
                         <alatag:occurrenceTableRow fieldCode="coordinateUncertaintyInMeters" fieldName="Coordinate uncertainty in metres" 
-                            dwcTerm="true"
                             infoMessage="${message(code:'dwc.coordinateUncertaintyInMeters.info')}">
                             ${fieldsMap.put("coordinateUncertaintyInMeters", true)}
                             <g:if test="${record.processed.location.coordinateUncertaintyInMeters}">
@@ -377,7 +373,6 @@
                         </alatag:occurrenceTableRow>
                         <!-- Individual count -->
                         <alatag:occurrenceTableRow fieldName="individualCount" fieldCode="individualCount" 
-                            dwcTerm="true"
                             infoMessage="${message(code:'dwc.individualCount.info')}">
                             ${fieldsMap.put("individualCount", true)}
                             <g:if test="${record.raw.occurrence.individualCount}">
@@ -386,7 +381,6 @@
                         </alatag:occurrenceTableRow>
                         <!-- Life stage -->
                         <alatag:occurrenceTableRow fieldName="lifeStage" fieldCode="lifeStage" 
-                            dwcTerm="true"
                             infoMessage="${message(code:'dwc.lifeStage.info')}">
                             ${fieldsMap.put("lifeStage", true)}
                             <g:if test="${record.raw.occurrence.lifeStage}">
@@ -395,7 +389,6 @@
                         </alatag:occurrenceTableRow>
                         <!-- Municipality -->
                         <alatag:occurrenceTableRow fieldName="municipality" fieldCode="municipality" 
-                            dwcTerm="true"
                             infoMessage="${message(code:'dwc.municipality.info')}">
                             ${fieldsMap.put("municipality", true)}
                             <g:if test="${record.raw.location.municipality}">
@@ -404,7 +397,6 @@
                         </alatag:occurrenceTableRow>
                         <!-- Locality -->
                         <alatag:occurrenceTableRow fieldName="locality" fieldCode="locality" 
-                            dwcTerm="true"
                             infoMessage="${message(code:'dwc.locality.info')}">
                             ${fieldsMap.put("locality", true)}
                             <g:if test="${record.raw.occurrence.locality}">
@@ -413,7 +405,6 @@
                         </alatag:occurrenceTableRow>
                         <!-- Sampling protocol -->
                         <alatag:occurrenceTableRow fieldName="samplingProtocol" fieldCode="samplingProtocol" 
-                            dwcTerm="true"
                             infoMessage="${message(code:'dwc.samplingProtocol.info')}">
                             ${fieldsMap.put("samplingProtocol", true)}
                             <g:if test="${record.raw.occurrence.samplingProtocol}">
