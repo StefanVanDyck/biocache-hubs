@@ -685,7 +685,7 @@ class OccurrenceTagLib {
                 td(class:"dwcLabel " + fieldCode, title:infoMessage) {
                     mkp.yieldUnescaped(formatFieldName(fieldCode, fieldName))
                     if (isDwcTerm) {
-                        a(href: "http://dwc.tdwg.org/terms/#dwc:${fieldCode}") {
+                        a(href: "https://dwc.tdwg.org/list/#dwc_${fieldCode}") {
                             i(class: "dwc-logo", "")
                         }
                     }
