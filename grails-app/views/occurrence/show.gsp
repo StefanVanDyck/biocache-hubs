@@ -1156,13 +1156,6 @@
                 <p><g:message code="show.headingbar02.p01" default="The requested record ID"/> "${uuid}" <g:message code="show.headingbar02.p02" default="was not found"/></p>
             </div>
         </g:if>
-        <g:if test="${record.sounds}">
-            <asset:script type="text/javascript">
-              audiojs.events.ready(function() {
-                var as = audiojs.createAll();
-              });
-            </asset:script>
-        </g:if>
     </g:if>
     <g:else>
         <h3><g:message code="show.body.error.title" default="An error occurred"/> <br/><alatag:stripApiKey message="${flash.message}"/></h3>

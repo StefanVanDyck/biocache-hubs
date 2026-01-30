@@ -168,7 +168,7 @@
                 <g:each in="${record.sounds}" var="sound">
                     <div class="row">
                         <div id="audioWrapper" class="col-md-12">
-                            <audio src="${sound?.alternativeFormats?.'audio/mpeg'}" preload="auto" />
+                            <audio controls src="${sound?.alternativeFormats?.'audio/mpeg'}" preload="auto" />
                             <div class="track-details">
                                 ${record.raw.classification.scientificName}
                             </div>
