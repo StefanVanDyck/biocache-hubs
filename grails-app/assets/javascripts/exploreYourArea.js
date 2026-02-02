@@ -29,6 +29,8 @@
 //= require_self
  */
 
+const SPECIES_GROUPS_TAB_ID = "speciesGroupsTab";
+const SPECIES_LISTS_TAB_ID = "speciesListsTab";
 
 var geocoder, marker, circle, markerInfowindow, lastInfoWindow, taxon, taxonGuid, alaWmsLayer, radius;
 var points = [], infoWindows = [], speciesGroup = "ALL_SPECIES"; speciesListDrUid = "";
@@ -197,8 +199,13 @@ function init() {
     $('#viewAllRecords').on("click", function(e) {
         e.preventDefault();
         var params = "q=*:*&lat="+$('#latitude').val()+"&lon="+$('#longitude').val()+"&radius="+$('#radius').val()+"&fq=spatiallyValid:true";
-        if (speciesGroup !== "ALL_SPECIES") {
-            params += "&fq=species_group:" + speciesGroup;
+        if (getActiveTabId() === SPECIES_GROUPS_TAB_ID) {
+            if (speciesGroup !== "ALL_SPECIES") {
+                params += "&fq=species_group:" + speciesGroup;
+            }
+        }
+        if (getActiveTabId() === SPECIES_LISTS_TAB_ID) {
+            params += "&fq=species_list_uid:" + speciesListDrUid;
         }
         document.location.href = MAP_VAR.contextPath +'/occurrences/search?' + params;
     });
@@ -643,6 +650,11 @@ function getJson(tab){
 
 function setJson(tab, value){
     return globalJsonMap.set(tab, value)
+}
+
+function getActiveTabId() {
+    const activeTab = document.querySelector('.tab-pane.active');
+    return activeTab ? activeTab.id : null;
 }
 
 /**
