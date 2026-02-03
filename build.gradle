@@ -97,8 +97,6 @@ dependencies {
     implementation "org.grails.plugins:ala-admin-plugin:2.3.0"
     implementation "org.grails.plugins:ala-auth:$alaSecurityLibsVersion"
     implementation "org.grails.plugins:ala-ws-plugin:$alaSecurityLibsVersion"
-    // Spring Security core is required for SecurityContextHolder references
-    implementation "org.springframework.security:spring-security-core"
     implementation "au.org.ala.plugins.grails:images-client-plugin:1.5-SNAPSHOT"
     implementation "au.org.ala.plugins.grails:ala-charts-plugin:2.3.0"
 
