@@ -159,7 +159,11 @@ class QualityService {
         "record count cache cleared\n"
     }
 
-    @Cacheable(value = 'excludedCountCache', key = { requestParams.toString() })
+    def getExcludeCountCacheKey(SpatialSearchRequestParams requestParams) {
+        SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString() + "_" + requestParams.toString()
+    }
+
+    @Cacheable(value = 'excludedCountCache', key = { getExcludeCountCacheKey(requestParams) })
     def getExcludeCount(SpatialSearchRequestParams requestParams) {
         return webServicesService.fullTextSearch(requestParams)?.totalRecords
     }
