@@ -15,3 +15,78 @@
      margin-left: .25em;
      vertical-align: text-top;
  }
+
+/* Styles for the taxon image text box */
+
+#taxonImageText {
+  display: none; /* initially hidden */
+  margin-top: 10px;
+  padding: 12px 16px;
+  border: 2px solid #ff9800; /* warm orange border */
+  background-color: #fff3e0; /* light orange background */
+  color: #bf360c; /* dark orange text */
+  font-weight: 600;
+  font-size: 1rem; /* slightly larger */
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+#taxonImageText.show {
+  display: block;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+/* Simple Image Carousel Styles */
+
+.image-carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px; /* space between buttons and image */
+  position: relative;
+}
+
+.carousel-slides-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 100%;
+}
+
+.carousel-slide {
+  display: none;
+  text-align: center;
+}
+
+.carousel-slide.active {
+  display: block;
+}
+
+.carousel-slide img {
+  max-width: 500px; /* or adjust to fit your sidebar */
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.carousel-btn {
+  background-color: rgba(0,0,0,0.5);
+  color: white;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  transition: background-color 0.2s;
+}
+
+.carousel-btn:hover {
+  background-color: rgba(0,0,0,0.7);
+}

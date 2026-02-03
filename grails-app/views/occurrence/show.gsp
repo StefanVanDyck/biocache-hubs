@@ -256,11 +256,38 @@
                         </div>
                     </div>
                 <g:if test="${record.images}">
+                    <asset:script type="text/javascript">
+                        $(document).ready(function() {
+                            const $slides = $('.carousel-slide');
+                            const $prevBtn = $('.carousel-btn.prev');
+                            const $nextBtn = $('.carousel-btn.next');
+                            let currentIndex = 0;
+
+                            function showSlide(index) {
+                                $slides.removeClass('active');
+                                $slides.eq(index).addClass('active');
+                            }
+
+                            $prevBtn.click(function() {
+                                currentIndex = (currentIndex - 1 + $slides.length) % $slides.length;
+                                showSlide(currentIndex);
+                            });
+
+                            $nextBtn.click(function() {
+                                currentIndex = (currentIndex + 1) % $slides.length;
+                                showSlide(currentIndex);
+                            });
+                      });
+                    </asset:script>
+
                     <div class="sidebar">
                         <h3 id="images"><g:message code="show.sidebar03.title" default="Images"/></h3>
-                        <div id="occurrenceImages" style="margin-top:5px;">
-                            <g:each in="${record.images}" var="image">
-                                <div style="margin-bottom:10px;">
+                        <div id="occurrenceImages" class="image-carousel">
+                            <button class="carousel-btn prev">‹</button>
+
+                            <div class="carousel-slides-wrapper">
+                            <g:each in="${record.images}" var="image" status="i">
+                                <div class="carousel-slide ${i == 0 ? 'active' : ''}">
                                     <g:if test="${grailsApplication.config.getProperty('skin.useAlaImageService', Boolean)}">
                                         <a href="${grailsApplication.config.getProperty('images.viewerUrl')}${image.filePath}" target="_blank">
                                             <img src="${image.alternativeFormats.smallImageUrl}" style="max-width: 100%;" alt="Click to view this image in a large viewer"/>
@@ -301,13 +328,22 @@
                                     </g:else>
                                 </div>
                             </g:each>
+                            </div>
+
+                            <button class="carousel-btn next">›</button>
                         </div>
                     </div>
                 </g:if>
                 <g:else>
                     <div id="occurrenceImages" style="margin-top:10px; margin-bottom: 10px">
+                        <div id="taxonImageText"
+                             data-no-image="<g:message code='show.image.no.image' default='No image found'/>"
+                             data-load-error="<g:message code='show.image.load.error' default='Error while loading image'/>"
+                             data-generic-warning="<g:message code='show.image.generic.warning' default='Warning: Generic image of the species'/>">
+                        </div>
                         <img id="taxonImage"/>
                     </div>
+
                 </g:else>
                     <table class="occurrenceTable table table-bordered table-striped table-condensed" id="summaryTable">
                         <tbody>
