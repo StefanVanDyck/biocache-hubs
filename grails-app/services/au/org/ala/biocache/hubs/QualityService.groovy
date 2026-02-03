@@ -23,6 +23,7 @@ import com.google.common.base.Stopwatch
 import grails.plugin.cache.CacheEvict
 import grails.plugin.cache.Cacheable
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.security.core.context.SecurityContextHolder
 import retrofit2.Call
 import retrofit2.HttpException
 
