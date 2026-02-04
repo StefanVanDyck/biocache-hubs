@@ -1211,18 +1211,18 @@ function sendEmail(strEncoded) {
 
 function renderTaxonImage() {
 
-    const image = document.getElementById("taxonImage");
-    const container = document.getElementById("taxonImageContainer");
-    const overlay = document.getElementById("taxonImageOverlay");
-    const message = document.getElementById("taxonImageMessage");
+    const $image = $("#taxonImage");
+    const $container = $("#taxonImageContainer");
+    const $overlay = $("#taxonImageOverlay");
+    const $message = $("#taxonImageMessage");
 
-    const textHolder = document.getElementById("taxonImageText");
+    const $textHolder = $("#taxonImageText");
 
-    const noImageText = textHolder.dataset.noImage;
-    const loadErrorText = textHolder.dataset.loadError;
-    const genericWarningText = textHolder.dataset.genericWarning;
+    const noImageText = $textHolder.dataset.noImage;
+    const loadErrorText = $textHolder.dataset.loadError;
+    const genericWarningText = $textHolder.dataset.genericWarning;
 
-    if(!container){
+    if(!$container){
         // not rendering an image, so
         return;
     }
@@ -1237,34 +1237,34 @@ function renderTaxonImage() {
     })
     .done(function (data) {
         if (data && data.url) {
-            image.src = data.url;
+            $image.src = data.url;
         }
     }).fail( function () {
-        container.style.display = "none";
-        overlay.style.display = "none";
-        message.textContent = loadErrorText;
+        $container.style.display = "none";
+        $overlay.style.display = "none";
+        $message.textContent = loadErrorText;
     });
 
-    image.onload = function () {
-        container.style.display = "block";
-        message.textContent = "";
+    $image.onload = function () {
+        $container.style.display = "block";
+        $message.textContent = "";
 
         // show overlay warning
-        overlay.textContent = genericWarningText;
-        overlay.style.display = "block";
+        $overlay.textContent = genericWarningText;
+        $overlay.style.display = "block";
     };
 
-    image.onerror = function () {
-        container.style.display = "none";
-        overlay.style.display = "none";
-        message.textContent = loadErrorText;
+    $image.onerror = function () {
+        $container.style.display = "none";
+        $overlay.style.display = "none";
+        $message.textContent = loadErrorText;
     };
 
 // Optional: if no src at all
-    if (!image.src) {
-        container.style.display = "none";
-        overlay.style.display = "none";
-        message.textContent = noImageText;
+    if (!$image.src) {
+        $container.style.display = "none";
+        $overlay.style.display = "none";
+        $message.textContent = noImageText;
     }
 
 }
