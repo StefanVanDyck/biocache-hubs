@@ -256,30 +256,6 @@
                         </div>
                     </div>
                 <g:if test="${record.images}">
-                    <asset:script type="text/javascript">
-                        $(document).ready(function() {
-                            const $slides = $('.carousel-slide');
-                            const $prevBtn = $('.carousel-btn.prev');
-                            const $nextBtn = $('.carousel-btn.next');
-                            let currentIndex = 0;
-
-                            function showSlide(index) {
-                                $slides.removeClass('active');
-                                $slides.eq(index).addClass('active');
-                            }
-
-                            $prevBtn.click(function() {
-                                currentIndex = (currentIndex - 1 + $slides.length) % $slides.length;
-                                showSlide(currentIndex);
-                            });
-
-                            $nextBtn.click(function() {
-                                currentIndex = (currentIndex + 1) % $slides.length;
-                                showSlide(currentIndex);
-                            });
-                      });
-                    </asset:script>
-
                     <div class="sidebar">
                         <h3 id="images"><g:message code="show.sidebar03.title" default="Images"/></h3>
                         <div id="occurrenceImages" class="image-carousel">
