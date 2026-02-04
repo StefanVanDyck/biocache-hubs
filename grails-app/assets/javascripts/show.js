@@ -573,7 +573,8 @@ function init() {
         }
     });
 
-    fillImageThumbnailUrl();
+    renderTaxonImage();
+    renderOccurrenceImagesCarousel();
 }
 
 /**
@@ -1208,19 +1209,76 @@ function sendEmail(strEncoded) {
     return false;
 }
 
-function fillImageThumbnailUrl() {
-    var url =
-        OCC_REC.contextPath +
-        "/occurrences/thumbnailImageURL/" +
-        OCC_REC.taxonConceptID;
+function renderTaxonImage() {
+    var $image = $("#taxonImage");
+    var $text = $("#taxonImageText");
+
+    if(!$image.length) {
+        // taxon image is not rendering on page
+        return;
+    }
+
+    // Reset state
+    $image.off("error").hide();
+    $text.hide();
+
+    var url = OCC_REC.contextPath +
+        "/occurrences/thumbnailImageURL/" + encodeURIComponent(OCC_REC.taxonConceptID);
+
     $.ajax({
         type: "GET",
         url: url,
-        dataType: "json",
-        success: function(data) {
-            if (data) {
-                $("#taxonImage").attr("src", data.url);
-            }
-        },
+        dataType: "json"
+    })
+    .done(function (data) {
+        if (data && data.url) {
+            // Show image and generic warning
+            $image.attr("src", data.url)
+            .on("error", function () {
+                // Image failed to load => show error text only
+                $image.hide();
+                $text.text($text.data("load-error")).addClass("show");
+            })
+            .show();
+
+            // Show the generic warning text below the image
+            $text.text($text.data("generic-warning")).addClass("show");
+
+        } else {
+            // No URL returned => hide image, show "No image found"
+            $image.hide();
+            $text.text($text.data("no-image")).addClass("show");
+        }
+    })
+    .fail(function () {
+        // AJAX failed => hide image, show error message
+        $image.hide();
+        $text.text($text.data("load-error")).addClass("show");
+    });
+}
+
+function renderOccurrenceImagesCarousel(){
+    const $slides = $('.carousel-slide');
+    const $prevBtn = $('.carousel-btn.prev');
+    const $nextBtn = $('.carousel-btn.next');
+    let currentIndex = 0;
+
+    if(!$slides.length){
+        return; // No slides to show
+    }
+
+    function showSlide(index) {
+        $slides.removeClass('active');
+        $slides.eq(index).addClass('active');
+    }
+
+    $prevBtn.click(function() {
+        currentIndex = (currentIndex - 1 + $slides.length) % $slides.length;
+        showSlide(currentIndex);
+    });
+
+    $nextBtn.click(function() {
+        currentIndex = (currentIndex + 1) % $slides.length;
+        showSlide(currentIndex);
     });
 }
