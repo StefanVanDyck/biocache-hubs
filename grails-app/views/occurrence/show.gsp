@@ -320,6 +320,11 @@
                                 </div>
                                 <!-- fallback message -->
                                 <div id="taxonImageMessage" class="image-message"></div>
+                                <div id="taxonImageText"
+                                     data-no-image="<g:message code='show.image.no.image' default='No image found'/>"
+                                     data-load-error="<g:message code='show.image.load.error' default='Error while loading image'/>"
+                                     data-generic-warning="<g:message code='show.image.generic.warning' default='Warning: Generic image of the species'/>">
+                                </div>
                             </div>
 
                         </g:else>

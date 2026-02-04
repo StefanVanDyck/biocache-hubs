@@ -1218,9 +1218,9 @@ function renderTaxonImage() {
 
     const $textHolder = $("#taxonImageText");
 
-    const noImageText = $textHolder.dataset.noImage;
-    const loadErrorText = $textHolder.dataset.loadError;
-    const genericWarningText = $textHolder.dataset.genericWarning;
+    const noImageText = $textHolder.data("no-image");
+    const loadErrorText = $textHolder.data("load-error");
+    const genericWarningText = $textHolder.data("generic-warning");
 
     if(!$container){
         // not rendering an image, so
