@@ -1210,21 +1210,26 @@ function sendEmail(strEncoded) {
 }
 
 function renderTaxonImage() {
-    var $image = $("#taxonImage");
-    var $text = $("#taxonImageText");
 
-    if(!$image.length) {
-        // taxon image is not rendering on page
+    const image = document.getElementById("taxonImage");
+    const container = document.getElementById("taxonImageContainer");
+    const overlay = document.getElementById("taxonImageOverlay");
+    const message = document.getElementById("taxonImageMessage");
+
+    const textHolder = document.getElementById("taxonImageText");
+
+    const noImageText = textHolder.dataset.noImage;
+    const loadErrorText = textHolder.dataset.loadError;
+    const genericWarningText = textHolder.dataset.genericWarning;
+
+    if(!container){
+        // not rendering an image, so
         return;
     }
 
-    // Reset state
-    $image.off("error").hide();
-    $text.hide();
-
+    // set image src
     var url = OCC_REC.contextPath +
         "/occurrences/thumbnailImageURL/" + encodeURIComponent(OCC_REC.taxonConceptID);
-
     $.ajax({
         type: "GET",
         url: url,
@@ -1232,53 +1237,97 @@ function renderTaxonImage() {
     })
     .done(function (data) {
         if (data && data.url) {
-            // Show image and generic warning
-            $image.attr("src", data.url)
-            .on("error", function () {
-                // Image failed to load => show error text only
-                $image.hide();
-                $text.text($text.data("load-error")).addClass("show");
-            })
-            .show();
-
-            // Show the generic warning text below the image
-            $text.text($text.data("generic-warning")).addClass("show");
-
-        } else {
-            // No URL returned => hide image, show "No image found"
-            $image.hide();
-            $text.text($text.data("no-image")).addClass("show");
+            image.src = data.url;
         }
-    })
-    .fail(function () {
-        // AJAX failed => hide image, show error message
-        $image.hide();
-        $text.text($text.data("load-error")).addClass("show");
+    }).fail( function () {
+        container.style.display = "none";
+        overlay.style.display = "none";
+        message.textContent = loadErrorText;
     });
+
+    image.onload = function () {
+        container.style.display = "block";
+        message.textContent = "";
+
+        // show overlay warning
+        overlay.textContent = genericWarningText;
+        overlay.style.display = "block";
+    };
+
+    image.onerror = function () {
+        container.style.display = "none";
+        overlay.style.display = "none";
+        message.textContent = loadErrorText;
+    };
+
+// Optional: if no src at all
+    if (!image.src) {
+        container.style.display = "none";
+        overlay.style.display = "none";
+        message.textContent = noImageText;
+    }
+
 }
 
 function renderOccurrenceImagesCarousel(){
-    const $slides = $('.carousel-slide');
-    const $prevBtn = $('.carousel-btn.prev');
-    const $nextBtn = $('.carousel-btn.next');
-    let currentIndex = 0;
+    const $track = $('.carousel-track');
+    const $items = $('.carousel-item');
 
-    if(!$slides.length){
-        return; // No slides to show
+    if( !$track.length){
+        // no carousel to render
+        return;
+    }{
+
+    const itemsPerPage = 3;
+    const itemWidth = 160;
+    const totalItems = $items.length;
+
+    // If not enough items, disable carousel behavior
+    if (totalItems <= itemsPerPage) {
+        $('.carousel-btn').hide();
+        return;
     }
 
-    function showSlide(index) {
-        $slides.removeClass('active');
-        $slides.eq(index).addClass('active');
+    // Clone first & last pages
+    const $firstClones = $items.slice(0, itemsPerPage).clone();
+    const $lastClones  = $items.slice(-itemsPerPage).clone();
+
+    $track.prepend($lastClones);
+    $track.append($firstClones);
+
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+    let currentPage = 1; // start at real first page
+
+    // Initial offset (skip prepended clones)
+    function setPosition(animate = true) {
+        const offset = -(currentPage * itemsPerPage * itemWidth);
+        $track.css('transition', animate ? 'transform 0.3s ease' : 'none');
+        $track.css('transform', `translateX(${offset}px)`);
     }
 
-    $prevBtn.click(function() {
-        currentIndex = (currentIndex - 1 + $slides.length) % $slides.length;
-        showSlide(currentIndex);
+    setPosition(false);
+
+    $('.carousel-btn.next').click(function () {
+        currentPage++;
+        setPosition();
+
+        if (currentPage === totalPages + 1) {
+            setTimeout(() => {
+                currentPage = 1;
+                setPosition(false);
+            }, 300);
+        }
     });
 
-    $nextBtn.click(function() {
-        currentIndex = (currentIndex + 1) % $slides.length;
-        showSlide(currentIndex);
+    $('.carousel-btn.prev').click(function () {
+        currentPage--;
+        setPosition();
+
+        if (currentPage === 0) {
+            setTimeout(() => {
+                currentPage = totalPages;
+                setPosition(false);
+            }, 300);
+        }
     });
 }

@@ -255,72 +255,75 @@
                             </div>
                         </div>
                     </div>
-                <g:if test="${record.images}">
                     <div class="sidebar">
                         <h3 id="images"><g:message code="show.sidebar03.title" default="Images"/></h3>
-                        <div id="occurrenceImages" class="image-carousel">
+                        <g:if test="${record.images}">
+                            <div id="occurrenceImages" class="image-carousel">
                             <button class="carousel-btn prev">‹</button>
 
-                            <div class="carousel-slides-wrapper">
-                            <g:each in="${record.images}" var="image" status="i">
-                                <div class="carousel-slide ${i == 0 ? 'active' : ''}">
-                                    <g:if test="${grailsApplication.config.getProperty('skin.useAlaImageService', Boolean)}">
-                                        <a href="${grailsApplication.config.getProperty('images.viewerUrl')}${image.filePath}" target="_blank">
-                                            <img src="${image.alternativeFormats.smallImageUrl}" style="max-width: 100%;" alt="Click to view this image in a large viewer"/>
-                                        </a>
-                                    </g:if>
-                                    <g:else>
-                                        <a href="${image.alternativeFormats.largeImageUrl}" target="_blank">
-                                            <img src="${image.alternativeFormats.smallImageUrl}" style="max-width: 100%;"/>
-                                        </a>
-                                    </g:else>
-                                    <br/>
-                                    <g:if test="${record.raw.miscProperties?.TITLE}">
-                                        <cite><b><g:message code="show.sidebar03.image.title" default="Title"/>:</b> <alatag:sanitizeContent>${raw(record.raw.miscProperties.TITLE)}</alatag:sanitizeContent></cite><br/>
-                                    </g:if>
-                                    <g:if test="${record.raw.occurrence.photographer || image.metadata?.creator}">
-                                        <cite><b><g:message code="show.sidebar03.cite01" default="Photographer"/>:</b> ${image.metadata?.creator ?: record.raw.occurrence.photographer}</cite><br/>
-                                    </g:if>
-                                    <g:if test="${record.raw.occurrence.rights || image.metadata?.rights}">
-                                        <cite><b><g:message code="show.sidebar03.cite02" default="Rights"/>:</b> ${image.metadata?.rights ?: record.raw.occurrence.rights}</cite><br/>
-                                    </g:if>
-                                    <g:if test="${record.raw.occurrence.rightsholder || image.metadata?.rightsHolder}">
-                                        <cite><b><g:message code="show.sidebar03.cite03" default="Rights holder"/>:</b> ${image.metadata?.rightsHolder ?: record.raw.occurrence.rightsholder}</cite><br/>
-                                    </g:if>
-                                    <g:if test="${record.raw.miscProperties.rightsHolder}">
-                                        <cite><b><g:message code="show.sidebar03.cite03" default="Rights holder"/>:</b> ${record.raw.miscProperties.rightsHolder}</cite><br/>
-                                    </g:if>
-                                    <g:if test="${image.metadata?.license}">
-                                        <cite><b><g:message code="show.sidebar03.image.license" default="License"/>:</b> ${image.metadata?.license}</cite><br/>
-                                    </g:if>
-                                    <g:if test="${record.raw.miscProperties?.DESCRIPTION}">
-                                        <cite><b><g:message code="show.sidebar03.caption" default="Caption"/>:</b> <alatag:sanitizeContent>${raw(record.raw.miscProperties.DESCRIPTION)}</alatag:sanitizeContent></cite><br/>
-                                    </g:if>
-                                    <g:if test="${grailsApplication.config.getProperty('skin.useAlaImageService', Boolean)}">
-                                        <a href="${grailsApplication.config.getProperty('images.metadataUrl')}${image.filePath}" target="_blank"><g:message code="show.sidebardiv.occurrenceimages.navigator01" default="View image details"/></a>
-                                    </g:if>
-                                    <g:else>
-                                        <a href="${image.alternativeFormats.imageUrl}" target="_blank"><g:message code="show.sidebardiv.occurrenceimages.navigator02" default="Original image"/></a>
-                                    </g:else>
+                            <div class="carousel-viewport">
+                                <div class="carousel-track">
+                                <g:each in="${record.images}" var="image">
+                                    <div class="carousel-item">
+                                        <g:if test="${grailsApplication.config.getProperty('skin.useAlaImageService', Boolean)}">
+                                            <a href="${grailsApplication.config.getProperty('images.viewerUrl')}${image.filePath}" target="_blank">
+                                                <img src="${image.alternativeFormats.smallImageUrl}" style="max-width: 100%;" alt="Click to view this image in a large viewer"/>
+                                            </a>
+                                        </g:if>
+                                        <g:else>
+                                            <a href="${image.alternativeFormats.largeImageUrl}" target="_blank">
+                                                <img src="${image.alternativeFormats.smallImageUrl}" style="max-width: 100%;"/>
+                                            </a>
+                                        </g:else>
+                                        <br/>
+                                        <g:if test="${record.raw.miscProperties?.TITLE}">
+                                            <cite><b><g:message code="show.sidebar03.image.title" default="Title"/>:</b> <alatag:sanitizeContent>${raw(record.raw.miscProperties.TITLE)}</alatag:sanitizeContent></cite><br/>
+                                        </g:if>
+                                        <g:if test="${record.raw.occurrence.photographer || image.metadata?.creator}">
+                                            <cite><b><g:message code="show.sidebar03.cite01" default="Photographer"/>:</b> ${image.metadata?.creator ?: record.raw.occurrence.photographer}</cite><br/>
+                                        </g:if>
+                                        <g:if test="${record.raw.occurrence.rights || image.metadata?.rights}">
+                                            <cite><b><g:message code="show.sidebar03.cite02" default="Rights"/>:</b> ${image.metadata?.rights ?: record.raw.occurrence.rights}</cite><br/>
+                                        </g:if>
+                                        <g:if test="${record.raw.occurrence.rightsholder || image.metadata?.rightsHolder}">
+                                            <cite><b><g:message code="show.sidebar03.cite03" default="Rights holder"/>:</b> ${image.metadata?.rightsHolder ?: record.raw.occurrence.rightsholder}</cite><br/>
+                                        </g:if>
+                                        <g:if test="${record.raw.miscProperties.rightsHolder}">
+                                            <cite><b><g:message code="show.sidebar03.cite03" default="Rights holder"/>:</b> ${record.raw.miscProperties.rightsHolder}</cite><br/>
+                                        </g:if>
+                                        <g:if test="${image.metadata?.license}">
+                                            <cite><b><g:message code="show.sidebar03.image.license" default="License"/>:</b> ${image.metadata?.license}</cite><br/>
+                                        </g:if>
+                                        <g:if test="${record.raw.miscProperties?.DESCRIPTION}">
+                                            <cite><b><g:message code="show.sidebar03.caption" default="Caption"/>:</b> <alatag:sanitizeContent>${raw(record.raw.miscProperties.DESCRIPTION)}</alatag:sanitizeContent></cite><br/>
+                                        </g:if>
+                                        <g:if test="${grailsApplication.config.getProperty('skin.useAlaImageService', Boolean)}">
+                                            <a href="${grailsApplication.config.getProperty('images.metadataUrl')}${image.filePath}" target="_blank"><g:message code="show.sidebardiv.occurrenceimages.navigator01" default="View image details"/></a>
+                                        </g:if>
+                                        <g:else>
+                                            <a href="${image.alternativeFormats.imageUrl}" target="_blank"><g:message code="show.sidebardiv.occurrenceimages.navigator02" default="Original image"/></a>
+                                        </g:else>
                                 </div>
                             </g:each>
                             </div>
+                            </div>
 
-                            <button class="carousel-btn next">›</button>
-                        </div>
-                    </div>
-                </g:if>
-                <g:else>
-                    <div id="occurrenceImages" style="margin-top:10px; margin-bottom: 10px">
-                        <div id="taxonImageText"
-                             data-no-image="<g:message code='show.image.no.image' default='No image found'/>"
-                             data-load-error="<g:message code='show.image.load.error' default='Error while loading image'/>"
-                             data-generic-warning="<g:message code='show.image.generic.warning' default='Warning: Generic image of the species'/>">
-                        </div>
-                        <img id="taxonImage"/>
-                    </div>
+                                <button class="carousel-btn next">›</button>
+                            </div>
+                        </g:if>
+                        <g:else>
+                            <div id="occurrenceImages" class="image-wrapper">
+                                <div id="taxonImageContainer">
+                                    <img id="taxonImage" alt="Taxon image"/>
+                                    <!-- overlay text -->
+                                    <div id="taxonImageOverlay"></div>
+                                </div>
+                                <!-- fallback message -->
+                                <div id="taxonImageMessage" class="image-message"></div>
+                            </div>
 
-                </g:else>
+                        </g:else>
+                    </div>
                     <table class="occurrenceTable table table-bordered table-striped table-condensed" id="summaryTable">
                         <tbody>
                         <!-- Family -->
