@@ -16,77 +16,85 @@
      vertical-align: text-top;
  }
 
-/* Styles for the taxon image text box */
+/* Styles for the taxon image and overlay text */
 
-#taxonImageText {
-  display: none; /* initially hidden */
-  margin-top: 10px;
-  padding: 12px 16px;
-  border: 2px solid #ff9800; /* warm orange border */
-  background-color: #fff3e0; /* light orange background */
-  color: #bf360c; /* dark orange text */
-  font-weight: 600;
-  font-size: 1rem; /* slightly larger */
-  border-radius: 8px;
-  text-align: center;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+.image-wrapper {
+  width: 100%;
+  max-width: 600px;   /* optional */
 }
 
-#taxonImageText.show {
+#taxonImageContainer {
+  position: relative;
+  width: 100%;
+  height: 300px;      /* define your available space */
+  display: none;      /* hidden until image loads */
+}
+
+#taxonImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;   /* key part */
   display: block;
-  animation: fadeIn 0.3s ease-in-out;
 }
 
-@keyframes fadeIn {
-  from {opacity: 0;}
-  to {opacity: 1;}
+/* overlay text */
+#taxonImageOverlay {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.65);
+  color: #fff;
+  padding: 4px 8px;
+  font-size: 12px;
+  border-radius: 4px;
+  display: none; /* shown only for generic warning */
 }
 
-/* Simple Image Carousel Styles */
+/* no-image / error message */
+.image-message {
+  padding: 12px;
+  color: #666;
+  font-style: italic;
+}
+
+
+/* Infinite Image Carousel Styles */
 
 .image-carousel {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 10px; /* space between buttons and image */
-  position: relative;
+  gap: 10px;
 }
 
-.carousel-slides-wrapper {
+.carousel-viewport {
+  overflow: hidden;
+  width: 480px; /* 3 × 160 */
+}
+
+.carousel-track {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  max-width: 100%;
+  transition: transform 0.3s ease;
 }
 
-.carousel-slide {
-  display: none;
+.carousel-item {
+  flex: 0 0 160px;
   text-align: center;
 }
 
-.carousel-slide.active {
-  display: block;
-}
-
-.carousel-slide img {
-  max-width: 500px; /* or adjust to fit your sidebar */
-  width: 100%;
+.carousel-item img {
+  max-width: 150px;
+  max-height: 120px;
+  width: auto;
   height: auto;
-  border-radius: 5px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  object-fit: contain;
 }
 
 .carousel-btn {
-  background-color: rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.5);
   color: white;
   border: none;
   font-size: 2rem;
   cursor: pointer;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  transition: background-color 0.2s;
-}
-
-.carousel-btn:hover {
-  background-color: rgba(0,0,0,0.7);
+  padding: 0.5rem 0.8rem;
+  border-radius: 4px;
 }
