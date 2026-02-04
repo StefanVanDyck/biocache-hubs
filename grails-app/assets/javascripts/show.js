@@ -1276,7 +1276,7 @@ function renderOccurrenceImagesCarousel(){
     if( !$track.length){
         // no carousel to render
         return;
-    }{
+    }
 
     const itemsPerPage = 3;
     const itemWidth = 160;
