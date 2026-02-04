@@ -1215,21 +1215,35 @@ function renderTaxonImage() {
     const $container = $("#taxonImageContainer");
     const $overlay = $("#taxonImageOverlay");
     const $message = $("#taxonImageMessage");
-
     const $textHolder = $("#taxonImageText");
+
+    if ($container.length === 0) {
+        return;
+    }
 
     const noImageText = $textHolder.data("no-image");
     const loadErrorText = $textHolder.data("load-error");
     const genericWarningText = $textHolder.data("generic-warning");
 
-    if(!$container){
-        // not rendering an image, so
-        return;
-    }
+    // Attach handlers BEFORE setting src
+    $image
+    .on("load", function () {
+        $container.show();
+        $message.text("");
+        $overlay
+        .text(genericWarningText)
+        .show();
+    })
+    .on("error", function () {
+        $container.hide();
+        $overlay.hide();
+        $message.text(loadErrorText);
+    });
 
-    // set image src
-    var url = OCC_REC.contextPath +
-        "/occurrences/thumbnailImageURL/" + encodeURIComponent(OCC_REC.taxonConceptID);
+    const url = OCC_REC.contextPath +
+        "/occurrences/thumbnailImageURL/" +
+        encodeURIComponent(OCC_REC.taxonConceptID);
+
     $.ajax({
         type: "GET",
         url: url,
@@ -1237,37 +1251,20 @@ function renderTaxonImage() {
     })
     .done(function (data) {
         if (data && data.url) {
-            $image.src = data.url;
+            $image.attr("src", data.url);
+        } else {
+            $container.hide();
+            $overlay.hide();
+            $message.text(noImageText);
         }
-    }).fail( function () {
-        $container.style.display = "none";
-        $overlay.style.display = "none";
-        $message.textContent = loadErrorText;
+    })
+    .fail(function () {
+        $container.hide();
+        $overlay.hide();
+        $message.text(loadErrorText);
     });
-
-    $image.onload = function () {
-        $container.style.display = "block";
-        $message.textContent = "";
-
-        // show overlay warning
-        $overlay.textContent = genericWarningText;
-        $overlay.style.display = "block";
-    };
-
-    $image.onerror = function () {
-        $container.style.display = "none";
-        $overlay.style.display = "none";
-        $message.textContent = loadErrorText;
-    };
-
-// Optional: if no src at all
-    if (!$image.src) {
-        $container.style.display = "none";
-        $overlay.style.display = "none";
-        $message.textContent = noImageText;
-    }
-
 }
+
 
 function renderOccurrenceImagesCarousel(){
     const $track = $('.carousel-track');
