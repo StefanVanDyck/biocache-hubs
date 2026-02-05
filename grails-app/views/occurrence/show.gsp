@@ -256,7 +256,7 @@
                         </div>
                     </div>
                     <div class="sidebar">
-                        <h3 id="images"><g:message code="show.sidebar03.title" default="Images"/></h3>
+%{--                        <h3 id="images"><g:message code="show.sidebar03.title" default="Images"/></h3>--}%
                         <g:if test="${record.images}">
                             <div id="occurrenceImages" class="image-carousel">
                             <button class="carousel-btn prev">‹</button>

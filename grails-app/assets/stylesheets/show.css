@@ -77,12 +77,16 @@
 
 .carousel-track {
   display: flex;
-  transition: transform 0.3s ease;
+  height: 100%;
+  align-items: center;
 }
 
 .carousel-item {
-  max-height: 100%;
-  overflow: hidden;
+  flex: 0 0 auto;      /* keep item width fixed by content */
+  height: 100%;        /* allow image to fill vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .carousel-item br {
@@ -91,17 +95,17 @@
 
 .carousel-item cite {
   display: block;
-  max-height: 3.6em;     /* ~3 lines */
+  max-height: 3em;      /* limit to 2 lines */
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .carousel-item img {
-  max-width: 150px;
-  max-height: 120px;
+  max-width: 100%;     /* allow image to scale to container width */
+  max-height: 100%;    /* scale up to container height */
   width: auto;
   height: auto;
-  object-fit: contain;
+  object-fit: contain; /* keeps aspect ratio */
 }
 
 .carousel-btn {
