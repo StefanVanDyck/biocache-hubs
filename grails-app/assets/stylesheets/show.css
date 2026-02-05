@@ -79,14 +79,16 @@
   display: flex;
   height: 100%;
   align-items: center;
+  margin-top: 10px;
 }
 
 .carousel-item {
   flex: 0 0 auto;      /* keep item width fixed by content */
   height: 100%;        /* allow image to fill vertically */
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;   /* stack image + captions vertically */
+  justify-content: flex-start; /* image on top */
+  align-items: center;     /* center horizontally */
 }
 
 .carousel-item br {
