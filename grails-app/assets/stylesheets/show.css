@@ -16,25 +16,28 @@
      vertical-align: text-top;
  }
 
+/* Styles for the occurrence image div */
+#occurrenceImages {
+  height: 300px;
+  max-height: 300px;
+  overflow: hidden;      /* critical */
+}
+
 /* Styles for the taxon image and overlay text */
 
 .image-wrapper {
-  width: 100%;
-  max-width: 600px;   /* optional */
+  height: 100%;
 }
 
 #taxonImageContainer {
-  position: relative;
-  width: 100%;
-  height: 300px;      /* define your available space */
-  display: none;      /* hidden until image loads */
+  height: 100%;
 }
 
 #taxonImage {
   width: 100%;
   height: 100%;
-  object-fit: contain;   /* key part */
-  display: block;
+  object-fit: contain;
+  /*display: block;*/
 }
 
 /* overlay text */
@@ -48,6 +51,7 @@
   font-size: 12px;
   border-radius: 4px;
   display: none; /* shown only for generic warning */
+  opacity: 0.4;
 }
 
 /* no-image / error message */
@@ -61,14 +65,14 @@
 /* Infinite Image Carousel Styles */
 
 .image-carousel {
-  display: flex;
+  height: 100%;
+  overflow: hidden;
   align-items: center;
-  gap: 10px;
 }
 
 .carousel-viewport {
+  max-height: 100%;
   overflow: hidden;
-  width: 480px; /* 3 × 160 */
 }
 
 .carousel-track {
@@ -77,8 +81,19 @@
 }
 
 .carousel-item {
-  flex: 0 0 160px;
-  text-align: center;
+  max-height: 100%;
+  overflow: hidden;
+}
+
+.carousel-item br {
+  display: none;
+}
+
+.carousel-item cite {
+  display: block;
+  max-height: 3.6em;     /* ~3 lines */
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .carousel-item img {
