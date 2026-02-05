@@ -30,6 +30,7 @@
 }
 
 #taxonImageContainer {
+  position: relative;
   height: 100%;
 }
 
@@ -52,6 +53,9 @@
   border-radius: 4px;
   display: none; /* shown only for generic warning */
   opacity: 0.4;
+  max-width: 70%;          /* prevents overflow */
+  white-space: normal;    /* allow wrapping */
+  word-break: break-word; /* break long words if needed */
 }
 
 /* no-image / error message */
