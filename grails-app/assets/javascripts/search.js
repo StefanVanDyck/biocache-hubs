@@ -2398,6 +2398,16 @@ function addFacetItems(facetName, fsort, facetLimit, foffset, replaceFacets) {
 
   // add the selected items to the table
   var max = parseInt(foffset) + parseInt(facetLimit);
+
+  console.log(
+    "addFacetItems",
+    facetName,
+    fsort,
+    facetLimit,
+    foffset,
+    max,
+    facetList.length,
+  );
   for (var i = foffset; i < max && i < facetList.length; i++) {
     var el = facetList[i];
     if (el !== undefined && el.count > 0) {
