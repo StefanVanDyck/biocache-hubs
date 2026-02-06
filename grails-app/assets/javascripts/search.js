@@ -2354,9 +2354,10 @@ function loadFacetsContent(
         BC_CONF.serverName +
         "/occurrences/facets" +
         BC_CONF.searchString +
-        "&facets=" +
-        facetName +
-        "&flimit=200&pageSize=0";
+        "&facets=" + facetName +
+        "&foffset=" + foffset +
+        "&flimit=" + facetLimit +
+         "&pageSize=0";
 
     if (reSort) {
         // remove any facet values in table
