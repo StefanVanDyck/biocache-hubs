@@ -162,7 +162,8 @@ class QualityService {
     }
 
     def getExcludeCountCacheKey(SpatialSearchRequestParams requestParams) {
-        def role_key = authService.userDetails().roles.findAll { element -> element.startsWith("ROLE_DATA")}.toSorted().join("|")
+        def userDetails =  authService.userDetails()
+        def role_key = userDetails ? authService.userDetails().roles.findAll { element -> element.startsWith("ROLE_DATA")}.toSorted().join("|") : ""
         return role_key + "_" + requestParams.toString()
     }
 
