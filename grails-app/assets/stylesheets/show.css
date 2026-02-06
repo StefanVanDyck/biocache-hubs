@@ -18,8 +18,8 @@
 
 /* Styles for the occurrence image div */
 #occurrenceImages {
-  height: 300px;
-  max-height: 300px;
+  height: 380px;
+  max-height: 380px;
   overflow: hidden;      /* critical */
 }
 
@@ -70,7 +70,7 @@
 
 .image-carousel {
   position: relative;
-  min-height: 320px;
+  min-height: 380px;
   overflow: hidden;
 }
 
