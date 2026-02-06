@@ -2356,7 +2356,7 @@ function loadFacetsContent(
         BC_CONF.searchString +
         "&facets=" + facetName +
         "&foffset=" + foffset +
-        "&flimit=" + facetLimit +
+        "&flimit=" + (facetLimit + 1) +
          "&pageSize=0";
 
     if (reSort) {
