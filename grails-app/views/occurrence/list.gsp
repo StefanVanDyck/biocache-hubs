@@ -27,6 +27,10 @@
             type="text/javascript"></script>
 </g:if>
 
+    <%
+        def groupedFacetsJson = groupedFacetsMap ? (groupedFacetsMap as grails.converters.JSON).toString() : '{}'
+    %>
+
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
     // single global var for app conf settings
@@ -79,7 +83,7 @@
             autocompleteUseBie: ${grailsApplication.config.getProperty('skin.useAlaBie', Boolean)},
             groupedFacets: ${(groupedFacets as grails.converters.JSON).toString().encodeAsRaw()},
             groupedFacetsRequested: ${(groupedFacetsRequested as grails.converters.JSON).toString().encodeAsRaw()},
-            groupedFacetsMap: ${(groupedFacetsMap as grails.converters.JSON).toString().encodeAsRaw()},
+            groupedFacetsMap: ${raw(groupedFacetsJson)},
             pointColour: "${grailsApplication.config.getProperty('map.pointColour')}"
         };
 </script>
