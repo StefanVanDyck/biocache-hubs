@@ -265,16 +265,18 @@
                                 <div class="carousel-track">
                                 <g:each in="${record.images}" var="image">
                                     <div class="carousel-item">
-                                        <g:if test="${grailsApplication.config.getProperty('skin.useAlaImageService', Boolean)}">
-                                            <a href="${grailsApplication.config.getProperty('images.viewerUrl')}${image.filePath}" target="_blank">
-                                                <img src="${image.alternativeFormats.smallImageUrl}" style="max-width: 100%;" alt="Click to view this image in a large viewer"/>
-                                            </a>
-                                        </g:if>
-                                        <g:else>
-                                            <a href="${image.alternativeFormats.largeImageUrl}" target="_blank">
-                                                <img src="${image.alternativeFormats.smallImageUrl}" style="max-width: 100%;"/>
-                                            </a>
-                                        </g:else>
+                                        <div class="carousel-image-frame">
+                                            <g:if test="${grailsApplication.config.getProperty('skin.useAlaImageService', Boolean)}">
+                                                <a href="${grailsApplication.config.getProperty('images.viewerUrl')}${image.filePath}" target="_blank">
+                                                    <img src="${image.alternativeFormats.smallImageUrl}" alt="Click to view this image in a large viewer"/>
+                                                </a>
+                                            </g:if>
+                                            <g:else>
+                                                <a href="${image.alternativeFormats.largeImageUrl}" target="_blank">
+                                                    <img src="${image.alternativeFormats.smallImageUrl}" />
+                                                </a>
+                                            </g:else>
+                                        </div>
                                         <br/>
                                         <g:if test="${record.raw.miscProperties?.TITLE}">
                                             <cite><b><g:message code="show.sidebar03.image.title" default="Title"/>:</b> <alatag:sanitizeContent>${raw(record.raw.miscProperties.TITLE)}</alatag:sanitizeContent></cite><br/>
