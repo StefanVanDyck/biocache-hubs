@@ -247,7 +247,7 @@
                 </a>
                 <g:if test="${vlaanderenFilterEnabled}">
                     <a id="showAllButton" class="btn btn-primary btn-sm tooltips" href="${createLink(uri: request.requestURL,
-                            params: params.findAll { k, v -> v instanceof List ? !v.contains(regionVlaanderenFq) : v != regionVlaanderenFq})}" title="<g:message code="list.vbp.flanders.button.label"/>">
+                            params: params.findAll { k, v -> v != null && (v instanceof List ? !v.contains(regionVlaanderenFq) : v != regionVlaanderenFq)})}" title="<g:message code="list.vbp.flanders.button.label"/>">
                         <g:message code="list.vbp.flanders.button.label" default="Flanders"/></a>
                 </g:if>
                 <g:else>
