@@ -1566,17 +1566,23 @@ function init() {
   });
 
   // Facet value filter in popup
-  $("#filterPopupFacet").on("change", function() {
-    var fsort = $(this).data("sort");
-    var table = $(this).closest("table");
-    if (table.length == 0) {
-      table = $(this).parent().siblings("table#fullFacets");
-    }
-    var facetName = $(table).data("facet");
+  $("#filterPopupFacet").on(
+    "change",
+    debounce(function() {
+      var fsort = $(this).data("sort");
+      var table = $(this).closest("table");
+      if (table.length == 0) {
+        table = $(this).parent().siblings("table#fullFacets");
+      }
+      var facetName = $(table).data("facet");
 
-    const facetFilter = $("#facetFilter").val();
-    debounce(() => loadFacetsContent(facetName, fsort, 0, facetFilter), 300);
-  });
+      $("table#fullFacets tbody").html(""); //clear the existing table
+
+      const facetFilter = $("#facetFilter").val();
+      loadFacetsContent(facetName, fsort, 0, facetFilter);
+    }),
+    300,
+  );
 
   // Email alert buttons
   var alertsUrlPrefix = BC_CONF.alertsUrl || "https://alerts.ala.org.au";
@@ -2326,6 +2332,8 @@ function loadMoreFacets(facetName, displayName, fsort, foffset) {
 
   $("table#fullFacets tbody").html(""); //clear the existing table
 
+  $("#filterPopupFacet").val(""); // store sort in filter input for use when filtering
+
   $("a.fsort").qtip({
     style: {
       classes: "ui-tooltip-rounded ui-tooltip-shadow",
@@ -2382,7 +2390,7 @@ function addFacetItems(facetName, fsort, foffset, facetList) {
   const facetLimit = Number(BC_CONF.facetLimit);
   var html = "";
 
-  for (var i = 0; i < facetList.length; i++) {
+  for (var i = 0; i < facetList.length && i < facetLimit; i++) {
     var el = facetList[i];
     if (el !== undefined && el.count > 0) {
       // surround with quotes: fq value if contains spaces but not for range queries
