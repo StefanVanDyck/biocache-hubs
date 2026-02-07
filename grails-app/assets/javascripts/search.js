@@ -1564,7 +1564,7 @@ function init() {
 
   // Facet value filter in popup
   $("#filterPopupFacet").on("change", function() {
-    $.debounce(() => loadFacetsContent(facetName, fsort, foffset), 300);
+    debounce(() => loadFacetsContent(facetName, fsort, foffset), 300);
   });
 
   // Email alert buttons
@@ -2641,4 +2641,14 @@ function formatFieldValue(facetName, item) {
   }
 
   return label;
+}
+
+function debounce(func, timeout = 300) {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      func.apply(this, args);
+    }, timeout);
+  };
 }
