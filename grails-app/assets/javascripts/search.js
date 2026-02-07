@@ -2377,15 +2377,6 @@ function loadFacetsContent(facetName, fsort, foffset) {
 function addFacetItems(facetName, fsort, facetLimit, foffset, facetList) {
   var html = "";
 
-  console.log(
-    "addFacetItems",
-    facetName,
-    fsort,
-    facetLimit,
-    foffset,
-    max,
-    facetList.length,
-  );
   for (var i = 0; i < facetList.length; i++) {
     var el = facetList[i];
     if (el !== undefined && el.count > 0) {
