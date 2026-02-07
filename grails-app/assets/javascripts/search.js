@@ -1562,6 +1562,11 @@ function init() {
     loadFacetsContent(facetName, fsort, foffset);
   });
 
+  // Facet value filter in popup
+  $("#filterPopupFacet").on("change", function() {
+    $.debounce(() => loadFacetsContent(facetName, fsort, foffset), 300);
+  });
+
   // Email alert buttons
   var alertsUrlPrefix = BC_CONF.alertsUrl || "https://alerts.ala.org.au";
   $("a#alertNewRecords, a#alertNewAnnotations").click(function(e) {
@@ -2301,6 +2306,15 @@ function loadMoreFacets(facetName, displayName, fsort, foffset) {
         "<input type='hidden' name='" + pair[0] + "' value='" + pair[1] + "'/>";
     }
   });
+
+  const facetFilter = $("#facetFilter").val();
+  if (facetFilter) {
+    const facetNamfacetFiltere = facetName + ":*" + facetFilter + "*";
+    inputsHtml +=
+      "<input type='hidden' name='facets' value='" +
+      facetNamfacetFiltere +
+      "'/>";
+  }
   $("#facetRefineForm").append(inputsHtml);
   $("table#fullFacets").data("facet", facetName); // data attribute for storing facet field
   $("table#fullFacets").data("label", displayName); // data attribute for storing facet display name
