@@ -1534,7 +1534,8 @@ function init() {
     var facetName = $(table).data("facet");
     var displayName = $(table).data("label");
 
-    loadFacetsContent(facetName, fsort, 0);
+    const facetFilter = $("#facetFilter").val();
+    loadFacetsContent(facetName, fsort, 0, facetFilter);
   });
 
   // loadMoreValues (legacy - now handled by inview)
@@ -1548,7 +1549,8 @@ function init() {
     var facetName = $(table).data("facet");
     var displayName = $(table).data("label");
 
-    loadFacetsContent(facetName, fsort, foffset);
+    const facetFilter = $("#facetFilter").val();
+    loadFacetsContent(facetName, fsort, foffset, facetFilter);
   });
 
   // Inview trigger to load more values when tr comes into view
@@ -1559,12 +1561,21 @@ function init() {
     var table = $("table#fullFacets");
     var facetName = $(table).data("facet");
     var displayName = $(table).data("label");
-    loadFacetsContent(facetName, fsort, foffset);
+    const facetFilter = $("#facetFilter").val();
+    loadFacetsContent(facetName, fsort, foffset, facetFilter);
   });
 
   // Facet value filter in popup
   $("#filterPopupFacet").on("change", function() {
-    debounce(() => loadFacetsContent(facetName, fsort, foffset), 300);
+    var fsort = $(this).data("sort");
+    var table = $(this).closest("table");
+    if (table.length == 0) {
+      table = $(this).parent().siblings("table#fullFacets");
+    }
+    var facetName = $(table).data("facet");
+
+    const facetFilter = $("#facetFilter").val();
+    debounce(() => loadFacetsContent(facetName, fsort, 0, facetFilter), 300);
   });
 
   // Email alert buttons
@@ -2307,14 +2318,6 @@ function loadMoreFacets(facetName, displayName, fsort, foffset) {
     }
   });
 
-  const facetFilter = $("#facetFilter").val();
-  if (facetFilter) {
-    const facetNamfacetFiltere = facetName + ":*" + facetFilter + "*";
-    inputsHtml +=
-      "<input type='hidden' name='facets' value='" +
-      facetNamfacetFiltere +
-      "'/>";
-  }
   $("#facetRefineForm").append(inputsHtml);
   $("table#fullFacets").data("facet", facetName); // data attribute for storing facet field
   $("table#fullFacets").data("label", displayName); // data attribute for storing facet display name
@@ -2339,7 +2342,7 @@ function loadMoreFacets(facetName, displayName, fsort, foffset) {
   loadFacetsContent(facetName, fsort, foffset);
 }
 
-function loadFacetsContent(facetName, fsort, foffset) {
+function loadFacetsContent(facetName, fsort, foffset, facetFilter) {
   const flimit = Number(BC_CONF.facetLimit) + 1;
   var jsonUri =
     BC_CONF.serverName +
@@ -2347,6 +2350,7 @@ function loadFacetsContent(facetName, fsort, foffset) {
     BC_CONF.searchString +
     "&facets=" +
     facetName +
+    (facetFilter ? "&facet.contains=" + encodeURIComponent(facetFilter) : "") +
     "&foffset=" +
     foffset +
     "&flimit=" +
@@ -2374,7 +2378,8 @@ function loadFacetsContent(facetName, fsort, foffset) {
   });
 }
 
-function addFacetItems(facetName, fsort, facetLimit, foffset, facetList) {
+function addFacetItems(facetName, fsort, foffset, facetList) {
+  const facetLimit = Number(BC_CONF.facetLimit);
   var html = "";
 
   for (var i = 0; i < facetList.length; i++) {
