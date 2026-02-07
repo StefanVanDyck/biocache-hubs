@@ -1566,8 +1566,7 @@ function init() {
   });
 
   // Facet value filter in popup
-  $("#filterPopupFacet").on(
-    "change",
+  $("#filterPopupFacet").change(
     debounce(function() {
       var fsort = $(this).data("sort");
       var table = $(this).closest("table");
