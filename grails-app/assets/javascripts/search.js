@@ -17,7 +17,7 @@
 //= require_self
 
 // Jquery Document.onLoad equivalent
-$(document).ready(function () {
+$(document).ready(function() {
   if (typeof BC_CONF != "undefined" && BC_CONF.hasOwnProperty("contextPath")) {
     jQuery.i18n.properties({
       name: "messages",
@@ -30,7 +30,7 @@ $(document).ready(function () {
   }
 
   // jQuery.i18n.properties is required now, wait a bit
-  setTimeout(function () {
+  setTimeout(function() {
     init();
   }, 50);
 }); // end JQuery document ready
@@ -41,13 +41,13 @@ var loadFacetsQueue = [];
 function init() {
   // check for i18n
   var i = 0;
-  $.each(jQuery.i18n.map, function () {
+  $.each(jQuery.i18n.map, function() {
     i++;
   });
   if (i < 100) {
     // wait for at least 100 elements in this map
     // wait longer for i18n
-    setTimeout(function () {
+    setTimeout(function() {
       init();
     }, 50);
     return;
@@ -59,23 +59,23 @@ function init() {
   var excludeCounts = {};
   var excludeCountsStarted = false;
 
-  $("select#sort").change(function () {
+  $("select#sort").change(function() {
     var val = $("option:selected", this).val();
     reloadWithParam("sort", val);
   });
-  $("select#dir").change(function () {
+  $("select#dir").change(function() {
     var val = $("option:selected", this).val();
     reloadWithParam("dir", val);
   });
-  $("select#sort").change(function () {
+  $("select#sort").change(function() {
     var val = $("option:selected", this).val();
     reloadWithParam("sort", val);
   });
-  $("select#dir").change(function () {
+  $("select#dir").change(function() {
     var val = $("option:selected", this).val();
     reloadWithParam("dir", val);
   });
-  $("select#per-page").change(function () {
+  $("select#per-page").change(function() {
     var val = $("option:selected", this).val();
     reloadWithParam("pageSize", val);
   });
@@ -90,7 +90,7 @@ function init() {
   };
 
   // initialise BS tabs
-  $('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
+  $('a[data-toggle="tab"]').on("shown.bs.tab", function(e) {
     var id = $(this).attr("id");
     var tab = e.currentTarget.hash.substring(1);
     amplify.store("search-tab-state", tab);
@@ -147,12 +147,12 @@ function init() {
   $("#facetCheckboxes")
     .children()
     .not("#updateFacetOptions")
-    .click(function (e) {
+    .click(function(e) {
       e.stopPropagation();
     });
 
   // in mobile view toggle display of facets
-  $("#toggleFacetDisplay").click(function () {
+  $("#toggleFacetDisplay").click(function() {
     $(this).find("i").toggleClass("icon-chevron-down icon-chevron-right");
     if ($(".sidebar").is(":visible")) {
       $(".sidebar").removeClass("overrideHide");
@@ -162,13 +162,13 @@ function init() {
   });
 
   // user selectable facets...
-  $("input.facetOpts").change(function () {
+  $("input.facetOpts").change(function() {
     var selectedFacets = 0;
     $("#facetConfigErrors").html("").hide();
 
     //var val = $("option:selected", this).val();
     // count selected facets to check if facets.max has been exceeded
-    $("input.facetOpts:checkbox:checked").each(function () {
+    $("input.facetOpts:checkbox:checked").each(function() {
       selectedFacets++;
     });
 
@@ -188,12 +188,12 @@ function init() {
     }
   });
 
-  $("#updateFacetOptions").click(function (e) {
+  $("#updateFacetOptions").click(function(e) {
     e.preventDefault();
     // alert("about to reload with new facets...");
     var selectedFacets = [];
     // iterate over seleted facet options
-    $("input.facetOpts:checkbox:checked").each(function (i, el) {
+    $("input.facetOpts:checkbox:checked").each(function(i, el) {
       selectedFacets.push($(el).val());
     });
 
@@ -220,7 +220,7 @@ function init() {
   });
 
   // reset facet options to default values (clear cookie)
-  $("#resetFacetOptions").click(function (e) {
+  $("#resetFacetOptions").click(function(e) {
     e.preventDefault();
     $.removeCookie("user_facets");
     document.location.reload(true);
@@ -243,11 +243,11 @@ function init() {
   } //  note removed else that did page refresh by triggering cookie update code.
 
   // select all and none buttons
-  $(".selectNone").click(function (e) {
+  $(".selectNone").click(function(e) {
     e.preventDefault();
     $(":input.facetOpts").removeAttr("checked");
   });
-  $(".selectAll").click(function (e) {
+  $(".selectAll").click(function(e) {
     e.preventDefault();
     $(":input.facetOpts").attr("checked", "checked");
   });
@@ -255,7 +255,7 @@ function init() {
   // taxa search - show included synonyms with popup to allow user to refine to a single name
   $("span.lsid")
     .not(".searchError .lsid")
-    .each(function (i, el) {
+    .each(function(i, el) {
       var lsid = $(this).attr("id");
       var nameString = $(this).html();
       var maxFacets = 20;
@@ -281,7 +281,7 @@ function init() {
       $clone.find(":input.rawTaxonSumbit").attr("id", "rawTaxonSumbit_" + i);
       $clone.find(".refineTaxaSearch").attr("id", "refineTaxaSearch_" + i);
 
-      $.getJSON(jsonUri, function (data) {
+      $.getJSON(jsonUri, function(data) {
         // use HTML template, see http://stackoverflow.com/a/1091493/249327
         var speciesPageUri = BC_CONF.bieWebappUrl + "/species/" + lsid;
         var speciesPageLinkTitle = jQuery.i18n.prop(
@@ -302,9 +302,9 @@ function init() {
 
         var synListSize = 0;
         var synList1 = "";
-        $.each(data.facetResults, function (k, el) {
+        $.each(data.facetResults, function(k, el) {
           if (el.fieldName == "raw_taxon_name") {
-            $.each(el.fieldResult, function (j, el1) {
+            $.each(el.fieldResult, function(j, el1) {
               synListSize++;
               synList1 +=
                 "<input type='checkbox' name='raw_taxon_guid' id='rawTaxon_" +
@@ -345,7 +345,7 @@ function init() {
           .find(".stopProp")
           .children()
           .not("input.rawTaxonSumbit")
-          .click(function (e) {
+          .click(function(e) {
             e.stopPropagation();
           });
       });
@@ -354,7 +354,7 @@ function init() {
     });
 
   // form validation for raw_taxon_name popup div with checkboxes
-  $(":input.rawTaxonSumbit").on("click", function (e) {
+  $(":input.rawTaxonSumbit").on("click", function(e) {
     e.preventDefault();
     var submitId = $(this).attr("id");
     var formNum = submitId.replace("rawTaxonSumbit_", ""); // 1, 2, etc
@@ -362,7 +362,7 @@ function init() {
 
     $("#refineTaxaSearch_" + formNum)
       .find(":input.rawTaxonCheckBox")
-      .each(function (i, el) {
+      .each(function(i, el) {
         if ($(el).is(":checked")) {
           checkedFound = true;
           return false; // break loop
@@ -379,7 +379,7 @@ function init() {
   });
 
   // load more images button
-  $("#loadMoreImages .btn").on("click", function (e) {
+  $("#loadMoreImages .btn").on("click", function(e) {
     e.preventDefault();
     $(this).addClass("disabled");
     $(this).find("img").show(); // turn on spinner
@@ -388,7 +388,7 @@ function init() {
   });
 
   // load more species images button
-  $("#loadMoreSpecies").on("click", function (e) {
+  $("#loadMoreSpecies").on("click", function(e) {
     e.preventDefault();
     var start = $("#speciesGallery").data("count");
     var group = $("#speciesGroup :selected").val();
@@ -397,7 +397,7 @@ function init() {
   });
 
   // species tab -> species group drop down
-  $("#speciesGroup, #speciesGallerySort").on("change", function (e) {
+  $("#speciesGroup, #speciesGallerySort").on("change", function(e) {
     var group = $("#speciesGroup :selected").val();
     var sort = $("#speciesGallerySort :selected").val();
     loadSpeciesInTab(0, sort, group);
@@ -405,25 +405,25 @@ function init() {
 
   // add click even on each record row in results list
   $(".recordRow")
-    .click(function (e) {
+    .click(function(e) {
       e.preventDefault();
       window.location.href =
         BC_CONF.contextPath + "/occurrences/" + $(this).attr("id");
     })
     .hover(
-      function () {
+      function() {
         // mouse in
         $(this).css("cursor", "pointer");
         $(this).css("background-color", "#FFF");
       },
-      function () {
+      function() {
         // mouse out
         $(this).css("cursor", "default");
         $(this).css("background-color", "transparent");
       },
     );
 
-  $(".multipleFacetsLink").click(function () {
+  $(".multipleFacetsLink").click(function() {
     var link = this;
     var facetName = link.id
       .replace("multi-", "")
@@ -438,15 +438,15 @@ function init() {
     loadMoreFacets(facetName, displayName, "index");
   });
 
-  $("#profiles-selection").click(function (e) {
+  $("#profiles-selection").click(function(e) {
     e.preventDefault();
     $("#active-profile-name").text(e.target.innerText);
     window.location.href = e.target.href;
   });
 
   // When user clicks the 'view profile description' icon next to profiles selection drop-down
-  $(".DQProfileDetailsLink").click(function () {
-    $.each($(".cat-table"), function (idx, el) {
+  $(".DQProfileDetailsLink").click(function() {
+    $.each($(".cat-table"), function(idx, el) {
       var filterlist = $(el).data("filters");
       var keys = [];
 
@@ -462,7 +462,7 @@ function init() {
       var jsonUri =
         BC_CONF.biocacheServiceUrl + "/index/fields?fl=" + keys.join(",");
       var map = new Map();
-      $.when($.getJSON(jsonUri)).done(function (jarray) {
+      $.when($.getJSON(jsonUri)).done(function(jarray) {
         for (var i = 0; i < jarray.length; i++) {
           var obj = jarray[i];
           if (obj.infoUrl) {
@@ -475,7 +475,7 @@ function init() {
         var fqs = $(el).find("td.filter-value");
         var wikis = $(el).find("td.filter-wiki");
 
-        $.each(fqs, function (idx, el) {
+        $.each(fqs, function(idx, el) {
           var fq = $(el).text();
           var vals = parseFilter(fq);
           if (vals.length > 0) {
@@ -511,12 +511,12 @@ function init() {
   });
 
   // when user clicks 'ok' button in the 'data profiles applied' warning dialog
-  $("#hide-dq-warning").click(function () {
+  $("#hide-dq-warning").click(function() {
     $.cookie("dq_warn_off", true, { expires: 365, path: "/" });
   });
 
   // when use clicks <i/> to view details of a category
-  $(".DQCategoryDetailsLink").click(function () {
+  $(".DQCategoryDetailsLink").click(function() {
     var link = this;
     var filters = $(link).data("filters");
     var fq = $(link).data("fq");
@@ -573,7 +573,7 @@ function init() {
 
     // one AJAX request for each key
     var requests = [];
-    keys.forEach(function (key) {
+    keys.forEach(function(key) {
       requests.push(getField(key));
     });
 
@@ -586,7 +586,7 @@ function init() {
     // structure is different, that's why there's numberOfResponse == 1)
     // map = {fieldKey : [fieldDescription, fieldInfo]}
     // description and info could be null so convert it to "" when it's null
-    $.when.apply($, requests).done(function () {
+    $.when.apply($, requests).done(function() {
       if (numberOfResponse === 1) {
         if (successStatus === arguments[1] && arguments[0].length > 0) {
           map.set(arguments[0][0].name, [
@@ -615,7 +615,7 @@ function init() {
 
       // field table
       var html = "";
-      $.each(keys, function (index, key) {
+      $.each(keys, function(index, key) {
         if (map.has(key)) {
           html +=
             "<tr><td style='word-break: normal'>" +
@@ -630,7 +630,7 @@ function init() {
 
       var valuesHtml = "";
 
-      $.each(filters, function (idx, el) {
+      $.each(filters, function(idx, el) {
         var vals = parseFilter(el);
         if (vals.length > 0) {
           var key = vals[0];
@@ -708,7 +708,7 @@ function init() {
   }
 
   // to expand a category
-  $("#expandfilters").on("click", function (e) {
+  $("#expandfilters").on("click", function(e) {
     var category = $(this).data("category");
     var filters = $(this).data("filters");
 
@@ -717,9 +717,9 @@ function init() {
     url = appendURL(
       url,
       "disableQualityFilter=" +
-        encodeURIComponent(category)
-          .replace(/%20/g, "+")
-          .replace(/[()]/g, escape),
+      encodeURIComponent(category)
+        .replace(/%20/g, "+")
+        .replace(/[()]/g, escape),
     );
 
     // step 2, append all enabled fqs as user fq
@@ -727,9 +727,9 @@ function init() {
       url = appendURL(
         url,
         "fq=" +
-          encodeURIComponent(filters[i])
-            .replace(/%20/g, "+")
-            .replace(/[()]/g, escape),
+        encodeURIComponent(filters[i])
+          .replace(/%20/g, "+")
+          .replace(/[()]/g, escape),
       );
     }
 
@@ -749,9 +749,9 @@ function init() {
       url = prependURL(
         url,
         "qualityProfile=" +
-          encodeURIComponent(actualProfile)
-            .replace(/%20/g, "+")
-            .replace(/[()]/g, escape),
+        encodeURIComponent(actualProfile)
+          .replace(/%20/g, "+")
+          .replace(/[()]/g, escape),
         true,
       );
     }
@@ -760,7 +760,7 @@ function init() {
 
   function removeDuplicates(data) {
     var unique = [];
-    data.forEach(function (el) {
+    data.forEach(function(el) {
       if (!unique.includes(el)) {
         unique.push(el);
       }
@@ -797,12 +797,12 @@ function init() {
     return $.getJSON(jsonUri);
   }
 
-  $("#multipleFacets").on("hidden.bs.modal", function () {
+  $("#multipleFacets").on("hidden.bs.modal", function() {
     // clear the tbody content
     $("tbody.scrollContent tr").not("#spinnerRow").remove();
   });
 
-  $("#downloadFacet").on("click", function (e) {
+  $("#downloadFacet").on("click", function(e) {
     var facetName = $("table#fullFacets").data("facet");
     window.location.href =
       BC_CONF.serverName +
@@ -812,7 +812,7 @@ function init() {
       facetName;
   });
 
-  $("#copy-al4r").on("click", function () {
+  $("#copy-al4r").on("click", function() {
     var input = document.querySelector("#al4rcode");
     if (navigator.clipboard && window.isSecureContext) {
       // navigator clipboard api method'
@@ -831,26 +831,26 @@ function init() {
     } else {
       alert(
         "Copying to clipboard requires a secure HTTPS connection. Value copied to clipboard is: " +
-          input.value,
+        input.value,
       );
     }
   });
 
-  $("#copy-al4r").on("mouseleave", function () {
+  $("#copy-al4r").on("mouseleave", function() {
     $(this).qtip({
       content: jQuery.i18n.prop("list.copylinks.tooltip.copytoclipboard"),
       show: { when: { event: "mouseover" } },
     });
   });
 
-  $("#prefer_profile").change(function () {
+  $("#prefer_profile").change(function() {
     var profile = $("#prefer_profile").val();
     $(".profile_items").hide();
     $("#items_" + profile).show();
   });
 
   // when open the user preference dlg
-  $(".DQPrefSettingsLink").click(function () {
+  $(".DQPrefSettingsLink").click(function() {
     var prefSettings = $("#DQPrefSettings");
     var userPref = prefSettings.data("userpref-json");
     var profiles = prefSettings.data("profiles");
@@ -888,7 +888,7 @@ function init() {
   });
 
   // when submit the user preference dlg
-  $("#submitPref :input.submit").on("click", function (e) {
+  $("#submitPref :input.submit").on("click", function(e) {
     e.preventDefault();
     var prefSettings = $("#DQPrefSettings");
     var userPref = prefSettings.data("userpref-json");
@@ -905,7 +905,7 @@ function init() {
 
     // set items
     userPref.disabledItems = [];
-    $('input[name="items_' + prefProfile + '"]').each(function () {
+    $('input[name="items_' + prefProfile + '"]').each(function() {
       if (this.checked == "" && this.type == "checkbox") {
         userPref.disabledItems.push(this.value);
       }
@@ -924,10 +924,10 @@ function init() {
         contentType: "application/json",
         data: JSON.stringify(userPref),
         success: applyUserPreference, // reload on success
-        error: function () {
+        error: function() {
           window.alert(jQuery.i18n.prop("dq.warning.failedtosave"));
         },
-      }).always(function () {
+      }).always(function() {
         $("#DQPrefSettings").modal("hide");
       });
     } else {
@@ -990,9 +990,9 @@ function init() {
         url = removeFromURL(
           url,
           "fq=" +
-            encodeURIComponent(fqs[i])
-              .replace(/%20/g, "+")
-              .replace(/[()]/g, escape),
+          encodeURIComponent(fqs[i])
+            .replace(/%20/g, "+")
+            .replace(/[()]/g, escape),
           true,
         );
       }
@@ -1005,14 +1005,14 @@ function init() {
       url = prependURL(
         url,
         "qualityProfile=" +
-          encodeURIComponent(userPref.dataProfile)
-            .replace(/%20/g, "+")
-            .replace(/[()]/g, escape),
+        encodeURIComponent(userPref.dataProfile)
+          .replace(/%20/g, "+")
+          .replace(/[()]/g, escape),
         true,
       );
 
       if (userPref.disabledItems) {
-        $.each(userPref.disabledItems, function () {
+        $.each(userPref.disabledItems, function() {
           url = prependURL(url, "disableQualityFilter=" + this, true);
         });
       }
@@ -1022,7 +1022,7 @@ function init() {
   }
 
   // form validation for form#facetRefineForm
-  $("#submitFacets :input.submit").on("click", function (e) {
+  $("#submitFacets :input.submit").on("click", function(e) {
     e.preventDefault();
     var inverseModifier = $(this).attr("id") == "exclude" ? "-" : "";
     var fqArray = [];
@@ -1035,7 +1035,7 @@ function init() {
     );
     var numberOfSelectedItems = selectedItemsArray.length;
 
-    selectedItemsArray.each(function (i, el) {
+    selectedItemsArray.each(function(i, el) {
       checkedFound = true;
       selectedCount++;
 
@@ -1067,12 +1067,12 @@ function init() {
     if (checkedFound && selectedCount > maxSelected) {
       alert(
         "Too many options selected - maximum is " +
-          maxSelected +
-          ", you have selected " +
-          selectedCount +
-          ", please de-select " +
-          (selectedCount - maxSelected) +
-          " options. \n\nNote: if you want to include/exclude all possible values (wildcard filter), use the drop-down option on the buttons below.",
+        maxSelected +
+        ", you have selected " +
+        selectedCount +
+        ", please de-select " +
+        (selectedCount - maxSelected) +
+        " options. \n\nNote: if you want to include/exclude all possible values (wildcard filter), use the drop-down option on the buttons below.",
       );
     } else if (checkedFound) {
       //$("form#facetRefineForm").submit();
@@ -1086,7 +1086,7 @@ function init() {
   });
 
   // switch caret style
-  $(".dq-filters-collapse").click(function (e) {
+  $(".dq-filters-collapse").click(function(e) {
     $.cookie.json = true;
     var el = $(this).find("i");
     if ($(el).hasClass("fa-caret-right")) {
@@ -1104,9 +1104,9 @@ function init() {
   });
 
   // when dlg pops, load and init status, set checkall status
-  $(".multipleFiltersLink").click(function () {
+  $(".multipleFiltersLink").click(function() {
     var filterStatus = $("form#filterRefineForm").find(":input.filters");
-    $.each(filterStatus, function (i, status) {
+    $.each(filterStatus, function(i, status) {
       $(this).prop("checked", $(this).data("enabled"));
     });
 
@@ -1119,7 +1119,7 @@ function init() {
     var filterStatus = $("form#filterRefineForm").find(":input.filters");
     var allchecked = true;
     var allunchecked = true;
-    $.each(filterStatus, function (i, el) {
+    $.each(filterStatus, function(i, el) {
       allchecked = allchecked && $(el).prop("checked");
       allunchecked = allunchecked && !$(el).prop("checked");
     });
@@ -1137,7 +1137,7 @@ function init() {
     var filterStatus = $("form#filterRefineForm").find(":input.filters");
     var filters = $("form#filterRefineForm").find("td.filternames");
 
-    $.each(filterStatus, function (i, el) {
+    $.each(filterStatus, function(i, el) {
       var checked = $(el).prop("checked");
       var category = $(el).data("category");
       // 3 states, 'enabled', 'expanded', 'disabled'
@@ -1207,7 +1207,7 @@ function init() {
   }
 
   // handle enable/disable all
-  $("#filterRefineForm .checkall").on("click", function (e) {
+  $("#filterRefineForm .checkall").on("click", function(e) {
     $("form#filterRefineForm")
       .find(":input.filters")
       .prop("checked", $(this).prop("checked"));
@@ -1218,12 +1218,12 @@ function init() {
   function updateFiltersStatus() {
     var checks = $("form#filterRefineForm").find(":input.filters");
 
-    $.each(checks, function (i, el) {
+    $.each(checks, function(i, el) {
       updateIndividualStatus($(el));
     });
   }
   // handle checkbox for each filter
-  $("#filterRefineForm :input.filters").on("click", function () {
+  $("#filterRefineForm :input.filters").on("click", function() {
     setCheckAllStatus();
     updateIndividualStatus($(this));
   });
@@ -1246,7 +1246,7 @@ function init() {
   }
 
   // expand button clicked
-  $("#filterRefineForm :button.expand").on("click", function (e) {
+  $("#filterRefineForm :button.expand").on("click", function(e) {
     e.preventDefault();
     var category = $(this).data("category");
     // if expand clicked, uncheck enabled
@@ -1263,7 +1263,7 @@ function init() {
     $("#filterRefineForm .checkall").prop("checked", false);
   });
 
-  $("#submitFilters :input.submit").on("click", function (e) {
+  $("#submitFilters :input.submit").on("click", function(e) {
     e.preventDefault();
 
     // get all disabled categories from the url
@@ -1285,7 +1285,7 @@ function init() {
     var expanded = filterForm.find(".expanded");
 
     // replace url encoded %20 with '+' because groovy encodes space to '+'
-    $.each(filterStatus, function (i, status) {
+    $.each(filterStatus, function(i, status) {
       var filterlabel = $(fitlers[i]).data("category");
       // get checked status
       var toDisable = !this.checked;
@@ -1296,9 +1296,9 @@ function init() {
           url = appendURL(
             url,
             "disableQualityFilter=" +
-              encodeURIComponent(filterlabel)
-                .replace(/%20/g, "+")
-                .replace(/[()]/g, escape),
+            encodeURIComponent(filterlabel)
+              .replace(/%20/g, "+")
+              .replace(/[()]/g, escape),
           );
         }
 
@@ -1316,9 +1316,9 @@ function init() {
           url = removeFromURL(
             url,
             "disableQualityFilter=" +
-              encodeURIComponent(filterlabel)
-                .replace(/%20/g, "+")
-                .replace(/[()]/g, escape),
+            encodeURIComponent(filterlabel)
+              .replace(/%20/g, "+")
+              .replace(/[()]/g, escape),
             true,
           );
         }
@@ -1344,7 +1344,7 @@ function init() {
     }
 
     // split all fqs
-    filters.split(", ").forEach(function (filter) {
+    filters.split(", ").forEach(function(filter) {
       var queryToAppend =
         "fq=" +
         encodeURIComponent(filter)
@@ -1365,13 +1365,13 @@ function init() {
     }
 
     // get all enabled filters in this category
-    filters.split(", ").forEach(function (filter) {
+    filters.split(", ").forEach(function(filter) {
       url = removeFromURL(
         url,
         "fq=" +
-          encodeURIComponent(filter)
-            .replace(/%20/g, "+")
-            .replace(/[()]/g, escape),
+        encodeURIComponent(filter)
+          .replace(/%20/g, "+")
+          .replace(/[()]/g, escape),
         true,
       );
     });
@@ -1484,7 +1484,7 @@ function init() {
   }
 
   // Drop-down option on facet popup div - for wildcard fq searches
-  $("#submitFacets a.wildcard").on("click", function (e) {
+  $("#submitFacets a.wildcard").on("click", function(e) {
     e.preventDefault();
     var link = this;
     var inverseModifier =
@@ -1523,7 +1523,7 @@ function init() {
   });
 
   // maultiple facets popup - sortable column heading links
-  $("a.fsort").on("click", function (e) {
+  $("a.fsort").on("click", function(e) {
     e.preventDefault();
     var fsort = $(this).data("sort");
     var foffset = $(this).data("foffset");
@@ -1534,11 +1534,11 @@ function init() {
     var facetName = $(table).data("facet");
     var displayName = $(table).data("label");
 
-    loadFacetsContent(facetName, fsort, 0, BC_CONF.facetLimit, false, true);
+    loadFacetsContent(facetName, fsort, 0);
   });
 
   // loadMoreValues (legacy - now handled by inview)
-  $("#multipleFacets").on("click", "a.loadMoreValues", function (e) {
+  $("#multipleFacets").on("click", "a.loadMoreValues", function(e) {
     e.preventDefault();
     var link = $(this);
     var fsort = link.data("sort");
@@ -1548,42 +1548,28 @@ function init() {
     var facetName = $(table).data("facet");
     var displayName = $(table).data("label");
 
-    loadFacetsContent(
-      facetName,
-      fsort,
-      foffset,
-      BC_CONF.facetLimit,
-      false,
-      false,
-    );
+    loadFacetsContent(facetName, fsort, foffset);
   });
 
   // Inview trigger to load more values when tr comes into view
-  $("#multipleFacets").on("inview", "tr#loadMore", function () {
+  $("#multipleFacets").on("inview", "tr#loadMore", function() {
     var link = $(this).find("a.loadMoreValues");
     var fsort = link.data("sort");
     var foffset = link.data("foffset");
     var table = $("table#fullFacets");
     var facetName = $(table).data("facet");
     var displayName = $(table).data("label");
-    loadFacetsContent(
-      facetName,
-      fsort,
-      foffset,
-      BC_CONF.facetLimit,
-      false,
-      false,
-    );
+    loadFacetsContent(facetName, fsort, foffset);
   });
 
   // Email alert buttons
   var alertsUrlPrefix = BC_CONF.alertsUrl || "https://alerts.ala.org.au";
-  $("a#alertNewRecords, a#alertNewAnnotations").click(function (e) {
+  $("a#alertNewRecords, a#alertNewAnnotations").click(function(e) {
     e.preventDefault();
     var query = $("<p>" + BC_CONF.queryString + "</p>").text(); // strips <span> from string
     var fqArray = decodeURIComponent(BC_CONF.facetQueries)
       .split("&fq=")
-      .filter(function (e) {
+      .filter(function(e) {
         return e === 0 || e;
       }); // remove empty elements
     if (fqArray) {
@@ -1613,12 +1599,12 @@ function init() {
   });
 
   // Show/hide the facet groups
-  $(".showHideFacetGroup").click(function (e) {
+  $(".showHideFacetGroup").click(function(e) {
     e.preventDefault();
     var name = $(this).data("name");
     $(this).find("span").toggleClass("right-caret");
     var group = $("#group_" + name);
-    group.slideToggle(600, function () {
+    group.slideToggle(600, function() {
       if (group.is(":visible")) {
         amplify.store("search-facets-state-" + name, true);
 
@@ -1637,7 +1623,7 @@ function init() {
   });
 
   // Hide any facet groups if they don't contain any facet values
-  $(".facetsGroup").each(function (i, el) {
+  $(".facetsGroup").each(function(i, el) {
     var name = $(el)
       .attr("id")
       .replace(/^group_/, "");
@@ -1653,13 +1639,13 @@ function init() {
   amplify.store("lastSearch", $.url().attr("relative"));
 
   // mouse over affect on thumbnail images
-  $("#recordImages").on("hover", ".imgCon", function () {
+  $("#recordImages").on("hover", ".imgCon", function() {
     $(this).find(".brief, .detail").toggleClass("hide");
   });
 
   var imageId, attribution, recordUrl, scientificName;
   // Lightbox
-  $(document).delegate(".thumbImage", "click", function (event) {
+  $(document).delegate(".thumbImage", "click", function(event) {
     var recordLink = '<a href="RECORD_URL">View details of this record</a>';
     event.preventDefault();
     imageId = $(this).attr("data-image-id");
@@ -1680,7 +1666,7 @@ function init() {
   });
 
   // show image only after modal dialog is shown. otherwise, image position will be off the viewing area.
-  $("#imageDialog").on("shown.bs.modal", function () {
+  $("#imageDialog").on("shown.bs.modal", function() {
     if ($("#viewerContainerId").width() == 0) {
       //this is a workaround for #viewContainerId having width of zero, which results in the
       //image not rendering
@@ -1755,7 +1741,7 @@ function init() {
     if (excludeCountsStarted) return;
     excludeCountsStarted = true;
 
-    $.get(BC_CONF.excludeCountUrl).done(function (data) {
+    $.get(BC_CONF.excludeCountUrl).done(function(data) {
       $(".exclude-loader").hide();
       for (var key in data) {
         var categoryEnabled = $(
@@ -1790,7 +1776,7 @@ function init() {
     getExcludedCounts();
   }
 
-  $("#showHideDQFilter").on("click", function () {
+  $("#showHideDQFilter").on("click", function() {
     getExcludedCounts();
   });
 }
@@ -1870,7 +1856,7 @@ function getParamList(paramName, paramValue) {
     if (typeof disableQualityFilter === "string") {
       disableQualityFilter = [disableQualityFilter];
     }
-    disableQualityFilter.forEach(function (value, index, array) {
+    disableQualityFilter.forEach(function(value, index, array) {
       paramList.push("disableQualityFilter=" + value);
     });
   }
@@ -1908,14 +1894,14 @@ function loadUserCharts() {
     $.ajax({
       dataType: "json",
       url: BC_CONF.serverName + "/user/chart",
-      success: function (data) {
+      success: function(data) {
         if (
-          $.map(data, function (n, i) {
+          $.map(data, function(n, i) {
             return i;
           }).length > 3
         ) {
           //do not display user charts by default
-          $.map(data.charts, function (value, key) {
+          $.map(data.charts, function(value, key) {
             value.hideOnce = true;
           });
 
@@ -1936,7 +1922,7 @@ function loadUserCharts() {
           var charts = ALA.BiocacheCharts("userCharts", userChartConfig);
         }
       },
-      error: function (data) {
+      error: function(data) {
         userChartConfig.charts = {};
         userChartConfig.chartControlsCallback = saveChartConfig;
         var charts = ALA.BiocacheCharts("userCharts", userChartConfig);
@@ -1950,13 +1936,13 @@ function saveChartConfig(data) {
 
   //remove unnecessary data
   delete d.chartControlsCallback;
-  $.each(d.charts, function (key, value) {
+  $.each(d.charts, function(key, value) {
     if (value.slider) delete value.slider;
   });
-  $.each(d.charts, function (key, value) {
+  $.each(d.charts, function(key, value) {
     if (value.datastructure) delete value.datastructure;
   });
-  $.each(d.charts, function (key, value) {
+  $.each(d.charts, function(key, value) {
     if (value.chart) delete value.chart;
   });
 
@@ -1987,14 +1973,14 @@ function loadImages(start) {
     "&fq=multimedia:Image&facet=false&pageSize=20&start=" +
     start +
     "&sort=identification_qualifier_s&dir=asc";
-  $.getJSON(imagesJsonUri, function (data) {
+  $.getJSON(imagesJsonUri, function(data) {
     if (data.occurrences && data.occurrences.length > 0) {
       //var htmlUl = "";
       if (start == 0) {
         $("#imagesGrid").html("");
       }
       var count = 0;
-      $.each(data.occurrences, function (i, el) {
+      $.each(data.occurrences, function(i, el) {
         count++;
         var sciNameRawOrMatched =
           el.raw_scientificName === undefined
@@ -2050,7 +2036,7 @@ function loadImages(start) {
         "<p>" + jQuery.i18n.prop("list.noimages.available") + "</p>",
       );
     }
-  }).always(function () {
+  }).always(function() {
     $("#loadMoreImages img").hide();
   });
 }
@@ -2088,10 +2074,10 @@ function loadSpeciesInTab(start, sortField, group) {
       "/explore/groups" +
       BC_CONF.searchString +
       "&facets=species_group";
-    $.getJSON(groupsUrl, function (data) {
+    $.getJSON(groupsUrl, function(data) {
       if (data.length > 0) {
         $("#speciesGroup").empty();
-        $.each(data, function (i, el) {
+        $.each(data, function(i, el) {
           if (el.count > 0) {
             var indent = Array(el.level + 1).join("-") + " ";
             var dispayName = el.name.replace("_", " ");
@@ -2102,19 +2088,19 @@ function loadSpeciesInTab(start, sortField, group) {
             }
             var opt = $(
               "<option value='" +
-                el.name +
-                "'>" +
-                indent +
-                dispayName +
-                " (" +
-                el.speciesCount +
-                ")</option>",
+              el.name +
+              "'>" +
+              indent +
+              dispayName +
+              " (" +
+              el.speciesCount +
+              ")</option>",
             );
             $("#speciesGroup").append(opt);
           }
         });
       }
-    }).error(function () {
+    }).error(function() {
       $("#speciesGroup option").val("Error: species groups were not loaded");
     });
     //
@@ -2128,8 +2114,8 @@ function loadSpeciesInTab(start, sortField, group) {
       .empty()
       .before(
         "<div id='loadingSpecies'>Loading... <img src='" +
-          BC_CONF.contextPath +
-          "/images/spinner.gif'/></div>",
+        BC_CONF.contextPath +
+        "/images/spinner.gif'/></div>",
       );
     $("#loadMoreSpecies").hide();
   } else {
@@ -2148,17 +2134,17 @@ function loadSpeciesInTab(start, sortField, group) {
     start +
     sortExtras;
 
-  $.getJSON(speciesJsonUrl, function (data) {
+  $.getJSON(speciesJsonUrl, function(data) {
     if (data.length > 0) {
       var count = 0;
-      $.each(data, function (i, el) {
+      $.each(data, function(i, el) {
         // don't show higher taxa
         count++;
         if (el.rankId > 6000 && el.thumbnailUrl) {
           var imgEl = $(
             "<img src='" +
-              el.thumbnailUrl +
-              "' style='height:100px; cursor:pointer;'/>",
+            el.thumbnailUrl +
+            "' style='height:100px; cursor:pointer;'/>",
           );
           var metaData = {
             type: "species",
@@ -2187,10 +2173,10 @@ function loadSpeciesInTab(start, sortField, group) {
       //            $("#speciesGallery").append(html);
     }
   })
-    .error(function (request, status, error) {
+    .error(function(request, status, error) {
       alert(request.responseText);
     })
-    .complete(function () {
+    .complete(function() {
       $("#loadingSpecies").remove();
       $("#loadMoreSpecies img").hide();
     });
@@ -2202,8 +2188,8 @@ function loadSpeciesInTab(start, sortField, group) {
  * Posted to stack overflow:
  *   http://stackoverflow.com/questions/7411393/pop-images-like-google-images/7412302#7412302
  */
-(function ($) {
-  $.fn.ibox = function () {
+(function($) {
+  $.fn.ibox = function() {
     // set zoom ratio //
     resize = 50; // pixels to add to img height
     ////////////////////
@@ -2214,10 +2200,10 @@ function loadSpeciesInTab(start, sortField, group) {
     var elX = 0;
     var elY = 0;
 
-    img.each(function () {
+    img.each(function() {
       var el = $(this);
 
-      el.mouseenter(function () {
+      el.mouseenter(function() {
         ibox.html("");
         var elH = el.height();
         var elW = el.width();
@@ -2268,7 +2254,7 @@ function loadSpeciesInTab(start, sortField, group) {
           count +
           "</div>";
         $(ibox).append(infoDiv);
-        $(ibox).click(function (e) {
+        $(ibox).click(function(e) {
           e.preventDefault();
           window.location.href = link;
         });
@@ -2279,7 +2265,7 @@ function loadSpeciesInTab(start, sortField, group) {
           "max-width": $(el).width() + 2 * wh + 12,
         });
 
-        ibox.stop().fadeTo(200, 1, function () {
+        ibox.stop().fadeTo(200, 1, function() {
           //$(this).animate({top: '-='+(resize/2), left:'-='+wh},200).children('img').animate({height:'+='+resize},200);
           $(this)
             .children("img")
@@ -2287,7 +2273,7 @@ function loadSpeciesInTab(start, sortField, group) {
         });
       });
 
-      ibox.mouseleave(function () {
+      ibox.mouseleave(function() {
         ibox.html("").hide();
       });
     });
@@ -2305,11 +2291,10 @@ var hoverDropDownDiv = false;
  */
 function loadMoreFacets(facetName, displayName, fsort, foffset) {
   foffset = foffset ? foffset : "0";
-  var facetLimit = BC_CONF.facetLimit;
   var params = BC_CONF.searchString.replace(/^\?/, "").split("&");
   // include hidden inputs for current request params
   var inputsHtml = "";
-  $.each(params, function (i, el) {
+  $.each(params, function(i, el) {
     var pair = el.split("=");
     if (pair.length == 2) {
       inputsHtml +=
@@ -2337,18 +2322,11 @@ function loadMoreFacets(facetName, displayName, fsort, foffset) {
     },
   });
   // perform ajax
-  loadFacetsContent(facetName, fsort, foffset, facetLimit, true, false);
+  loadFacetsContent(facetName, fsort, foffset);
 }
 
-var facetList = [];
-
-function loadFacetsContent(
-  facetName,
-  fsort,
-  foffset,
-  facetLimit,
-  replaceFacets,
-) {
+function loadFacetsContent(facetName, fsort, foffset) {
+  const flimit = Number(BC_CONF.facetLimit) + 1;
   var jsonUri =
     BC_CONF.serverName +
     "/occurrences/facets" +
@@ -2358,30 +2336,19 @@ function loadFacetsContent(
     "&foffset=" +
     foffset +
     "&flimit=" +
-    (facetLimit + 1) +
+    flimit +
     "&pageSize=0";
 
-  if (!replaceFacets) {
-    $("tr#loadingRow").remove(); // remove the loading message
-    $("tr#loadMore").remove(); // remove the load more records link
-
-    addFacetItems(facetName, fsort, facetLimit, foffset, replaceFacets);
-    return;
-  }
   $("#spinnerRow").show();
 
-  $.getJSON(jsonUri, function (data) {
+  $.getJSON(jsonUri, function(data) {
     if (data.totalRecords && data.totalRecords > 0) {
       $("tr#loadingRow").remove(); // remove the loading message
       $("tr#loadMore").remove(); // remove the load more records link
 
-      // store the full list
-      if (foffset == 0) {
-        facetList = [];
-      }
-      facetList += data.facetResults[0].fieldResult;
+      const facetList = data.facetResults[0].fieldResult;
 
-      addFacetItems(facetName, fsort, facetLimit, foffset, replaceFacets);
+      addFacetItems(facetName, fsort, foffset, facetList);
     } else {
       $("tr#loadingRow").remove(); // remove the loading message
       $("tr#loadMore").remove(); // remove the load more records link
@@ -2393,11 +2360,8 @@ function loadFacetsContent(
   });
 }
 
-function addFacetItems(facetName, fsort, facetLimit, foffset, replaceFacets) {
+function addFacetItems(facetName, fsort, facetLimit, foffset, facetList) {
   var html = "";
-
-  // add the selected items to the table
-  var max = parseInt(foffset) + parseInt(facetLimit);
 
   console.log(
     "addFacetItems",
@@ -2408,7 +2372,7 @@ function addFacetItems(facetName, fsort, facetLimit, foffset, replaceFacets) {
     max,
     facetList.length,
   );
-  for (var i = foffset; i < max && i < facetList.length; i++) {
+  for (var i = 0; i < facetList.length; i++) {
     var el = facetList[i];
     if (el !== undefined && el.count > 0) {
       // surround with quotes: fq value if contains spaces but not for range queries
@@ -2416,7 +2380,7 @@ function addFacetItems(facetName, fsort, facetLimit, foffset, replaceFacets) {
         (el.label.indexOf(" ") != -1 ||
           el.label.indexOf(",") != -1 ||
           el.label.indexOf("lsid") != -1) &&
-        el.label.indexOf("[") != 0
+          el.label.indexOf("[") != 0
           ? '"' + el.label + '"'
           : el.label; // .replace(/:/g,"\\:")
       var label = formatFieldValue(facetName, el);
@@ -2457,7 +2421,7 @@ function addFacetItems(facetName, fsort, facetLimit, foffset, replaceFacets) {
     "none",
   );
 
-  if (max < facetList.length) {
+  if (facetList.length > facetLimit) {
     var offsetInt = Number(foffset);
     var flimitInt = Number(facetLimit);
     var loadMore =
@@ -2473,7 +2437,7 @@ function addFacetItems(facetName, fsort, facetLimit, foffset, replaceFacets) {
 
   var tableHeight = $("#fullFacets tbody").height();
   var tbodyHeight = 0;
-  $("#fullFacets tbody tr").each(function (i, el) {
+  $("#fullFacets tbody tr").each(function(i, el) {
     tbodyHeight += $(el).height();
   });
 }
@@ -2488,7 +2452,7 @@ function processLoadFacetQueue() {
 
 // load facets, one at a time
 function loadFacet(facet) {
-  loadFacetsQueue.push(function () {
+  loadFacetsQueue.push(function() {
     console.log("loadFacet", facet);
     var parentNode = $("#facet_" + facet);
 
@@ -2519,7 +2483,7 @@ function loadFacet(facet) {
 
     $.ajax({
       url: url,
-      success: function (data) {
+      success: function(data) {
         if (
           data.facetResults.length === 0 ||
           data.facetResults[0].fieldResult.length === 0
@@ -2547,7 +2511,7 @@ function loadFacet(facet) {
         inFacetsLoop = false;
         processLoadFacetQueue();
       },
-      error: function () {
+      error: function() {
         // remove the facet label if there is an error
         parentNode.prev().remove();
         parentNode.remove();
