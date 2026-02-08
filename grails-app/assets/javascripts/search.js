@@ -2354,7 +2354,7 @@ function loadFacetsContent(facetName, fsort, foffset, facetFilter) {
     BC_CONF.searchString +
     "&facets=" +
     facetName +
-    (facetFilter ? "&facet.contains=" + encodeURIComponent(facetFilter) : "") +
+    (facetFilter ? "&fcontains=" + encodeURIComponent(facetFilter) : "") +
     "&foffset=" +
     foffset +
     "&flimit=" +
@@ -2646,11 +2646,13 @@ function formatFieldValue(facetName, item) {
 }
 
 function debounce(func, timeout = 300) {
-  let timer;
-  return (...args) => {
+  var timer;
+  return function() {
+    var context = this;
+    var args = arguments;
     clearTimeout(timer);
-    timer = setTimeout(() => {
-      func.apply(this, args);
+    timer = setTimeout(function() {
+      func.apply(context, args);
     }, timeout);
   };
 }
