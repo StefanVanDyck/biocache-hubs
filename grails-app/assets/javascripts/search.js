@@ -1579,8 +1579,7 @@ function init() {
 
       const facetFilter = $("#facetFilter").val();
       loadFacetsContent(facetName, fsort, 0, facetFilter);
-    }),
-    300,
+    }, 300),
   );
 
   // Email alert buttons
