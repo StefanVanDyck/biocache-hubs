@@ -1526,13 +1526,14 @@ function init() {
   $("a.fsort").on("click", function(e) {
     e.preventDefault();
     var fsort = $(this).data("sort");
-    var foffset = $(this).data("foffset");
     var table = $(this).closest("table");
     if (table.length == 0) {
       table = $(this).parent().siblings("table#fullFacets");
     }
     var facetName = $(table).data("facet");
     var displayName = $(table).data("label");
+
+    $("table#fullFacets tbody").html(""); //clear the existing table
 
     const facetFilter = $("#facetFilter").val();
     loadFacetsContent(facetName, fsort, 0, facetFilter);
@@ -1569,15 +1570,12 @@ function init() {
   $("#filterPopupFacet").change(
     debounce(function() {
       var fsort = $(this).data("sort");
-      var table = $(this).closest("table");
-      if (table.length == 0) {
-        table = $(this).parent().siblings("table#fullFacets");
-      }
+      var table = $("table#fullFacets");
       var facetName = $(table).data("facet");
 
       $("table#fullFacets tbody").html(""); //clear the existing table
 
-      const facetFilter = $("#facetFilter").val();
+      const facetFilter = $("#filterPopupFacet").val();
       loadFacetsContent(facetName, fsort, 0, facetFilter);
     }, 300),
   );
@@ -2361,6 +2359,8 @@ function loadFacetsContent(facetName, fsort, foffset, facetFilter) {
     foffset +
     "&flimit=" +
     flimit +
+    "&fsort=" +
+    fsort +
     "&pageSize=0";
 
   $("#spinnerRow").show();
