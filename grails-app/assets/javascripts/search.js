@@ -1562,12 +1562,13 @@ function init() {
     var table = $("table#fullFacets");
     var facetName = $(table).data("facet");
     var displayName = $(table).data("label");
-    const facetFilter = $("#facetFilter").val();
+    const facetFilter = $("#filterPopupFacet").val();
     loadFacetsContent(facetName, fsort, foffset, facetFilter);
   });
 
   // Facet value filter in popup
-  $("#filterPopupFacet").change(
+  $("#filterPopupFacet").on(
+    "input",
     customDebounce(function() {
       var fsort = $(this).data("sort");
       var table = $("table#fullFacets");
@@ -2659,7 +2660,6 @@ function customDebounce(func, timeout = 300) {
   return function() {
     var context = this;
     var args = arguments;
-    console.log("debounce", args);
     clearTimeout(timer);
     timer = setTimeout(function() {
       func.apply(context, args);
