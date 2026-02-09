@@ -277,27 +277,26 @@
                                                 </a>
                                             </g:else>
                                         </div>
-                                        <br/>
                                         <g:if test="${record.raw.miscProperties?.TITLE}">
-                                            <cite><b><g:message code="show.sidebar03.image.title" default="Title"/>:</b> <alatag:sanitizeContent>${raw(record.raw.miscProperties.TITLE)}</alatag:sanitizeContent></cite><br/>
+                                            <cite><b><g:message code="show.sidebar03.image.title" default="Title"/>:</b> <alatag:sanitizeContent>${raw(record.raw.miscProperties.TITLE)}</alatag:sanitizeContent></cite>
                                         </g:if>
                                         <g:if test="${record.raw.occurrence.photographer || image.metadata?.creator}">
-                                            <cite><b><g:message code="show.sidebar03.cite01" default="Photographer"/>:</b> ${image.metadata?.creator ?: record.raw.occurrence.photographer}</cite><br/>
+                                            <cite><b><g:message code="show.sidebar03.cite01" default="Photographer"/>:</b> ${image.metadata?.creator ?: record.raw.occurrence.photographer}</cite>
                                         </g:if>
                                         <g:if test="${record.raw.occurrence.rights || image.metadata?.rights}">
-                                            <cite><b><g:message code="show.sidebar03.cite02" default="Rights"/>:</b> ${image.metadata?.rights ?: record.raw.occurrence.rights}</cite><br/>
+                                            <cite><b><g:message code="show.sidebar03.cite02" default="Rights"/>:</b> ${image.metadata?.rights ?: record.raw.occurrence.rights}</cite>
                                         </g:if>
                                         <g:if test="${record.raw.occurrence.rightsholder || image.metadata?.rightsHolder}">
-                                            <cite><b><g:message code="show.sidebar03.cite03" default="Rights holder"/>:</b> ${image.metadata?.rightsHolder ?: record.raw.occurrence.rightsholder}</cite><br/>
+                                            <cite><b><g:message code="show.sidebar03.cite03" default="Rights holder"/>:</b> ${image.metadata?.rightsHolder ?: record.raw.occurrence.rightsholder}</cite>
                                         </g:if>
                                         <g:if test="${record.raw.miscProperties.rightsHolder}">
-                                            <cite><b><g:message code="show.sidebar03.cite03" default="Rights holder"/>:</b> ${record.raw.miscProperties.rightsHolder}</cite><br/>
+                                            <cite><b><g:message code="show.sidebar03.cite03" default="Rights holder"/>:</b> ${record.raw.miscProperties.rightsHolder}</cite>
                                         </g:if>
                                         <g:if test="${image.metadata?.license}">
-                                            <cite><b><g:message code="show.sidebar03.image.license" default="License"/>:</b> ${image.metadata?.license}</cite><br/>
+                                            <cite><b><g:message code="show.sidebar03.image.license" default="License"/>:</b> ${image.metadata?.license}</cite>
                                         </g:if>
                                         <g:if test="${record.raw.miscProperties?.DESCRIPTION}">
-                                            <cite><b><g:message code="show.sidebar03.caption" default="Caption"/>:</b> <alatag:sanitizeContent>${raw(record.raw.miscProperties.DESCRIPTION)}</alatag:sanitizeContent></cite><br/>
+                                            <cite><b><g:message code="show.sidebar03.caption" default="Caption"/>:</b> <alatag:sanitizeContent>${raw(record.raw.miscProperties.DESCRIPTION)}</alatag:sanitizeContent></cite>
                                         </g:if>
                                         <g:if test="${grailsApplication.config.getProperty('skin.useAlaImageService', Boolean)}">
                                             <a href="${grailsApplication.config.getProperty('images.metadataUrl')}${image.filePath}" target="_blank"><g:message code="show.sidebardiv.occurrenceimages.navigator01" default="View image details"/></a>
