@@ -115,7 +115,6 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <h3 id="multipleFacetsLabel"><g:message code="facets.multiplefacets.title" default="Refine your search"/></h3>
-                <input type="text" id="filterPopupFacet" placeholder="<g:message code="facets.multiplefacets.filterPlaceHolder" default="Filter values"/>" value="" />
             </div>
             <div class="modal-body">
                 <div id="dynamic" class="tableContainer">
@@ -124,7 +123,13 @@
                             <thead class="fixedHeader">
                                 <tr class="tableHead">
                                     <th>&nbsp;</th>
-                                    <th id="indexCol" width="80%"><a href="#index" class="fsort" data-sort="index" data-foffset="0"></a></th>
+                                    <th id="indexCol" width="80%">
+                                        <div class="multipleFacetsIndexHeader">
+                                            <a href="#index" class="fsort" data-sort="index" data-foffset="0"></a>
+                                            <a href="" id="facet-filter-show"><i class="fa-solid fa-filter"></i></a>
+                                            <input type="text" id="filterPopupFacet" placeholder="<g:message code="facets.multiplefacets.filterPlaceHolder" default="Filter values"/>" value="" />
+                                        </div>
+                                    </th>
                                     <th style="border-right-style: none;text-align: right;"><a href="#count" class="fsort" data-sort="count" data-foffset="0" title="<g:message code="facets.multiplefacets.tableth01.title"/>"><g:message code="facets.multiplefacets.tableth01" default="Count"/></a></th>
                                 </tr>
                             </thead>
