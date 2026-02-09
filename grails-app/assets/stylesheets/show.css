@@ -81,7 +81,7 @@
 }
 
 .carousel-image-frame {
-  width: 160px;     /* same width as item */
+  width: 320px;     /* same width as item */
   aspect-ratio: 4 / 3;
   height: auto;
   display: flex;
@@ -106,8 +106,8 @@
 }
 
 .carousel-item {
-  width: 160px;        /* MUST match JS */
-  flex: 0 0 160px;     /* prevent flex resizing */
+  width: 320px;        /* MUST match JS */
+  flex: 0 0 320px;     /* prevent flex resizing */
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -147,4 +147,22 @@
 .carousel-btn.next {
   right: 8px;
 }
+
+.license-badge {
+  display: inline-flex;
+  align-items: center;
+  height: 1em;              /* lock to text height */
+  margin-left: 0.25rem;
+  vertical-align: middle;
+  opacity: 0.75;
+}
+
+.license-badge img {
+  height: 100%;
+  width: auto;
+  max-width: 1.5em;         /* safety cap */
+  object-fit: contain;
+  display: block;
+}
+
 
