@@ -127,8 +127,8 @@
                                         <div class="multipleFacetsIndexHeader">
                                             <a href="#index" class="fsort" data-sort="index" data-foffset="0"></a>
                                             <a href="" id="facet-filter-show"><i class="fa-solid fa-filter"></i></a>
-                                            <input type="text" id="filterPopupFacet" placeholder="<g:message code="facets.multiplefacets.filterPlaceHolder" default="Filter values"/>" value="" />
                                         </div>
+                                        <input type="text" id="filterPopupFacet" class="hidden" placeholder="<g:message code="facets.multiplefacets.filterPlaceHolder" default="Filter values"/>" value="" />
                                     </th>
                                     <th style="border-right-style: none;text-align: right;"><a href="#count" class="fsort" data-sort="count" data-foffset="0" title="<g:message code="facets.multiplefacets.tableth01.title"/>"><g:message code="facets.multiplefacets.tableth01" default="Count"/></a></th>
                                 </tr>
