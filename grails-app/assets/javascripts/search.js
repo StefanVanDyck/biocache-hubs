@@ -1805,6 +1805,8 @@ function init() {
     $("#filterPopupFacet").toggleClass("hidden");
     if ($("#filterPopupFacet").hasClass("hidden")) {
       $("#filterPopupFacet").val("");
+    } else {
+      $("#filterPopupFacet").focus();
     }
   });
 }
