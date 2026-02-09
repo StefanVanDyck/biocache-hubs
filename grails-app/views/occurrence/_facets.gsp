@@ -115,7 +115,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <h3 id="multipleFacetsLabel"><g:message code="facets.multiplefacets.title" default="Refine your search"/></h3>
-                <input type="text" id="filterPopupFacet" defaultValue="Filter values" value="" />
+                <input type="text" id="filterPopupFacet" placeholder="<g:message code="facets.multiplefacets.filterPlaceHolder" default="Filter values"/>" value="" />
             </div>
             <div class="modal-body">
                 <div id="dynamic" class="tableContainer">
