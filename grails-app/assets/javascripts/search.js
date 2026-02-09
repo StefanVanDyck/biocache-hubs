@@ -1941,16 +1941,16 @@ var facetList = []
 
 function loadFacetsContent(facetName, fsort, foffset, facetLimit, replaceFacets, reSort) {
     var jsonUri = BC_CONF.serverName + "/occurrences/facets" + BC_CONF.searchString +
-        "&facets=" + facetName + "&flimit=-1&pageSize=0";
+        "&facets=" + facetName + "&flimit=" + BC_CONF.facetListMax + "&pageSize=0&fsort=" + fsort;
 
-    if (reSort) {
+    if (reSort && (BC_CONF.facetListMax > 0 && facetList.length < BC_CONF.facetListMax)) {
         // remove any facet values in table
         $("table#fullFacets tr").not("tr.tableHead").not("#spinnerRow").remove();
 
         sortFacetList(fsort)
     }
 
-    if (!replaceFacets || reSort) {
+    if (!replaceFacets && !reSort) {
         $("tr#loadingRow").remove(); // remove the loading message
         $("tr#loadMore").remove(); // remove the load more records link
 
@@ -1958,6 +1958,9 @@ function loadFacetsContent(facetName, fsort, foffset, facetLimit, replaceFacets,
         return
     }
     $('#spinnerRow').show();
+
+    // remove any facet values in table
+    $("table#fullFacets tr").not("tr.tableHead").not("#spinnerRow").remove();
 
     $.getJSON(jsonUri, function (data) {
         if (data.totalRecords && data.totalRecords > 0) {
@@ -2022,6 +2025,9 @@ function addFacetItems(facetName, fsort, facetLimit, foffset, replaceFacets, res
             fsort + "' data-foffset='" + (offsetInt + flimitInt) +
             "'>Loading " + facetLimit + " more values...</a></td></tr>";
         $("table#fullFacets tbody").append(loadMore);
+    } else if (facetList.length == BC_CONF.facetListMax) {
+        var limitReached = "<tr><td colspan='3'>" + jQuery.i18n.prop('facets.limitReached', "More items not shown") + "</td></tr>";
+        $("table#fullFacets tbody").append(limitReached);
     }
 
     var tableHeight = $("#fullFacets tbody").height();
