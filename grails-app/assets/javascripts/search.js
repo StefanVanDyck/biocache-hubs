@@ -1799,7 +1799,7 @@ function init() {
   });
 
   // Show/hide the facet filter inside the facet popup
-  $("facet-filter-show").click(function(e) {
+  $("#facet-filter-show").click(function(e) {
     e.preventDefault();
     $("#filterPopupFacet").toggleClass("hidden");
     if ($("#filterPopupFacet").hasClass("hidden")) {
@@ -2332,8 +2332,8 @@ function loadMoreFacets(facetName, displayName, fsort, foffset) {
   $("#facetRefineForm").append(inputsHtml);
   $("table#fullFacets").data("facet", facetName); // data attribute for storing facet field
   $("table#fullFacets").data("label", displayName); // data attribute for storing facet display name
-  $("#indexCol a").html(displayName); // table heading
-  $("#indexCol a").attr("title", "sort by " + displayName); // table heading
+  $("#indexCol a#index").html(displayName); // table heading
+  $("#indexCol a#index").attr("title", "sort by " + displayName); // table heading
 
   $("table#fullFacets tbody").html(""); //clear the existing table
 

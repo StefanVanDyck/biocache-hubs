@@ -1251,11 +1251,16 @@ a.copyLink {
 .multipleFacetsIndexHeader {
   display: flex;
 }
-.facet-filter-show {
+#facet-filter-show {
   margin-left: auto;
   margin-right: 0;
 }
 
 #filterPopupFacet {
   width: 100%;
+}
+#facetRefineForm {
+  .tableHead > th {
+    vertical-align: baseline;
+  }
 }
