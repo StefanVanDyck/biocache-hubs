@@ -854,6 +854,7 @@
                                         prev="${message(code: "show.previousbtn.navigator", default:"Previous")}"
                                         omitLast="true"
                                         params="${params.clone().with { it.remove('max'); it.remove('offset'); it } }"
+                                        maxsteps="${grailsApplication.config.maxPaginationSteps ?: 10}"
                             />
                         </div>
                         </div>
