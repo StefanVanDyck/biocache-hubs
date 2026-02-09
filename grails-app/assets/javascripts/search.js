@@ -1797,6 +1797,15 @@ function init() {
   $("#showHideDQFilter").on("click", function() {
     getExcludedCounts();
   });
+
+  // Show/hide the facet filter inside the facet popup
+  $("facet-filter-show").click(function(e) {
+    e.preventDefault();
+    $("#filterPopupFacet").toggleClass("hidden");
+    if ($("#filterPopupFacet").hasClass("hidden")) {
+      $("#filterPopupFacet").val("");
+    }
+  });
 }
 
 /** get list of encoded query params, excluding the one provided */
