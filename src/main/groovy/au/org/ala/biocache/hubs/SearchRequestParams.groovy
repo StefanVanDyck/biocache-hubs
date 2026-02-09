@@ -33,6 +33,8 @@ class SearchRequestParams implements Validateable{
     Integer foffset = 0
     /** The prefix to limit facet values*/
     String fprefix = ""
+    /** The substring to match facet values (new request parameter) */
+    String fcontains = "" // newly added parameter to request facet value contains
     /**  pagination params */
     Integer start = 0
     Integer offset // grails version of start
@@ -124,6 +126,8 @@ class SearchRequestParams implements Validateable{
             req.append("&foffset=").append(foffset);
         if(!"".equals(fprefix))
             req.append("&fprefix=").append(fprefix);
+        if(!"".equals(fcontains))
+            req.append("&fcontains=").append(conditionalEncode(fcontains, encodeParams));
 
         return req.toString();
     }
@@ -191,6 +195,15 @@ class SearchRequestParams implements Validateable{
         disableQualityFilter.each { dqf ->
             req.append("&disableQualityFilter=").append(URLEncoder.encode(dqf, "UTF-8"))
         }
+
+        if(fprefix){
+            req.append("&fprefix=").append(URLEncoder.encode(fprefix, "UTF-8"));
+        }
+
+        if(fcontains){
+            req.append("&fcontains=").append(URLEncoder.encode(fcontains, "UTF-8"));
+        }
+
         return req.toString();
     }
 }
