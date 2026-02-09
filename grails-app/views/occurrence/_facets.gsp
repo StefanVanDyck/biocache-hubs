@@ -125,7 +125,7 @@
                                     <th>&nbsp;</th>
                                     <th id="indexCol" width="80%">
                                         <div class="multipleFacetsIndexHeader">
-                                            <a href="#index" class="fsort" data-sort="index" data-foffset="0"></a>
+                                            <a href="#index" id="indexColLink" class="fsort" data-sort="index" data-foffset="0"></a>
                                             <a href="" id="facet-filter-show"><i class="fa-solid fa-filter"></i></a>
                                         </div>
                                         <input type="text" id="filterPopupFacet" class="hidden" placeholder="<g:message code="facets.multiplefacets.filterPlaceHolder" default="Filter values"/>" value="" />

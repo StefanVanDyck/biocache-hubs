@@ -1568,7 +1568,7 @@ function init() {
 
   // Facet value filter in popup
   $("#filterPopupFacet").change(
-    debounce(function() {
+    customDebounce(function() {
       var fsort = $(this).data("sort");
       var table = $("table#fullFacets");
       var facetName = $(table).data("facet");
@@ -2332,8 +2332,8 @@ function loadMoreFacets(facetName, displayName, fsort, foffset) {
   $("#facetRefineForm").append(inputsHtml);
   $("table#fullFacets").data("facet", facetName); // data attribute for storing facet field
   $("table#fullFacets").data("label", displayName); // data attribute for storing facet display name
-  $("#indexCol a#index").html(displayName); // table heading
-  $("#indexCol a#index").attr("title", "sort by " + displayName); // table heading
+  $("#indexColLink").html(displayName); // table heading
+  $("#indexColLink").attr("title", "sort by " + displayName); // table heading
 
   $("table#fullFacets tbody").html(""); //clear the existing table
 
@@ -2654,11 +2654,12 @@ function formatFieldValue(facetName, item) {
   return label;
 }
 
-function debounce(func, timeout = 300) {
+function customDebounce(func, timeout = 300) {
   var timer;
   return function() {
     var context = this;
     var args = arguments;
+    console.log("debounce", args);
     clearTimeout(timer);
     timer = setTimeout(function() {
       func.apply(context, args);
