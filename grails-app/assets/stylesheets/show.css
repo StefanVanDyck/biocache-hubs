@@ -81,8 +81,9 @@
 }
 
 .carousel-image-frame {
-  width: 100%;
-  height: 220px;              /* fixed image size */
+  width: 160px;     /* same width as item */
+  aspect-ratio: 3 / 4;   /* excellent for biodiversity photos */
+  height: auto;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -100,11 +101,13 @@
 .carousel-track {
   display: flex;
   height: 100%;
-  align-items: center;
+  align-items: flex-start;
   margin-top: 10px;
 }
 
 .carousel-item {
+  width: 160px;        /* MUST match JS */
+  flex: 0 0 160px;     /* prevent flex resizing */
   height: 100%;
   display: flex;
   flex-direction: column;
