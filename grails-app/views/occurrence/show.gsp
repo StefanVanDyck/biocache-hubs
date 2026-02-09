@@ -286,14 +286,21 @@
                                         <g:if test="${record.raw.occurrence.rights || image.metadata?.rights}">
                                             <cite><b><g:message code="show.sidebar03.cite02" default="Rights"/>:</b> ${image.metadata?.rights ?: record.raw.occurrence.rights}</cite>
                                         </g:if>
-                                        <g:if test="${record.raw.occurrence.rightsholder || image.metadata?.rightsHolder}">
-                                            <cite><b><g:message code="show.sidebar03.cite03" default="Rights holder"/>:</b> ${image.metadata?.rightsHolder ?: record.raw.occurrence.rightsholder}</cite>
-                                        </g:if>
-                                        <g:if test="${record.raw.miscProperties.rightsHolder}">
-                                            <cite><b><g:message code="show.sidebar03.cite03" default="Rights holder"/>:</b> ${record.raw.miscProperties.rightsHolder}</cite>
-                                        </g:if>
-                                        <g:if test="${image.metadata?.license}">
-                                            <cite><b><g:message code="show.sidebar03.image.license" default="License"/>:</b> ${image.metadata?.license}</cite>
+%{--                                        <g:if test="${record.raw.occurrence.rightsholder || image.metadata?.rightsHolder}">--}%
+%{--                                            <cite><b><g:message code="show.sidebar03.cite03" default="Rights holder"/>:</b> ${image.metadata?.rightsHolder ?: record.raw.occurrence.rightsholder}</cite>--}%
+%{--                                        </g:if>--}%
+%{--                                        <g:if test="${record.raw.miscProperties.rightsHolder}">--}%
+%{--                                            <cite><b><g:message code="show.sidebar03.cite03" default="Rights holder"/>:</b> ${record.raw.miscProperties.rightsHolder}</cite>--}%
+%{--                                        </g:if>--}%
+%{--                                        <g:if test="${image.metadata?.license}">--}%
+%{--                                            <cite><b><g:message code="show.sidebar03.image.license" default="License"/>:</b> ${image.metadata?.license}</cite>--}%
+%{--                                        </g:if>--}%
+                                        <g:if test="${image.metadata?.recognisedLicence?.imageUrl}">
+                                            <cite><b>License:</b>
+                                            <span class="license-badge">
+                                                <img src="${image.metadata?.recognisedLicence?.imageUrl}" alt="${image.metadata?.recognisedLicence?.name}"/>
+                                            </span>
+                                            </cite>
                                         </g:if>
                                         <g:if test="${record.raw.miscProperties?.DESCRIPTION}">
                                             <cite><b><g:message code="show.sidebar03.caption" default="Caption"/>:</b> <alatag:sanitizeContent>${raw(record.raw.miscProperties.DESCRIPTION)}</alatag:sanitizeContent></cite>
@@ -356,7 +363,7 @@
                             </g:if>
                         </alatag:occurrenceTableRow>
                         <!-- Scientific name -->
-                        <alatag:occurrenceTableRow fieldCode="scientificName" fieldName="Scientific name" 
+                        <alatag:occurrenceTableRow fieldCode="scientificName" fieldName="Scientific name"
                             infoMessage="${message(code:'dwc.scientificName.info')}">
                             ${fieldsMap.put("taxonConceptID", true)}
                             ${fieldsMap.put("scientificName", true)}
@@ -377,7 +384,7 @@
                             </g:if>
                         </alatag:occurrenceTableRow>
                         <!-- Presence/Absence -->
-                        <alatag:occurrenceTableRow fieldName="occurrenceStatus" fieldCode="occurrenceStatus" 
+                        <alatag:occurrenceTableRow fieldName="occurrenceStatus" fieldCode="occurrenceStatus"
                             infoMessage="${message(code:'dwc.occurrenceStatus.info')}">
                             ${fieldsMap.put("occurrenceStatus", true)}
                             <g:if test="${record.raw.occurrence.occurrenceStatus}">
@@ -385,7 +392,7 @@
                             </g:if>
                         </alatag:occurrenceTableRow>
                         <!-- Coordinate Uncertainty -->
-                        <alatag:occurrenceTableRow fieldCode="coordinateUncertaintyInMeters" fieldName="Coordinate uncertainty in metres" 
+                        <alatag:occurrenceTableRow fieldCode="coordinateUncertaintyInMeters" fieldName="Coordinate uncertainty in metres"
                             infoMessage="${message(code:'dwc.coordinateUncertaintyInMeters.info')}">
                             ${fieldsMap.put("coordinateUncertaintyInMeters", true)}
                             <g:if test="${record.processed.location.coordinateUncertaintyInMeters}">
@@ -393,7 +400,7 @@
                             </g:if>
                         </alatag:occurrenceTableRow>
                         <!-- Individual count -->
-                        <alatag:occurrenceTableRow fieldName="individualCount" fieldCode="individualCount" 
+                        <alatag:occurrenceTableRow fieldName="individualCount" fieldCode="individualCount"
                             infoMessage="${message(code:'dwc.individualCount.info')}">
                             ${fieldsMap.put("individualCount", true)}
                             <g:if test="${record.raw.occurrence.individualCount}">
@@ -401,7 +408,7 @@
                             </g:if>
                         </alatag:occurrenceTableRow>
                         <!-- Life stage -->
-                        <alatag:occurrenceTableRow fieldName="lifeStage" fieldCode="lifeStage" 
+                        <alatag:occurrenceTableRow fieldName="lifeStage" fieldCode="lifeStage"
                             infoMessage="${message(code:'dwc.lifeStage.info')}">
                             ${fieldsMap.put("lifeStage", true)}
                             <g:if test="${record.raw.occurrence.lifeStage}">
@@ -409,7 +416,7 @@
                             </g:if>
                         </alatag:occurrenceTableRow>
                         <!-- Municipality -->
-                        <alatag:occurrenceTableRow fieldName="municipality" fieldCode="municipality" 
+                        <alatag:occurrenceTableRow fieldName="municipality" fieldCode="municipality"
                             infoMessage="${message(code:'dwc.municipality.info')}">
                             ${fieldsMap.put("municipality", true)}
                             <g:if test="${record.raw.location.municipality}">
@@ -417,7 +424,7 @@
                             </g:if>
                         </alatag:occurrenceTableRow>
                         <!-- Locality -->
-                        <alatag:occurrenceTableRow fieldName="locality" fieldCode="locality" 
+                        <alatag:occurrenceTableRow fieldName="locality" fieldCode="locality"
                             infoMessage="${message(code:'dwc.locality.info')}">
                             ${fieldsMap.put("locality", true)}
                             <g:if test="${record.raw.occurrence.locality}">
@@ -425,7 +432,7 @@
                             </g:if>
                         </alatag:occurrenceTableRow>
                         <!-- Sampling protocol -->
-                        <alatag:occurrenceTableRow fieldName="samplingProtocol" fieldCode="samplingProtocol" 
+                        <alatag:occurrenceTableRow fieldName="samplingProtocol" fieldCode="samplingProtocol"
                             infoMessage="${message(code:'dwc.samplingProtocol.info')}">
                             ${fieldsMap.put("samplingProtocol", true)}
                             <g:if test="${record.raw.occurrence.samplingProtocol}">
