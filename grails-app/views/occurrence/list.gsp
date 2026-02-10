@@ -113,14 +113,10 @@
 </asset:script>
 
 <%
-    // Get all 'fq' parameters as a list
+    // Check if the region Vlaanderen filter is applied
     def fqList = params.list('fq') ?: []
-
-    // Get the configured value from Grails config
     def regionVlaanderenFq = grailsApplication.config.getProperty('regionVlaanderen.query')
-
-    // Check if the configured value is present in the list of fq parameters
-    def vlaanderenFilterEnabled = fqList.contains(regionVlaanderenFq)
+    def vlaanderenFilterEnabled = fqList.contains(regionVlaanderenFq) || fqList.contains(URLEncoder.encode(regionVlaanderenFq))
 %>
 
 </head>
@@ -143,10 +139,6 @@
                 <div class="input-group pull-right col-sm-7 col-md-7">
                     <input type="text" id="taxaQuery" name="q" class="form-control"
                            value="${params.list(searchQuery).join(' OR ')}"/>
-                    <g:if test="${vlaanderenFilterEnabled}">
-                        <input type="hidden" name="vlaanderen" value="true"/>
-                        <input type="hidden" name="fq" value="${regionVlaanderenFq}"/>
-                    </g:if>
                     <span class="input-group-btn">
                         <input class="form-control btn btn-default" type="submit" id="solrSubmit" value="${g.message(code:"list.advancedsearchlink.button.label", default:"Quick search")}"/>
                     </span>
