@@ -1241,3 +1241,22 @@ a.copyLink {
     white-space: normal;
 }
 
+.hidden {
+  display: none;
+}
+.multipleFacetsIndexHeader {
+  display: flex;
+}
+#facet-filter-show {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+#filterPopupFacet {
+  width: 100%;
+}
+#facetRefineForm {
+  .tableHead > th {
+    vertical-align: top;
+  }
+}

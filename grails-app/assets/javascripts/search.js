@@ -1376,7 +1376,6 @@ function init() {
     $("a.fsort").on("click", function(e) {
         e.preventDefault();
         var fsort = $(this).data('sort');
-        var foffset = $(this).data('foffset');
         var table = $(this).closest('table');
         if (table.length == 0) {
             table = $(this).parent().siblings('table#fullFacets');
@@ -1384,8 +1383,11 @@ function init() {
         var facetName = $(table).data('facet');
         var displayName = $(table).data('label');
 
-        loadFacetsContent(facetName, fsort, 0, BC_CONF.facetLimit, false, true);
-    });
+    $("table#fullFacets tbody").html(""); //clear the existing table
+
+    const facetFilter = $("#facetFilter").val();
+    loadFacetsContent(facetName, fsort, 0, facetFilter);
+  });
 
     // loadMoreValues (legacy - now handled by inview)
     $("#multipleFacets").on("click", "a.loadMoreValues", function(e) {
@@ -1398,8 +1400,9 @@ function init() {
         var facetName = $(table).data('facet');
         var displayName = $(table).data('label');
 
-        loadFacetsContent(facetName, fsort, foffset, BC_CONF.facetLimit, false, false);
-    });
+    const facetFilter = $("#facetFilter").val();
+    loadFacetsContent(facetName, fsort, foffset, facetFilter);
+  });
 
     // Inview trigger to load more values when tr comes into view
     $("#multipleFacets").on("inview", "tr#loadMore", function() {
@@ -1409,9 +1412,24 @@ function init() {
         var table = $("table#fullFacets");
         var facetName = $(table).data('facet');
         var displayName = $(table).data('label');
-        loadFacetsContent(facetName, fsort, foffset, BC_CONF.facetLimit, false, false);
+    const facetFilter = $("#filterPopupFacet").val();
+    loadFacetsContent(facetName, fsort, foffset, facetFilter);
     });
 
+  // Facet value filter in popup
+  $("#filterPopupFacet").on(
+    "input",
+    customDebounce(function() {
+      var fsort = $(this).data("sort");
+      var table = $("table#fullFacets");
+      var facetName = $(table).data("facet");
+
+      $("table#fullFacets tbody").html(""); //clear the existing table
+
+      const facetFilter = $("#filterPopupFacet").val();
+      loadFacetsContent(facetName, fsort, 0, facetFilter);
+    }, 500),
+  );
     // Email alert buttons
     var alertsUrlPrefix = BC_CONF.alertsUrl || "https://alerts.ala.org.au";
     $("a#alertNewRecords, a#alertNewAnnotations").click(function(e) {
@@ -1590,6 +1608,17 @@ function init() {
     $('#showHideDQFilter').on('click', function() {
         getExcludedCounts();
     });
+
+  // Show/hide the facet filter inside the facet popup
+  $("#facet-filter-show").click(function(e) {
+    e.preventDefault();
+    $("#filterPopupFacet").toggleClass("hidden");
+    if ($("#filterPopupFacet").hasClass("hidden")) {
+      $("#filterPopupFacet").val("");
+    } else {
+      $("#filterPopupFacet").focus();
+    }
+  });
 }
 
 /** get list of encoded query params, excluding the one provided */
@@ -2063,117 +2092,118 @@ function loadMoreFacets(facetName, displayName, fsort, foffset) {
 
 }
 
-var facetList = []
+function loadFacetsContent(facetName, fsort, foffset, facetFilter) {
+  const flimit = Number(BC_CONF.facetLimit) + 1;
+  var jsonUri =
+    BC_CONF.serverName +
+    "/occurrences/facets" +
+    BC_CONF.searchString +
+    "&facets=" +
+    facetName +
+    (facetFilter ? "&fcontains=" + encodeURIComponent(facetFilter) : "") +
+    "&foffset=" +
+    foffset +
+    "&flimit=" +
+    flimit +
+    "&fsort=" +
+    fsort +
+    "&pageSize=0";
 
-function loadFacetsContent(facetName, fsort, foffset, facetLimit, replaceFacets, reSort) {
-    var jsonUri = BC_CONF.serverName + "/occurrences/facets" + BC_CONF.searchString +
-        "&facets=" + facetName + "&flimit=" + BC_CONF.facetListMax + "&pageSize=0&fsort=" + fsort;
+  $("#spinnerRow").show();
 
-    if (reSort && (BC_CONF.facetListMax > 0 && facetList.length < BC_CONF.facetListMax)) {
-        // remove any facet values in table
-        $("table#fullFacets tr").not("tr.tableHead").not("#spinnerRow").remove();
+  $.getJSON(jsonUri, function(data) {
+    if (data.totalRecords && data.totalRecords > 0) {
+      $("tr#loadingRow").remove(); // remove the loading message
+      $("tr#loadMore").remove(); // remove the load more records link
 
-        sortFacetList(fsort)
+      const facetList = data.facetResults[0]
+        ? data.facetResults[0].fieldResult
+        : [];
+
+      addFacetItems(facetName, fsort, foffset, facetList);
+    } else {
+      $("tr#loadingRow").remove(); // remove the loading message
+      $("tr#loadMore").remove(); // remove the load more records link
+      $("#spinnerRow").hide();
+      $("table#fullFacets tbody").append(
+        "<tr><td></td><td>[Error: no values returned]</td></tr>",
+      );
     }
-
-    if (!replaceFacets && !reSort) {
-        $("tr#loadingRow").remove(); // remove the loading message
-        $("tr#loadMore").remove(); // remove the load more records link
-
-        addFacetItems(facetName, fsort, facetLimit, foffset, replaceFacets, reSort)
-        return
-    }
-    $('#spinnerRow').show();
-
-    // remove any facet values in table
-    $("table#fullFacets tr").not("tr.tableHead").not("#spinnerRow").remove();
-
-    $.getJSON(jsonUri, function (data) {
-        if (data.totalRecords && data.totalRecords > 0) {
-            $("tr#loadingRow").remove(); // remove the loading message
-            $("tr#loadMore").remove(); // remove the load more records link
-
-            // store the full list
-            facetList = data.facetResults[0].fieldResult
-            sortFacetList(fsort)
-
-            addFacetItems(facetName, fsort, facetLimit, foffset, replaceFacets, reSort)
-
-        } else {
-            $("tr#loadingRow").remove(); // remove the loading message
-            $("tr#loadMore").remove(); // remove the load more records link
-            $('#spinnerRow').hide();
-            $("table#fullFacets tbody").append("<tr><td></td><td>[Error: no values returned]</td></tr>");
-        }
-    })
+  });
 }
 
-function addFacetItems(facetName, fsort, facetLimit, foffset, replaceFacets, resort) {
-    var html = ''
+function addFacetItems(facetName, fsort, foffset, facetList) {
+  const facetLimit = Number(BC_CONF.facetLimit);
+  var html = "";
 
-    // add the selected items to the table
-    var max = parseInt(foffset) + parseInt(facetLimit)
-    for (var i=foffset;i<max && i < facetList.length;i++) {
-        var el = facetList[i]
-        if (el !== undefined && el.count > 0) {
+  for (var i = 0; i < facetList.length && i < facetLimit; i++) {
+    var el = facetList[i];
+    if (el !== undefined && el.count > 0) {
+      // surround with quotes: fq value if contains spaces but not for range queries
+      var fqEsc =
+        (el.label.indexOf(" ") != -1 ||
+          el.label.indexOf(",") != -1 ||
+          el.label.indexOf("lsid") != -1) &&
+          el.label.indexOf("[") != 0
+          ? '"' + el.label + '"'
+          : el.label; // .replace(/:/g,"\\:")
+      var label = formatFieldValue(facetName, el);
+      var encodeFq = true;
 
-            // surround with quotes: fq value if contains spaces but not for range queries
-            var fqEsc = ((el.label.indexOf(" ") != -1 || el.label.indexOf(",") != -1 || el.label.indexOf("lsid") != -1) && el.label.indexOf("[") != 0)
-                ? "\"" + el.label + "\""
-                : el.label; // .replace(/:/g,"\\:")
-            var label = formatFieldValue(facetName, el);
-            var encodeFq = true;
+      facetName = facetName.replace(/_RNG$/, ""); // remove range version if present
+      var fqParam = el.fq
+        ? encodeURIComponent(el.fq)
+        : facetName + ":" + (encodeFq ? encodeURIComponent(fqEsc) : fqEsc);
 
-            facetName = facetName.replace(/_RNG$/,""); // remove range version if present
-            var fqParam = (el.fq) ? encodeURIComponent(el.fq) : facetName + ":" + ((encodeFq) ? encodeURIComponent(fqEsc) : fqEsc) ;
-
-            //NC: 2013-01-16 I changed the link so that the search string is uri encoded so that " characters do not cause issues
-            //Problematic URL http://biocache.ala.org.au/occurrences/search?q=lsid:urn:lsid:biodiversity.org.au:afd.taxon:b76f8dcf-fabd-4e48-939c-fd3cafc1887a&fq=spatiallyValid:true&fq=state:%22Australian%20Capital%20Territory%22
-            var link = BC_CONF.searchString + "&fq=" + fqParam;
-            var rowType = (i % 2 == 0) ? "normalRow" : "alternateRow";
-            html += "<tr class='" + rowType + "'><td>" +
-                "<input type='checkbox' name='fqs' class='fqs' value=\""  + fqParam +
-                "\"/></td><td class='multiple-facet-value'><a href=\"" + link + "\"> " + label + "</a></td><td class='multiple-facet-count'>" + el.count.toLocaleString() + "</td></tr>";
-        }
+      //NC: 2013-01-16 I changed the link so that the search string is uri encoded so that " characters do not cause issues
+      //Problematic URL http://biocache.ala.org.au/occurrences/search?q=lsid:urn:lsid:biodiversity.org.au:afd.taxon:b76f8dcf-fabd-4e48-939c-fd3cafc1887a&fq=spatiallyValid:true&fq=state:%22Australian%20Capital%20Territory%22
+      var link = BC_CONF.searchString + "&fq=" + fqParam;
+      var rowType = i % 2 == 0 ? "normalRow" : "alternateRow";
+      html +=
+        "<tr class='" +
+        rowType +
+        "'><td>" +
+        "<input type='checkbox' name='fqs' class='fqs' value=\"" +
+        fqParam +
+        "\"/></td><td class='multiple-facet-value'><a href=\"" +
+        link +
+        '"> ' +
+        label +
+        "</a></td><td class='multiple-facet-count'>" +
+        el.count.toLocaleString() +
+        "</td></tr>";
     }
+  }
 
-    $("table#fullFacets tbody").append(html);
+  $("table#fullFacets tbody").append(html);
 
-    $('#spinnerRow').hide();
-    // Fix some border issues
-    $("table#fullFacets tr:last td").css("border-bottom", "1px solid #CCCCCC");
-    $("table#fullFacets td:last-child, table#fullFacets th:last-child").css("border-right", "none");
+  $("#spinnerRow").hide();
+  // Fix some border issues
+  $("table#fullFacets tr:last td").css("border-bottom", "1px solid #CCCCCC");
+  $("table#fullFacets td:last-child, table#fullFacets th:last-child").css(
+    "border-right",
+    "none",
+  );
 
-    if (max < facetList.length) {
-        var offsetInt = Number(foffset);
-        var flimitInt = Number(facetLimit);
-        var loadMore =  "<tr id='loadMore' class=''><td colspan='3'><a href='#index' class='loadMoreValues' data-sort='" +
-            fsort + "' data-foffset='" + (offsetInt + flimitInt) +
-            "'>Loading " + facetLimit + " more values...</a></td></tr>";
-        $("table#fullFacets tbody").append(loadMore);
-    } else if (facetList.length == BC_CONF.facetListMax) {
-        var limitReached = "<tr><td colspan='3'>" + jQuery.i18n.prop('facets.limitReached', "More items not shown") + "</td></tr>";
-        $("table#fullFacets tbody").append(limitReached);
-    }
+  if (facetList.length > facetLimit) {
+    var offsetInt = Number(foffset);
+    var flimitInt = Number(facetLimit);
+    var loadMore =
+      "<tr id='loadMore' class=''><td colspan='3'><a href='#index' class='loadMoreValues' data-sort='" +
+      fsort +
+      "' data-foffset='" +
+      (offsetInt + flimitInt) +
+      "'>Loading " +
+      facetLimit +
+      " more values...</a></td></tr>";
+    $("table#fullFacets tbody").append(loadMore);
+  }
 
-    var tableHeight = $("#fullFacets tbody").height();
-    var tbodyHeight = 0;
-    $("#fullFacets tbody tr").each(function(i, el) {
-        tbodyHeight += $(el).height();
-    });
-}
-
-function sortFacetList(fsort) {
-    if (fsort == 'count') {
-        facetList.sort(function (a, b) {
-            // descending order
-            return a.count === b.count ? 0 : (a.count > b.count ? -1 : 1)
-        })
-    } else { // index sort
-        facetList.sort(function (a, b) {
-            return a.label === b.label ? 0 : (a.label < b.label ? -1 : 1)
-        })
-    }
+  var tableHeight = $("#fullFacets tbody").height();
+  var tbodyHeight = 0;
+  $("#fullFacets tbody tr").each(function(i, el) {
+    tbodyHeight += $(el).height();
+  });
 }
 
 function processLoadFacetQueue() {
@@ -2332,4 +2362,16 @@ function formatFieldValue(facetName, item) {
     }
 
     return label;
+}
+
+function customDebounce(func, timeout = 500) {
+  var timer;
+  return function() {
+    var context = this;
+    var args = arguments;
+    clearTimeout(timer);
+    timer = setTimeout(function() {
+      func.apply(context, args);
+    }, timeout);
+  };
 }
