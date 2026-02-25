@@ -117,7 +117,7 @@
     def regionVlaanderenFq = grailsApplication.config.getProperty('regionVlaanderen.query')
 
     // Check if the configured value is present in the list of fq parameters
-    def vlaanderenFilterEnabled = fqList.contains(regionVlaanderenFq)
+    def vlaanderenFilterEnabled = fqList.contains(regionVlaanderenFq) || fqList.contains(java.net.URLEncoder.encode(regionVlaanderenFq))
 %>
 
 </head>
