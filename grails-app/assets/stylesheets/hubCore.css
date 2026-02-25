@@ -2,5 +2,6 @@
 *= require-XX-bootstrap-theme.min.css
 *= require autocomplete.css
 *= require base.css // Old styles
+*= require facetRangeSlider.css
 *** = require bootstrapAdditions.css // Old styles
 */

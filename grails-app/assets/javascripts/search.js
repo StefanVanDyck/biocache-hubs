@@ -14,6 +14,7 @@
  *
  */
 //= require searchCore.js
+//= require facetRangeSlider.js
 //= require_self
 
 // Jquery Document.onLoad equivalent
@@ -2534,11 +2535,20 @@ function loadFacet(facet) {
           parentNode.remove();
         } else {
           var fieldDisplayName = formatFieldName(facet);
-          var list = createFacetLinkList(
-            data.facetResults[0],
-            queryString,
-            fieldDisplayName,
-          );
+          var list
+          if (facet == "year" || facet == "occurrence_decade_i") {
+            list = createFacetLinkList(
+              data.facetResults[0],
+              queryString,
+              fieldDisplayName,
+            );
+          } else {
+            list = createFacetRangeSlider(
+              facet,
+              queryString,
+              data.facetResults[0],
+            );
+          }
 
           spinnerNode.remove();
 
@@ -2619,6 +2629,87 @@ function createFacetLinkList(facetResult, queryString, fieldDisplayName) {
   });
 
   return ul;
+}
+
+function createFacetRangeSelect(facetResult, queryString, fieldDisplayName) {
+  const container = document.createElement("div");
+  container.
+  const histogram = document.createElement("div");
+  ul.classList.add("facets");
+
+
+  const keys = facetResult.fieldResult.map(d => parseInt(d.label, 10));
+  const counts = facetResult.fieldResult.map(d => d.count);
+  const minKey = keys[0];
+  const maxKey = keys[keys.length - 1];
+
+  // Build histogram bars
+  const histogram = document.getElementById('histogram');
+  data.forEach((d, i) => {
+    const bar = document.createElement('div');
+    bar.className = 'histogram-bar';
+    bar.dataset.year = d.label;
+    bar.style.height = ((logCounts[i] / maxLog) * 100).toFixed(2) + '%';
+    bar.title = `${d.label}: ${d.count.toLocaleString()}`;
+    histogram.appendChild(bar);
+  });
+
+  // Set up sliders
+  const sliderMin = document.getElementById('sliderMin');
+  const sliderMax = document.getElementById('sliderMax');
+  const rangeFill = document.getElementById('rangeFill');
+  const rangeOutput = document.getElementById('rangeOutput');
+  const labelMin = document.getElementById('labelMin');
+  const labelMax = document.getElementById('labelMax');
+
+  [sliderMin, sliderMax].forEach(s => {
+    s.min = minYear;
+    s.max = maxYear;
+    s.step = 1;
+  });
+  sliderMin.value = minYear;
+  sliderMax.value = maxYear;
+
+  labelMin.textContent = minYear;
+  labelMax.textContent = maxYear;
+
+  function update() {
+    let lo = parseInt(sliderMin.value, 10);
+    let hi = parseInt(sliderMax.value, 10);
+
+    // Prevent thumbs from crossing
+    if (lo > hi) {
+      if (this === sliderMin) {
+        sliderMin.value = hi;
+        lo = hi;
+      } else {
+        sliderMax.value = lo;
+        hi = lo;
+      }
+    }
+
+    const total = maxYear - minYear;
+    const leftPct = ((lo - minYear) / total) * 100;
+    const rightPct = ((maxYear - hi) / total) * 100;
+
+    rangeFill.style.left = leftPct + '%';
+    rangeFill.style.right = rightPct + '%';
+
+    rangeOutput.textContent = lo === hi ? lo : `${lo} – ${hi}`;
+
+    // Colour histogram bars
+    const bars = histogram.querySelectorAll('.histogram-bar');
+    bars.forEach(bar => {
+      const y = parseInt(bar.dataset.year, 10);
+      bar.classList.toggle('in-range', y >= lo && y <= hi);
+    });
+  }
+
+  sliderMin.addEventListener('input', update);
+  sliderMax.addEventListener('input', update);
+
+  // Initialise
+  update.call(sliderMin);
 }
 
 function formatFieldName(fieldName) {

@@ -1,0 +1,101 @@
+` .facet-range-slider-widget {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1.5rem;
+  max-width: 700px;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+.facet-range-slider-histogram {
+  display: flex;
+  align-items: flex-end;
+  gap: 1px;
+  height: 80px;
+  width: 100%;
+}
+.facet-range-slider-bar {
+  flex: 1;
+  min-width: 1px;
+  background: #b0c4de;
+  transition:
+    background 0.1s,
+    height 0.2s;
+  cursor: default;
+}
+.facet-range-slider-bar.in-range {
+  background: #2b6cb0;
+}
+.facet-range-slider-track-area {
+  position: relative;
+  height: 32px;
+}
+.facet-range-slider-track-bg {
+  position: absolute;
+  height: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 0;
+  right: 0;
+  background: #ddd;
+  border-radius: 2px;
+}
+.facet-range-slider-range-fill {
+  position: absolute;
+  height: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #2b6cb0;
+  pointer-events: none;
+  z-index: 1;
+}
+.facet-range-slider-track-area input[type="range"] {
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  pointer-events: none;
+  margin: 0;
+  padding: 0;
+  height: 4px;
+}
+.facet-range-slider-track-area input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #2b6cb0;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  pointer-events: all;
+}
+.facet-range-slider-track-area input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #2b6cb0;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  pointer-events: all;
+}
+.facet-range-slider-axis {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: #555;
+  margin-top: 4px;
+}
+.facet-range-slider-filter-link {
+  display: block;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2b6cb0;
+  margin-top: 0.75rem;
+}
