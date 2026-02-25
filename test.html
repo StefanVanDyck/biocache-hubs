@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title></title>
+    <link
+      href="file:///@home/stefan/Projects/Inbo/biocache-hubs/grails-app/assets/stylesheets/facetRangeSlider.css"
+      rel="stylesheet"
+    />
+    <script src="file:///@home/stefan/Projects/Inbo/biocache-hubs/grails-app/assets/javascripts/facetRangeSlider.js"></script>
+  </head>
+  <body>
+    <div id="test"></div>
+    <script>
+      const data = [
+        {
+          i18nCode: "occurrence_decade_i.1950",
+          count: 239289,
+          label: "1950",
+          fq: 'occurrence_decade_i:"1950"',
+        },
+        {
+          i18nCode: "occurrence_decade_i.1960",
+          count: 143168,
+          label: "1960",
+          fq: 'occurrence_decade_i:"1960"',
+        },
+        {
+          i18nCode: "occurrence_decade_i.1970",
+          count: 765980,
+          label: "1970",
+          fq: 'occurrence_decade_i:"1970"',
+        },
+        {
+          i18nCode: "occurrence_decade_i.1980",
+          count: 1026172,
+          label: "1980",
+          fq: 'occurrence_decade_i:"1980"',
+        },
+        {
+          i18nCode: "occurrence_decade_i.1990",
+          count: 2010432,
+          label: "1990",
+          fq: 'occurrence_decade_i:"1990"',
+        },
+        {
+          i18nCode: "occurrence_decade_i.2000",
+          count: 4026821,
+          label: "2000",
+          fq: 'occurrence_decade_i:"2000"',
+        },
+        {
+          i18nCode: "occurrence_decade_i.2010",
+          count: 18550034,
+          label: "2010",
+          fq: 'occurrence_decade_i:"2010"',
+        },
+        {
+          i18nCode: "occurrence_decade_i.2020",
+          count: 6170029,
+          label: "2020",
+          fq: 'occurrence_decade_i:"2020"',
+        },
+        {
+          i18nCode: "occurrence_decade_i.novalue",
+          count: 71021,
+          label: "Not supplied",
+          fq: "-occurrence_decade_i:*",
+        },
+      ];
+      const facetRangeSlider = createFacetRangeSlider("year", "", data);
+      document.getElementById("test").appendChild(facetRangeSlider);
+    </script>
+  </body>
+</html>

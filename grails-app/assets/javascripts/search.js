@@ -39,6 +39,28 @@ $(document).ready(function() {
 var inFacetsLoop = false;
 var loadFacetsQueue = [];
 
+/**
+ * Configuration for facets that should use Solr range faceting.
+ * Maps facet field names to their range query parameters.
+ */
+var FACET_RANGE_CONFIG = {
+  year: {
+    facetRangeStart: "1600",
+    facetRangeEnd: String(new Date().getFullYear() + 1),
+    facetRangeGap: "1"
+  },
+  event_date: {
+    facetRangeStart: "1600-01-01T00:00:00Z",
+    facetRangeEnd: "NOW/YEAR",
+    facetRangeGap: "+1YEAR"
+  },
+  date_identified: {
+    facetRangeStart: "1600-01-01T00:00:00Z",
+    facetRangeEnd: "NOW/YEAR",
+    facetRangeGap: "+1YEAR"
+  }
+};
+
 function init() {
   // check for i18n
   var i = 0;
@@ -2502,7 +2524,8 @@ function loadFacet(facet) {
     if (
       parentNode.length === 0 ||
       parentNode.is(":hidden") ||
-      parentNode.find("ul").length > 0
+      parentNode.find("ul").length > 0 ||
+      parentNode.find(".facet-range-slider-widget").length > 0
     ) {
       inFacetsLoop = false;
       processLoadFacetQueue();
@@ -2515,44 +2538,68 @@ function loadFacet(facet) {
     var queryContextParam = BC_CONF.queryContext
       ? "&qc=" + BC_CONF.queryContext
       : "";
-    var url =
-      BC_CONF.biocacheServiceUrl +
-      "/occurrences/search?" +
-      queryString +
-      "&facets=" +
-      facet +
-      queryContextParam;
+
+    var rangeConfig = FACET_RANGE_CONFIG[facet];
+
+    var url;
+    if (rangeConfig) {
+      // Use facet range query via the hub's /occurrences/facets endpoint
+      url =
+        BC_CONF.serverName +
+        "/occurrences/facets?" +
+        queryString +
+        "&facets=" + facet +
+        "&facetRanges=" + facet +
+        "&facetRangeStart=" + encodeURIComponent(rangeConfig.facetRangeStart) +
+        "&facetRangeEnd=" + encodeURIComponent(rangeConfig.facetRangeEnd) +
+        "&facetRangeGap=" + encodeURIComponent(rangeConfig.facetRangeGap) +
+        "&pageSize=0" +
+        queryContextParam;
+    } else {
+      // Standard facet query directly to biocache-service
+      url =
+        BC_CONF.biocacheServiceUrl +
+        "/occurrences/search?" +
+        queryString +
+        "&facets=" +
+        facet +
+        queryContextParam;
+    }
 
     $.ajax({
       url: url,
       success: function(data) {
+        var facetResults = data.facetResults;
+
         if (
-          data.facetResults.length === 0 ||
-          data.facetResults[0].fieldResult.length === 0
+          !facetResults || facetResults.length === 0 ||
+          facetResults[0].fieldResult.length === 0
         ) {
           // remove if there are no results
           parentNode.prev().remove();
           parentNode.remove();
         } else {
           var fieldDisplayName = formatFieldName(facet);
-          var list
-          if (facet == "year" || facet == "occurrence_decade_i") {
-            list = createFacetLinkList(
-              data.facetResults[0],
-              queryString,
-              fieldDisplayName,
-            );
-          } else {
+          var list;
+
+          if (rangeConfig) {
+            // Use the range slider for range facets
             list = createFacetRangeSlider(
               facet,
               queryString,
-              data.facetResults[0],
+              facetResults[0].fieldResult
+            );
+          } else {
+            list = createFacetLinkList(
+              facetResults[0],
+              queryString,
+              fieldDisplayName,
             );
           }
 
           spinnerNode.remove();
 
-          if (data.facetResults[0].fieldResult.length > 1) {
+          if (!rangeConfig && facetResults[0].fieldResult.length > 1) {
             moreNode.show();
           }
 
@@ -2629,87 +2676,6 @@ function createFacetLinkList(facetResult, queryString, fieldDisplayName) {
   });
 
   return ul;
-}
-
-function createFacetRangeSelect(facetResult, queryString, fieldDisplayName) {
-  const container = document.createElement("div");
-  container.
-  const histogram = document.createElement("div");
-  ul.classList.add("facets");
-
-
-  const keys = facetResult.fieldResult.map(d => parseInt(d.label, 10));
-  const counts = facetResult.fieldResult.map(d => d.count);
-  const minKey = keys[0];
-  const maxKey = keys[keys.length - 1];
-
-  // Build histogram bars
-  const histogram = document.getElementById('histogram');
-  data.forEach((d, i) => {
-    const bar = document.createElement('div');
-    bar.className = 'histogram-bar';
-    bar.dataset.year = d.label;
-    bar.style.height = ((logCounts[i] / maxLog) * 100).toFixed(2) + '%';
-    bar.title = `${d.label}: ${d.count.toLocaleString()}`;
-    histogram.appendChild(bar);
-  });
-
-  // Set up sliders
-  const sliderMin = document.getElementById('sliderMin');
-  const sliderMax = document.getElementById('sliderMax');
-  const rangeFill = document.getElementById('rangeFill');
-  const rangeOutput = document.getElementById('rangeOutput');
-  const labelMin = document.getElementById('labelMin');
-  const labelMax = document.getElementById('labelMax');
-
-  [sliderMin, sliderMax].forEach(s => {
-    s.min = minYear;
-    s.max = maxYear;
-    s.step = 1;
-  });
-  sliderMin.value = minYear;
-  sliderMax.value = maxYear;
-
-  labelMin.textContent = minYear;
-  labelMax.textContent = maxYear;
-
-  function update() {
-    let lo = parseInt(sliderMin.value, 10);
-    let hi = parseInt(sliderMax.value, 10);
-
-    // Prevent thumbs from crossing
-    if (lo > hi) {
-      if (this === sliderMin) {
-        sliderMin.value = hi;
-        lo = hi;
-      } else {
-        sliderMax.value = lo;
-        hi = lo;
-      }
-    }
-
-    const total = maxYear - minYear;
-    const leftPct = ((lo - minYear) / total) * 100;
-    const rightPct = ((maxYear - hi) / total) * 100;
-
-    rangeFill.style.left = leftPct + '%';
-    rangeFill.style.right = rightPct + '%';
-
-    rangeOutput.textContent = lo === hi ? lo : `${lo} – ${hi}`;
-
-    // Colour histogram bars
-    const bars = histogram.querySelectorAll('.histogram-bar');
-    bars.forEach(bar => {
-      const y = parseInt(bar.dataset.year, 10);
-      bar.classList.toggle('in-range', y >= lo && y <= hi);
-    });
-  }
-
-  sliderMin.addEventListener('input', update);
-  sliderMax.addEventListener('input', update);
-
-  // Initialise
-  update.call(sliderMin);
 }
 
 function formatFieldName(fieldName) {

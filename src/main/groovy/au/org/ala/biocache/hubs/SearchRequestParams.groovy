@@ -35,6 +35,14 @@ class SearchRequestParams implements Validateable{
     String fprefix = ""
     /** The substring to match facet values (new request parameter) */
     String fcontains = "" // newly added parameter to request facet value contains
+    /** Fields to perform range faceting on (maps to Solr facet.range) */
+    String[] facetRanges = []
+    /** Global start value for facet ranges (maps to Solr facet.range.start) */
+    String facetRangeStart = ""
+    /** Global end value for facet ranges (maps to Solr facet.range.end) */
+    String facetRangeEnd = ""
+    /** Global gap value for facet ranges (maps to Solr facet.range.gap) */
+    String facetRangeGap = ""
     /**  pagination params */
     Integer start = 0
     Integer offset // grails version of start
@@ -128,6 +136,18 @@ class SearchRequestParams implements Validateable{
             req.append("&fprefix=").append(fprefix);
         if(!"".equals(fcontains))
             req.append("&fcontains=").append(conditionalEncode(fcontains, encodeParams));
+
+        if (facet && facetRanges?.length > 0) {
+            facetRanges.each { range ->
+                if (range) req.append("&facetRanges=").append(conditionalEncode(range, encodeParams))
+            }
+            if (facetRangeStart)
+                req.append("&facetRangeStart=").append(conditionalEncode(facetRangeStart, encodeParams))
+            if (facetRangeEnd)
+                req.append("&facetRangeEnd=").append(conditionalEncode(facetRangeEnd, encodeParams))
+            if (facetRangeGap)
+                req.append("&facetRangeGap=").append(conditionalEncode(facetRangeGap, encodeParams))
+        }
 
         return req.toString();
     }

@@ -687,6 +687,7 @@ class OccurrenceController {
 
     def facets(SpatialSearchRequestParams requestParams) {
         requestParams.fq = params.list("fq") as String[] // override Grails binding which splits on internal commas in value
+        requestParams.facetRanges = params.list("facetRanges") as String[]
         render webServicesService.facetSearch(requestParams) as JSON
     }
 

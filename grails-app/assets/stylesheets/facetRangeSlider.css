@@ -1,4 +1,4 @@
-` .facet-range-slider-widget {
+.facet-range-slider-widget {
   background: #fff;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -98,4 +98,13 @@
   font-weight: 600;
   color: #2b6cb0;
   margin-top: 0.75rem;
+}
+.facet-range-slider-extra-link {
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: #555;
+  margin-top: 0.4rem;
+}
+.facet-range-slider-extra-link:hover {
+  color: #2b6cb0;
 }
