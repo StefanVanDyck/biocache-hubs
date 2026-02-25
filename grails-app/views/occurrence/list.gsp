@@ -34,6 +34,7 @@
     <g:set var="searchString" value="${raw(sr?.urlParameters).encodeAsURL()}"/>
     <g:set var="biocacheServiceUrl" value="${alatag.getBiocacheAjaxUrl()}"/>
     <g:set var="regionVlaanderenFq" value="${grailsApplication.config.getProperty('regionVlaanderen.query')}"/>
+    <g:set var="vlaanderenFilterEnabled" value="${(params.list('fq') ?: []).contains(regionVlaanderenFq)}"/>
     var BC_CONF = {
         contextPath: "${request.contextPath}",
             serverName: "<g:createLink absolute="true" uri="" />",
@@ -108,18 +109,6 @@
         google.load('maps','3.5');
     </g:if>
 </asset:script>
-
-<%
-    // Get all 'fq' parameters as a list
-    def fqList = params.list('fq') ?: []
-
-    // Get the configured value from Grails config
-    def regionVlaanderenFq = grailsApplication.config.getProperty('regionVlaanderen.query')
-
-    // Check if the configured value is present in the list of fq parameters
-    def vlaanderenFilterEnabled = fqList.contains(regionVlaanderenFq) || fqList.contains(java.net.URLEncoder.encode(regionVlaanderenFq))
-%>
-
 </head>
 
 <body class="occurrence-search-">
