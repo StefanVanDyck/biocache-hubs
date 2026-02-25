@@ -33,6 +33,7 @@
     <g:set var="fqParams" value="${(params.fq) ? "&fq=" + params.list('fq')?.join('&fq=') : ''}"/>
     <g:set var="searchString" value="${raw(sr?.urlParameters).encodeAsURL()}"/>
     <g:set var="biocacheServiceUrl" value="${alatag.getBiocacheAjaxUrl()}"/>
+    <g:set var="regionVlaanderenFq" value="${grailsApplication.config.getProperty('regionVlaanderen.query')}"/>
     var BC_CONF = {
         contextPath: "${request.contextPath}",
             serverName: "<g:createLink absolute="true" uri="" />",
