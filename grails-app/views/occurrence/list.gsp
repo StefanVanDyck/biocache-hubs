@@ -139,10 +139,6 @@
                 <div class="input-group pull-right col-sm-7 col-md-7">
                     <input type="text" id="taxaQuery" name="q" class="form-control"
                            value="${params.list(searchQuery).join(' OR ')}"/>
-                    <g:if test="${vlaanderenFilterEnabled}">
-                        <input type="hidden" name="vlaanderen" value="true"/>
-                        <input type="hidden" name="fq" value="${regionVlaanderenFq}"/>
-                    </g:if>
                     <span class="input-group-btn">
                         <input class="form-control btn btn-default" type="submit" id="solrSubmit" value="${g.message(code:"list.advancedsearchlink.button.label", default:"Quick search")}"/>
                     </span>
@@ -247,11 +243,11 @@
                 </a>
                 <g:if test="${vlaanderenFilterEnabled}">
                     <a id="showAllButton" class="btn btn-primary btn-sm tooltips" href="${createLink(uri: request.requestURL,
-                            params: params.findAll { k, v -> v instanceof List ? !v.contains(regionVlaanderenFq) : v != regionVlaanderenFq})}" title="<g:message code="list.vbp.flanders.button.label"/>">
+                            params: params ? params.findAll { k, v -> v instanceof List ? !v.contains(regionVlaanderenFq) : v != regionVlaanderenFq} : {})}" title="<g:message code="list.vbp.flanders.button.label"/>">
                         <g:message code="list.vbp.flanders.button.label" default="Flanders"/></a>
                 </g:if>
                 <g:else>
-                    <a id="showFlandersButton" class="btn btn-default btn-sm tooltips" href="${createLink(uri: request.requestURL, params: params + [fq: regionVlaanderenFq])}" title="<g:message code="list.vbp.flanders.button.label"/>">
+                    <a id="showFlandersButton" class="btn btn-default btn-sm tooltips" href="${createLink(uri: request.requestURL, params: (params ? params : {}) + [fq: regionVlaanderenFq])}" title="<g:message code="list.vbp.flanders.button.label"/>">
                         <g:message code="list.vbp.flanders.button.label" default="Flanders"/></a>
                 </g:else>
                 </div>
