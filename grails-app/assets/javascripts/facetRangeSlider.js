@@ -63,7 +63,12 @@ function createFacetRangeSlider(facetId, queryString, data) {
   var axis = _el("div", "facet-range-slider-axis");
   var axisLeft = _el("span");
   var axisRight = _el("span");
-  var sliderFilterLink = _el("a", "facet-range-slider-filter-link");
+  var sliderFilterLink = _el("a", "facet-range-slider-filter-link tooltips");
+  var sliderFilterIcon = _el("span", "fa fa-square-o");
+  sliderFilterIcon.innerHTML = "&nbsp;";
+  var sliderFilterItem = _el("span", "facet-item");
+  sliderFilterLink.appendChild(sliderFilterIcon);
+  sliderFilterLink.appendChild(sliderFilterItem);
 
   var maxIdx = parsed.length - 1;
   sliderMin.type = sliderMax.type = "range";
@@ -88,7 +93,7 @@ function createFacetRangeSlider(facetId, queryString, data) {
   widget.appendChild(axis);
   widget.appendChild(sliderFilterLink);
 
-  // ---- Histogram bars ----
+  // ---- Histogram bars (one per parsed entry — Solr gap controls bin count) ----
   var counts = parsed.map(function(p) { return p.count; });
   var maxCount = Math.max.apply(null, counts);
 
@@ -126,10 +131,16 @@ function createFacetRangeSlider(facetId, queryString, data) {
 
     var loLabel = parsed[low].displayLabel;
     var hiLabel = parsed[high].displayLabel;
-    sliderFilterLink.textContent =
+    var rangeText =
       low === high
-        ? loLabel + " (" + inRangeCount.toLocaleString() + ")"
-        : loLabel + " – " + hiLabel + " (" + inRangeCount.toLocaleString() + ")";
+        ? loLabel
+        : loLabel + " – " + hiLabel;
+
+    // Update the link label and count, preserving the icon + facet-item structure
+    sliderFilterItem.textContent = rangeText;
+    var countSpan = _el("span", "facetCount");
+    countSpan.textContent = " (" + inRangeCount.toLocaleString() + ")";
+    sliderFilterItem.appendChild(countSpan);
   }
 
   function onSliderInput() {
@@ -161,26 +172,31 @@ function createFacetRangeSlider(facetId, queryString, data) {
   onSliderInput.call(sliderMin);
 
   // ---- Before / After / Not-supplied links ----
+  // These use the same checkbox-icon + label pattern as regular facet list items.
   if (beforeEntry && beforeEntry.count > 0) {
-    var beforeLink = _el("a", "facet-range-slider-filter-link facet-range-slider-extra-link");
-    var beforeFq = _buildEntryFq(beforeEntry, facetId);
-    beforeLink.textContent = "Before " + parsed[0].displayLabel + " (" + beforeEntry.count.toLocaleString() + ")";
-    beforeLink.href = "?" + queryString + "&fq=" + encodeURIComponent(beforeFq);
+    var beforeLink = _facetLink(
+      "?" + queryString + "&fq=" + encodeURIComponent(_buildEntryFq(beforeEntry, facetId)),
+      "Before " + parsed[0].displayLabel,
+      beforeEntry.count
+    );
     widget.appendChild(beforeLink);
   }
 
   if (afterEntry && afterEntry.count > 0) {
-    var afterLink = _el("a", "facet-range-slider-filter-link facet-range-slider-extra-link");
-    var afterFq = _buildEntryFq(afterEntry, facetId);
-    afterLink.textContent = "After " + parsed[parsed.length - 1].displayLabel + " (" + afterEntry.count.toLocaleString() + ")";
-    afterLink.href = "?" + queryString + "&fq=" + encodeURIComponent(afterFq);
+    var afterLink = _facetLink(
+      "?" + queryString + "&fq=" + encodeURIComponent(_buildEntryFq(afterEntry, facetId)),
+      "After " + parsed[parsed.length - 1].displayLabel,
+      afterEntry.count
+    );
     widget.appendChild(afterLink);
   }
 
   if (notSuppliedEntry && notSuppliedEntry.count > 0) {
-    var notSuppliedLink = _el("a", "facet-range-slider-filter-link facet-range-slider-extra-link");
-    notSuppliedLink.textContent = notSuppliedEntry.label + " (" + notSuppliedEntry.count.toLocaleString() + ")";
-    notSuppliedLink.href = "?" + queryString + "&fq=" + encodeURIComponent(notSuppliedEntry.fq || ("-" + facetId + ":*"));
+    var notSuppliedLink = _facetLink(
+      "?" + queryString + "&fq=" + encodeURIComponent(notSuppliedEntry.fq || ("-" + facetId + ":*")),
+      notSuppliedEntry.label,
+      notSuppliedEntry.count
+    );
     widget.appendChild(notSuppliedLink);
   }
 
@@ -194,6 +210,32 @@ function _el(tag, className) {
   var node = document.createElement(tag);
   if (className) node.className = className;
   return node;
+}
+
+/**
+ * Create a facet-style link that mirrors the regular facet list items:
+ *   <a class="facet-range-slider-filter-link facet-range-slider-extra-link tooltips">
+ *     <span class="fa fa-square-o">&nbsp;</span>
+ *     <span class="facet-item">Label <span class="facetCount"> (N)</span></span>
+ *   </a>
+ */
+function _facetLink(href, label, count) {
+  var a = _el("a", "facet-range-slider-filter-link facet-range-slider-extra-link tooltips");
+  a.href = href;
+
+  var icon = _el("span", "fa fa-square-o");
+  icon.innerHTML = "&nbsp;";
+  a.appendChild(icon);
+
+  var item = _el("span", "facet-item");
+  item.textContent = label;
+
+  var countSpan = _el("span", "facetCount");
+  countSpan.textContent = " (" + count.toLocaleString() + ")";
+  item.appendChild(countSpan);
+
+  a.appendChild(item);
+  return a;
 }
 
 /** Known date facet field names. */

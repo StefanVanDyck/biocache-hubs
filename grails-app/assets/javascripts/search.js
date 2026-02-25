@@ -40,24 +40,62 @@ var inFacetsLoop = false;
 var loadFacetsQueue = [];
 
 /**
+ * Target number of histogram bins for range facets.
+ * The gap is computed so that Solr returns approximately this many buckets.
+ */
+var FACET_RANGE_TARGET_BINS = 20;
+
+/**
  * Configuration for facets that should use Solr range faceting.
- * Maps facet field names to their range query parameters.
+ * Maps facet field names to their range query configuration.
+ *
+ * For numeric fields (year), stats.field is used to discover actual min/max.
+ * For date fields, the stats min/max are ISO timestamps that get converted to year ints.
+ * The gap is computed dynamically to produce ~FACET_RANGE_TARGET_BINS buckets.
+ *
+ * Each entry has:
+ *   statsField   - the Solr field to request stats on
+ *   buildParams  - function(min, max) returning {facetRangeStart, facetRangeEnd, facetRangeGap}
  */
 var FACET_RANGE_CONFIG = {
   year: {
-    facetRangeStart: "1600",
-    facetRangeEnd: String(new Date().getFullYear() + 1),
-    facetRangeGap: "1"
+    statsField: "year",
+    buildParams: function(min, max) {
+      var start = Math.floor(Number(min));
+      var end = Math.ceil(Number(max)) + 1; // +1 so the max value falls inside the last bucket
+      var gap = Math.max(1, Math.ceil((end - start) / FACET_RANGE_TARGET_BINS));
+      return {
+        facetRangeStart: String(start),
+        facetRangeEnd: String(end),
+        facetRangeGap: String(gap)
+      };
+    }
   },
   event_date: {
-    facetRangeStart: "1600-01-01T00:00:00Z",
-    facetRangeEnd: "NOW/YEAR",
-    facetRangeGap: "+1YEAR"
+    statsField: "event_date",
+    buildParams: function(min, max) {
+      var startYear = (typeof min === "string" ? new Date(min) : min).getFullYear();
+      var endYear = (typeof max === "string" ? new Date(max) : max).getFullYear() + 1;
+      var gapYears = Math.max(1, Math.ceil((endYear - startYear) / FACET_RANGE_TARGET_BINS));
+      return {
+        facetRangeStart: startYear + "-01-01T00:00:00Z",
+        facetRangeEnd: "NOW/YEAR",
+        facetRangeGap: "+" + gapYears + "YEAR"
+      };
+    }
   },
   date_identified: {
-    facetRangeStart: "1600-01-01T00:00:00Z",
-    facetRangeEnd: "NOW/YEAR",
-    facetRangeGap: "+1YEAR"
+    statsField: "date_identified",
+    buildParams: function(min, max) {
+      var startYear = (typeof min === "string" ? new Date(min) : min).getFullYear();
+      var endYear = (typeof max === "string" ? new Date(max) : max).getFullYear() + 1;
+      var gapYears = Math.max(1, Math.ceil((endYear - startYear) / FACET_RANGE_TARGET_BINS));
+      return {
+        facetRangeStart: startYear + "-01-01T00:00:00Z",
+        facetRangeEnd: "NOW/YEAR",
+        facetRangeGap: "+" + gapYears + "YEAR"
+      };
+    }
   }
 };
 
@@ -2541,83 +2579,137 @@ function loadFacet(facet) {
 
     var rangeConfig = FACET_RANGE_CONFIG[facet];
 
-    var url;
     if (rangeConfig) {
-      // Use facet range query via the hub's /occurrences/facets endpoint
-      url =
-        BC_CONF.serverName +
-        "/occurrences/facets?" +
+      // --- Two-step flow for range facets ---
+      // Step 1: Request stats (min/max) from biocache-service directly
+      var statsUrl =
+        BC_CONF.biocacheServiceUrl +
+        "/occurrences/search?" +
         queryString +
-        "&facets=" + facet +
-        "&facetRanges=" + facet +
-        "&facetRangeStart=" + encodeURIComponent(rangeConfig.facetRangeStart) +
-        "&facetRangeEnd=" + encodeURIComponent(rangeConfig.facetRangeEnd) +
-        "&facetRangeGap=" + encodeURIComponent(rangeConfig.facetRangeGap) +
-        "&pageSize=0" +
+        "&facets=&pageSize=0" +
+        "&stats=true" +
+        "&stats.field=" + encodeURIComponent(rangeConfig.statsField) +
         queryContextParam;
+
+      $.ajax({
+        url: statsUrl,
+        success: function(statsData) {
+          var fieldStats = statsData.fieldStats;
+          var statsItem = fieldStats && fieldStats[rangeConfig.statsField];
+
+          if (!statsItem || statsItem.min == null || statsItem.max == null) {
+            // No data for this field — remove the facet panel
+            parentNode.prev().remove();
+            parentNode.remove();
+            inFacetsLoop = false;
+            processLoadFacetQueue();
+            return;
+          }
+
+          // Step 2: Compute range params from actual data and fetch range facets
+          var rangeParams = rangeConfig.buildParams(statsItem.min, statsItem.max);
+
+          var rangeFacetUrl =
+            BC_CONF.serverName +
+            "/occurrences/facets?" +
+            queryString +
+            "&facets=" + facet +
+            "&facetRanges=" + facet +
+            "&facetRangeStart=" + encodeURIComponent(rangeParams.facetRangeStart) +
+            "&facetRangeEnd=" + encodeURIComponent(rangeParams.facetRangeEnd) +
+            "&facetRangeGap=" + encodeURIComponent(rangeParams.facetRangeGap) +
+            "&pageSize=0" +
+            queryContextParam;
+
+          $.ajax({
+            url: rangeFacetUrl,
+            success: function(data) {
+              var facetResults = data.facetResults;
+
+              if (
+                !facetResults || facetResults.length === 0 ||
+                facetResults[0].fieldResult.length === 0
+              ) {
+                parentNode.prev().remove();
+                parentNode.remove();
+              } else {
+                var list = createFacetRangeSlider(
+                  facet,
+                  queryString,
+                  facetResults[0].fieldResult
+                );
+                spinnerNode.remove();
+                parentNode.append(list);
+              }
+
+              inFacetsLoop = false;
+              processLoadFacetQueue();
+            },
+            error: function() {
+              parentNode.prev().remove();
+              parentNode.remove();
+              inFacetsLoop = false;
+              processLoadFacetQueue();
+            },
+          });
+        },
+        error: function() {
+          parentNode.prev().remove();
+          parentNode.remove();
+          inFacetsLoop = false;
+          processLoadFacetQueue();
+        },
+      });
     } else {
-      // Standard facet query directly to biocache-service
-      url =
+      // --- Standard facet query directly to biocache-service ---
+      var url =
         BC_CONF.biocacheServiceUrl +
         "/occurrences/search?" +
         queryString +
         "&facets=" +
         facet +
         queryContextParam;
-    }
 
-    $.ajax({
-      url: url,
-      success: function(data) {
-        var facetResults = data.facetResults;
+      $.ajax({
+        url: url,
+        success: function(data) {
+          var facetResults = data.facetResults;
 
-        if (
-          !facetResults || facetResults.length === 0 ||
-          facetResults[0].fieldResult.length === 0
-        ) {
-          // remove if there are no results
-          parentNode.prev().remove();
-          parentNode.remove();
-        } else {
-          var fieldDisplayName = formatFieldName(facet);
-          var list;
-
-          if (rangeConfig) {
-            // Use the range slider for range facets
-            list = createFacetRangeSlider(
-              facet,
-              queryString,
-              facetResults[0].fieldResult
-            );
+          if (
+            !facetResults || facetResults.length === 0 ||
+            facetResults[0].fieldResult.length === 0
+          ) {
+            parentNode.prev().remove();
+            parentNode.remove();
           } else {
-            list = createFacetLinkList(
+            var fieldDisplayName = formatFieldName(facet);
+            var list = createFacetLinkList(
               facetResults[0],
               queryString,
               fieldDisplayName,
             );
+
+            spinnerNode.remove();
+
+            if (facetResults[0].fieldResult.length > 1) {
+              moreNode.show();
+            }
+
+            parentNode.append(list);
           }
 
-          spinnerNode.remove();
+          inFacetsLoop = false;
+          processLoadFacetQueue();
+        },
+        error: function() {
+          parentNode.prev().remove();
+          parentNode.remove();
 
-          if (!rangeConfig && facetResults[0].fieldResult.length > 1) {
-            moreNode.show();
-          }
-
-          parentNode.append(list);
-        }
-
-        inFacetsLoop = false;
-        processLoadFacetQueue();
-      },
-      error: function() {
-        // remove the facet label if there is an error
-        parentNode.prev().remove();
-        parentNode.remove();
-
-        inFacetsLoop = false;
-        processLoadFacetQueue();
-      },
-    });
+          inFacetsLoop = false;
+          processLoadFacetQueue();
+        },
+      });
+    }
   });
 
   processLoadFacetQueue();
