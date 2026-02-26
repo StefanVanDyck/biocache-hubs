@@ -349,3 +349,13 @@ html>body tbody.scrollContent td + td + td {
 .leaflet-map-pane{
     z-index: 100;
 }
+
+.external-link {
+    display: none;
+    margin-left: 6px;
+    color: white
+}
+
+tr.activeRow .external-link {
+    display: inline-block;
+}
