@@ -1058,10 +1058,10 @@ function populateSpeciesLists(data) {
         $('#rightList tbody').height(tbodyHeight);
     }
 
-    function addSpeciesListRow(speciesListDruid, speciesListName, count, speciesListBaseUrl) {
+    function addSpeciesListRow(speciesListDruid, speciesListName, count) {
         var label = speciesListName;
         var rc = (speciesListName === speciesGroup) ? " class='activeRow'" : ""; // TODO - highlight active species list
-        var speciesListUrl = speciesListBaseUrl + "/speciesListItem/list/" + speciesListDruid;
+        var speciesListUrl = MAP_VAR.speciesListBaseUrl + "/speciesListItem/list/" + speciesListDruid;
 
         var h = "<tr" + rc
             + " title='click to view species list on map'><td class='indent0'><a href='#' id='" + speciesListDruid + "' "

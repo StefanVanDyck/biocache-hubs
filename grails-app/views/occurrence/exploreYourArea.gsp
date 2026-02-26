@@ -47,6 +47,7 @@
         var MAP_VAR = {
             contextPath: "${request.contextPath}",
             biocacheServiceUrl: "${biocacheServiceUrl.encodeAsHTML()?:''}",
+            speciesListBaseUrl: "${grailsApplication.config.getProperty('speciesList.baseURL')}",
             mappingUrl: "${biocacheServiceUrl.encodeAsHTML()?:''}", // duplicate var for map.commom.js
             forwardURI: "${request.forwardURI}",
             imagesUrlPrefix: "${request.contextPath}/assets/eya-images",
