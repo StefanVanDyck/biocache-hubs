@@ -1058,12 +1058,23 @@ function populateSpeciesLists(data) {
         $('#rightList tbody').height(tbodyHeight);
     }
 
-    function addSpeciesListRow(speciesListDruid, speciesListName, count) {
+    function addSpeciesListRow(speciesListDruid, speciesListName, count, speciesListBaseUrl) {
         var label = speciesListName;
         var rc = (speciesListName === speciesGroup) ? " class='activeRow'" : ""; // TODO - highlight active species list
+        var speciesListUrl = speciesListBaseUrl + "/speciesListItem/list/" + speciesListDruid;
 
-        var h = "<tr"+rc+" title='click to view species list on map'><td class='indent0'><a href='#' id='"+speciesListDruid+"' " +
-            "class='taxonBrowse' title='click to view species list on map'>"+label+"</a></td><td>"+count+"</td></tr>";
+        var h = "<tr" + rc
+            + " title='click to view species list on map'><td class='indent0'><a href='#' id='" + speciesListDruid + "' "
+            + "class='taxonBrowse' title='click to view species list on map'>" + label + "</a>"
+            + "<a href='" + speciesListUrl + "' " +
+            "target='_blank' " +
+            "class='external-link' " +
+            "rel='noopener noreferrer' " +
+            "title='Open conservation list details' " +
+            "onclick='event.stopPropagation();'>" +
+            "<i class='fa-solid fa-up-right-from-square'></i>" +
+            "</a>"
+            + "</td><td>" + count + "</td></tr>";
         $("#taxa-level-0-sl tbody").append(h);
     }
 }
