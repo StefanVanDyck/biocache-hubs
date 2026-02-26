@@ -81,8 +81,9 @@
 }
 
 .carousel-image-frame {
-  width: 100%;
-  height: 220px;              /* fixed image size */
+  width: 320px;     /* same width as item */
+  aspect-ratio: 4 / 3;
+  height: auto;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -100,11 +101,13 @@
 .carousel-track {
   display: flex;
   height: 100%;
-  align-items: center;
+  align-items: flex-start;
   margin-top: 10px;
 }
 
 .carousel-item {
+  width: 320px;        /* MUST match JS */
+  flex: 0 0 320px;     /* prevent flex resizing */
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -112,8 +115,14 @@
 }
 
 .carousel-item cite {
-  max-width: 100%;
+  display: block;
+  line-height: 1.2;     /* compact but readable */
+  margin: 0 0 0.25rem 0;
   font-size: 0.85rem;
+}
+
+.carousel-item cite b {
+  font-weight: 600;
 }
 
 .carousel-btn {
@@ -138,4 +147,22 @@
 .carousel-btn.next {
   right: 8px;
 }
+
+.license-badge {
+  display: inline-flex;
+  align-items: center;
+  height: 1em;              /* lock to text height */
+  margin-left: 0.25rem;
+  vertical-align: middle;
+  opacity: 0.75;
+}
+
+.license-badge img {
+  height: 100%;
+  width: auto;
+  max-width: 1.5em;         /* safety cap */
+  object-fit: contain;
+  display: block;
+}
+
 

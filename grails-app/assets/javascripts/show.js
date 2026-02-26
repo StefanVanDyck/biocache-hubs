@@ -1276,7 +1276,7 @@ function renderOccurrenceImagesCarousel(){
     }
 
     const itemsPerPage = 3;
-    const itemWidth = 160;
+    const itemWidth = 320;//must match with CSS .carousel-item width including margin
     const totalItems = $items.length;
 
     // If not enough items, disable carousel behavior
