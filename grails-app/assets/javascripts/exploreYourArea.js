@@ -671,7 +671,7 @@ function groupClicked(el) {
     $('#taxa-level-0 tr').removeClass("activeRow");
     $(el).addClass("activeRow");
     $('#taxa-level-1 tbody tr').addClass("activeRow");
-    // update records page link text
+    // update records page link text - if no list is selected, show "all", otherwise "selected"
     if (speciesGroup === "ALL_SPECIES") {
         $("#recordsGroupText").text("all");
     } else {
@@ -743,12 +743,8 @@ function speciesListClicked(el) {
     taxonGuid = null;
     $('#taxa-level-0-sl tr').removeClass("activeRow");
     $(el).addClass("activeRow");
-    // update records page link text
-    // if (speciesGroup === "ALL_SPECIES") {
-    //     $("#recordsGroupText").text("all");
-    // } else {
-    //     $("#recordsGroupText").text("selected");
-    // }
+    // update records page link text - always show "selected" for species lists, as they are all "selected" lists
+    $("#recordsGroupText").text("selected");
     // update links to downloads and records list
     if (MAP_VAR.map) {
         loadRecordsLayerForSpeciesList(false)
