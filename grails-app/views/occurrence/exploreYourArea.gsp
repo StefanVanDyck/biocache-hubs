@@ -187,9 +187,9 @@
                     </div>
                 </div>
             </div>
-            <div class="tab-pane active" id="speciesListsTab">
+            <div class="tab-pane" id="speciesListsTab">
                 <div id="speciesListsBox">
-                    <div id="leftListSL" class="tableContainer">
+                    <div id="leftListSL">
                         <table id="taxa-level-0-sl">
                             <thead>
                             <tr>

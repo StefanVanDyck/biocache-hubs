@@ -737,7 +737,7 @@ function speciesListClicked(el) {
 
     var speciesListJson = getJson('rightListSL')
     var globalOffset = getGlobalOffset('rightListSL')
-    // Change the global var speciesGroup
+    // Change the global var speciesListDrUid
     speciesListDrUid = $(el).find('a.taxonBrowse').attr('id'); // TODO narrow down to a tab
     taxon = null; // clear any species click
     taxonGuid = null;
@@ -1051,7 +1051,7 @@ function populateSpeciesLists(data) {
         var tableHeight = $('#taxa-level-0-sl').height();
         $('.tableContainer').height(tableHeight+2);
         var tbodyHeight = $('#taxa-level-0-sl tbody').height();
-        $('#rightList tbody').height(tbodyHeight);
+        $('#rightListSL tbody').height(tbodyHeight);
     }
 
     function addSpeciesListRow(speciesListDruid, speciesListName, count) {
