@@ -189,7 +189,7 @@
             </div>
             <div class="tab-pane" id="speciesListsTab">
                 <div id="speciesListsBox">
-                    <div id="leftListSL">
+                    <div id="leftListSL" class="tableContainer">
                         <table id="taxa-level-0-sl">
                             <thead>
                             <tr>
