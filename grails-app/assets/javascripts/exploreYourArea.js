@@ -146,6 +146,22 @@ function init() {
         }
     });
 
+    // Handle tab switching for button label
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        var targetTab = $(e.target).attr('href');
+        if (targetTab === '#' + SPECIES_LISTS_TAB_ID) {
+            if (!speciesListDrUid) {
+                $("#recordsGroupText").text("all");
+            }
+        } else if (targetTab === '#' + SPECIES_GROUPS_TAB_ID) {
+            if (speciesGroup === "ALL_SPECIES") {
+                $("#recordsGroupText").text("all");
+            } else {
+                $("#recordsGroupText").text("selected");
+            }
+        }
+    });
+
     // Handle back button and saved URLs
 
     var defaultParam = $.url().param('default'); // requires JS import: purl.js
