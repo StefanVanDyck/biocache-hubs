@@ -14,6 +14,7 @@
  *
  */
 //= require searchCore.js
+//= require facetRangeSlider.js
 //= require_self
 
 // Jquery Document.onLoad equivalent
@@ -938,6 +939,162 @@ function init() {
       $("#DQPrefSettings").modal("hide");
       applyUserPreference(userPref);
     }
+  });
+
+  // maultiple facets popup - sortable column heading links
+  $("a.fsort").on("click", function(e) {
+    e.preventDefault();
+    var fsort = $(this).data('sort');
+    var foffset = $(this).data('foffset');
+    var table = $(this).closest('table');
+    if (table.length == 0) {
+      table = $(this).parent().siblings('table#fullFacets');
+    }
+    var facetName = $(table).data('facet');
+    var displayName = $(table).data('label');
+
+    loadFacetsContent(facetName, fsort, 0, BC_CONF.facetLimit, false, true);
+  });
+
+  // loadMoreValues (legacy - now handled by inview)
+  $("#multipleFacets").on("click", "a.loadMoreValues", function(e) {
+    e.preventDefault();
+    var link = $(this);
+    var fsort = link.data('sort');
+    var foffset = link.data('foffset');
+    var table = $("table#fullFacets");
+
+    var facetName = $(table).data('facet');
+    var displayName = $(table).data('label');
+
+    loadFacetsContent(facetName, fsort, foffset, BC_CONF.facetLimit, false, false);
+  });
+
+  // Inview trigger to load more values when tr comes into view
+  $("#multipleFacets").on("inview", "tr#loadMore", function() {
+    var link = $(this).find("a.loadMoreValues");
+    var fsort = link.data('sort');
+    var foffset = link.data('foffset');
+    var table = $("table#fullFacets");
+    var facetName = $(table).data('facet');
+    var displayName = $(table).data('label');
+    loadFacetsContent(facetName, fsort, foffset, BC_CONF.facetLimit, false, false);
+  });
+
+  // Email alert buttons
+  var alertsUrlPrefix = BC_CONF.alertsUrl || "https://alerts.ala.org.au";
+  $("a#alertNewRecords, a#alertNewAnnotations").click(function(e) {
+    e.preventDefault();
+    var query = $("<p>"+BC_CONF.queryString+"</p>").text(); // strips <span> from string
+    var fqArray = decodeURIComponent(BC_CONF.facetQueries).split('&fq=').filter(function(e){ return e === 0 || e }); // remove empty elements
+    if (fqArray) {
+      var fqueryString = fqArray.join("; ");
+      if(fqueryString.length > 0){
+        query += " (" + fqueryString + ")"; // append the fq queries to queryString
+      }
+    }
+    var methodName = $(this).data("method");
+    var url = alertsUrlPrefix + "/ws/" + methodName + "?";
+    var searchParamsEncoded = encodeURIComponent(decodeURIComponent(BC_CONF.searchString)); // prevent double encoding of chars
+    if (query.length >= 250) {
+      url += "queryDisplayName="+encodeURIComponent(query.substring(0, 149) + "...");
+    } else {
+      url += "queryDisplayName="+encodeURIComponent(query);
+    }
+    url += "&baseUrlForWS=" + encodeURIComponent(BC_CONF.biocacheServiceUrl);
+    url += "&baseUrlForUI=" + encodeURIComponent(BC_CONF.serverName);
+    url += "&webserviceQuery=%2Foccurrences%2Fsearch" + searchParamsEncoded;
+    url += "&uiQuery=%2Foccurrences%2Fsearch" + searchParamsEncoded;
+    url += "&resourceName=" + encodeURIComponent(BC_CONF.resourceName);
+    window.location.href = url;
+  });
+
+  // Show/hide the facet groups
+  $('.showHideFacetGroup').click(function(e) {
+    e.preventDefault();
+    var name = $(this).data('name');
+    $(this).find('span').toggleClass('right-caret');
+    $('#group_' + name).slideToggle(600, function() {
+      if ($('#group_' + name).is(":visible") ) {
+        $('#group_' + name).find(".nano").nanoScroller({ preventPageScrolling: true });
+        amplify.store('search-facets-state-' + name, true);
+      } else {
+        amplify.store('search-facets-state-' + name, null);
+      }
+    });
+  });
+
+  // Hide any facet groups if they don't contain any facet values
+  $('.facetsGroup').each(function(i, el) {
+    var name = $(el).attr('id').replace(/^group_/, '');
+    var wasShown = amplify.store('search-facets-state-' + name);
+    if ($.trim($(el).html()) == '') {
+      $('#heading_' + name).hide();
+    } else if (wasShown) {
+      $(el).prev().find('a').click();
+    }
+  });
+
+  // scroll bars on facet values
+  $(".nano").nanoScroller({ preventPageScrolling: true});
+
+  // Initialize range slider for event_date facet
+  initializeEventDateRangeSlider();
+
+  // store last search in local storage for a "back button" on record pages
+  amplify.store('lastSearch', $.url().attr('relative'));
+
+  // mouse over affect on thumbnail images
+  $('#recordImages').on('hover', '.imgCon', function() {
+    $(this).find('.brief, .detail').toggleClass('hide');
+  });
+
+
+  var imageId, attribution, recordUrl, scientificName;
+  // Lightbox
+  $(document).delegate('.thumbImage', 'click', function(event) {
+    var recordLink = '<a href="RECORD_URL">View details of this record</a>'
+    event.preventDefault();
+    imageId = $(this).attr('data-image-id');
+    scientificName = $(this).attr('data-scientific-name');
+    attribution = $(this).find('.meta.detail').html();
+    recordUrl = $(this).attr('href');
+    recordLink = recordLink.replace('RECORD_URL', recordUrl);
+    var flagIssueLink = '<a href="RECORD_URL">record.</a>';
+    flagIssueLink = flagIssueLink.replace('RECORD_URL', recordUrl);
+    attribution += '<br>' + recordLink +
+      '<br><br>If this image is incorrectly<br>identified please flag an<br>issue on the ' + flagIssueLink +'<br>';
+    setDialogSize();
+    $('#imageDialog').modal('show');
+  });
+
+  // show image only after modal dialog is shown. otherwise, image position will be off the viewing area.
+  $('#imageDialog').on('shown.bs.modal',function () {
+
+    if($("#viewerContainerId").width() == 0){
+      //this is a workaround for #viewContainerId having width of zero, which results in the
+      //image not rendering
+      $("#viewerContainerId").width(($('#imageDialog').width() - 50));
+    }
+
+    imgvwr.viewImage($("#viewerContainerId"), imageId, scientificName, undefined, {
+      imageServiceBaseUrl: BC_CONF.imageServiceBaseUrl,
+      addSubImageToggle: false,
+      addCalibration: false,
+      addDrawer: false,
+      addCloseButton: true,
+      addAttribution: true,
+      addLikeDislikeButton: BC_CONF.addLikeDislikeButton,
+      addPreferenceButton: BC_CONF.addPreferenceButton,
+      attribution: attribution,
+      disableLikeDislikeButton: BC_CONF.disableLikeDislikeButton,
+      likeUrl: BC_CONF.likeUrl + '?id=' + imageId,
+      dislikeUrl: BC_CONF.dislikeUrl + '?id=' + imageId,
+      userRatingUrl: BC_CONF.userRatingUrl + '?id=' + imageId,
+      userRatingHelpText: BC_CONF.userRatingHelpText.replace('RECORD_URL', recordUrl),
+      savePreferredSpeciesListUrl: BC_CONF.savePreferredSpeciesListUrl + '?id=' + imageId + '&scientificName=' + scientificName,
+      getPreferredSpeciesListUrl: BC_CONF.getPreferredSpeciesListUrl
+    });
   });
 
   function applyUserPreference(userPref) {
@@ -2680,4 +2837,72 @@ function customDebounce(func, timeout = 500) {
       func.apply(context, args);
     }, timeout);
   };
+}
+
+/**
+ * Initialize range slider for event_date facet
+ * This function finds the event_date facet on the page, fetches its data,
+ * and replaces it with an interactive range slider widget
+ */
+function initializeEventDateRangeSlider() {
+    // Find the event_date facet header
+    var facetHeaders = $('.FieldName');
+    var eventDateFacetContainer = null;
+    var eventDateFieldName = null;
+
+    facetHeaders.each(function() {
+        var text = $(this).text().toLowerCase();
+        // Check if this is the event_date facet (could be labeled "Event Date", "Date", etc.)
+        if (text.includes('event') || $(this).closest('h4').prev('.subnavlist').find('ul.facets li a[href*="event_date"]').length > 0) {
+            eventDateFacetContainer = $(this).closest('h4').next('.subnavlist');
+            // Try to extract field name from existing links
+            var firstLink = eventDateFacetContainer.find('ul.facets li:first a').attr('href');
+            if (firstLink && firstLink.indexOf('fq=') !== -1) {
+                var fqMatch = firstLink.match(/fq=([^:]+):/);
+                if (fqMatch) {
+                    eventDateFieldName = fqMatch[1];
+                }
+            }
+        }
+    });
+
+    // If we didn't find it by text, try finding by field name in the href
+    if (!eventDateFacetContainer) {
+        $('ul.facets li a').each(function() {
+            var href = $(this).attr('href');
+            if (href && href.indexOf('fq=event_date') !== -1) {
+                eventDateFacetContainer = $(this).closest('.subnavlist');
+                eventDateFieldName = 'event_date';
+                return false; // break the loop
+            }
+        });
+    }
+
+    if (!eventDateFacetContainer || !eventDateFieldName) {
+        // event_date facet not found on this page, skip initialization
+        return;
+    }
+
+    // Fetch the facet data from the server
+    var jsonUri = BC_CONF.serverName + "/occurrences/facets" + BC_CONF.searchString +
+        "&facets=" + eventDateFieldName + "&flimit=-1&pageSize=0";
+
+    $.getJSON(jsonUri, function(data) {
+        if (data.facetResults && data.facetResults.length > 0 && data.facetResults[0].fieldResult.length > 0) {
+            // Create the range slider widget
+            var queryString = BC_CONF.searchString.substring(1); // remove leading '?'
+            var rangeSlider = createFacetRangeSlider(
+                eventDateFieldName,
+                queryString,
+                data.facetResults[0]
+            );
+
+            // Replace the facet list with the range slider
+            eventDateFacetContainer.html('');
+            eventDateFacetContainer.append(rangeSlider);
+            eventDateFacetContainer.removeClass('nano'); // remove nano class since we don't need scrolling
+        }
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+        console.error('Failed to load event_date facet data:', textStatus, errorThrown);
+    });
 }
