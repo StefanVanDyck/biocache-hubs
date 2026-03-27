@@ -105,6 +105,27 @@
                 </g:each>
             </div>
         </g:each>
+        <div class="facetGroupName" id="heading_YearRange">
+            <a href="#" class="showHideFacetGroup" data-name="YearRange">
+                <span class="caret right-caret"></span> Year Range
+            </a>
+        </div>
+
+        <div class="facetsGroup" id="group_YearRange" style="display:none;">
+            <h4><span class="FieldName">Year</span></h4>
+
+            <div class="year-range-container">
+                <input type="text" id="yearRangeSlider" />
+
+                <div class="year-range-values">
+                    <span id="yearMin"></span> - <span id="yearMax"></span>
+                </div>
+
+                <button id="applyYearRange" class="btn btn-primary btn-sm">
+                    Apply
+                </button>
+            </div>
+        </div>
         ${alatag.logMsg(msg:"After grouped facets facets.gsp")}
     </div>
 </div><!--end facets-->

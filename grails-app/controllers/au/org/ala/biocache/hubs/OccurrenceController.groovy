@@ -189,7 +189,9 @@ class OccurrenceController {
                             userEmail           : authService?.getEmail(),
                             processingTime      : (System.currentTimeMillis() - start),
                             wsTime              : wsTime,
-                            vlaanderenWKT       : grailsApplication.config.getProperty('vbp.vlaanderenWKT', String, '')
+                            vlaanderenWKT       : grailsApplication.config.getProperty('vbp.vlaanderenWKT', String, ''),
+                            yearMin             : '1800',
+                            yearMax             : new Date().format("yyyy")
                     ]
 
             if (dataQualityEnabled) {

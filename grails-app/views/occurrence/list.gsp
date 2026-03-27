@@ -86,6 +86,51 @@
         };
 </script>
 
+    <script>
+      $(document).ready(function () {
+        const yearMin = ${yearMin}; // Injected from the backend
+        const yearMax = ${yearMax}; // Injected from the backend
+
+        $("#yearRangeSlider").slider({
+          range: true,
+          min: yearMin,
+          max: yearMax,
+          values: [yearMin, yearMax],
+          slide: function (event, ui) {
+            $("#yearMin").text(ui.values[0]);
+            $("#yearMax").text(ui.values[1]);
+          },
+        });
+
+        $("#yearMin").text(yearMin);
+        $("#yearMax").text(yearMax);
+
+        $("#applyYearRange").on("click", function () {
+          const selectedRange = $("#yearRangeSlider").slider("values");
+          const fq = `year:[${selectedRange[0]} TO ${selectedRange[1]}]`;
+          applyYearRangeFilter(fq);
+        });
+      });
+
+      function applyYearRangeFilter(fq) {
+        // Get the current URL
+        const currentUrl = new URL(window.location.href);
+
+        // Retrieve existing `fq` parameters
+        const existingFq = currentUrl.searchParams.getAll("fq");
+
+        // Add the new year range filter to the `fq` parameters
+        existingFq.push(fq);
+
+        // Clear all `fq` parameters and re-add them
+        currentUrl.searchParams.delete("fq");
+        existingFq.forEach(param => currentUrl.searchParams.append("fq", param));
+
+        // Reload the page with the updated query string
+        window.location.href = currentUrl.toString();
+      }
+    </script>
+
 <asset:javascript src="ala/images-client.js"/>
 <asset:javascript src="leafletPlugins.js"/>
 <asset:javascript src="listThirdParty.js"/>
