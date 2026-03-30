@@ -191,7 +191,7 @@ class OccurrenceController {
                             wsTime              : wsTime,
                             vlaanderenWKT       : grailsApplication.config.getProperty('vbp.vlaanderenWKT', String, ''),
                             yearMin             : '1800',
-                            yearMax             : new Date().format("yyyy")
+                            yearMax             : new SimpleDateFormat("yyyy").format(new Date()),
                     ]
 
             if (dataQualityEnabled) {
