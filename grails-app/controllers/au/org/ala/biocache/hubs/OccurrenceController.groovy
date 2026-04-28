@@ -190,8 +190,8 @@ class OccurrenceController {
                             processingTime      : (System.currentTimeMillis() - start),
                             wsTime              : wsTime,
                             vlaanderenWKT       : grailsApplication.config.getProperty('vbp.vlaanderenWKT', String, ''),
-                            yearMin             : '1800',
-                            yearMax             : new SimpleDateFormat("yyyy").format(new Date()),
+                            minYear: 1800,
+                            currentYear: Calendar.instance.get(Calendar.YEAR)
                     ]
 
             if (dataQualityEnabled) {

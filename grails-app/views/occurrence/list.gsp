@@ -87,48 +87,66 @@
 </script>
 
     <script>
-      $(document).ready(function () {
-        const yearMin = ${yearMin}; // Injected from the backend
-        const yearMax = ${yearMax}; // Injected from the backend
+      function buildYearRangeUrl() {
+        var startYear = document.getElementById('startYear').value;
+        var endYear = document.getElementById('finishYear').value;
 
-        $("#yearRangeSlider").slider({
-          range: true,
-          min: yearMin,
-          max: yearMax,
-          values: [yearMin, yearMax],
-          slide: function (event, ui) {
-            $("#yearMin").text(ui.values[0]);
-            $("#yearMax").text(ui.values[1]);
-          },
+        var url = new URL(window.location.href);
+
+        // 1. Remove existing fq params containing year range
+        var params = url.searchParams.getAll('fq');
+
+        params = params.filter(function(p) {
+          return !p.includes('year:[');
         });
 
-        $("#yearMin").text(yearMin);
-        $("#yearMax").text(yearMax);
+        url.searchParams.delete('fq');
 
-        $("#applyYearRange").on("click", function () {
-          const selectedRange = $("#yearRangeSlider").slider("values");
-          const fq = `year:[${selectedRange[0]} TO ${selectedRange[1]}]`;
-          applyYearRangeFilter(fq);
+        params.forEach(function(p) {
+          url.searchParams.append('fq', p);
         });
-      });
 
-      function applyYearRangeFilter(fq) {
-        // Get the current URL
-        const currentUrl = new URL(window.location.href);
+        // 2. Add new fq
+        var newFq = 'year:[' + startYear + ' TO ' + endYear + ']';
+        url.searchParams.append('fq', newFq);
 
-        // Retrieve existing `fq` parameters
-        const existingFq = currentUrl.searchParams.getAll("fq");
-
-        // Add the new year range filter to the `fq` parameters
-        existingFq.push(fq);
-
-        // Clear all `fq` parameters and re-add them
-        currentUrl.searchParams.delete("fq");
-        existingFq.forEach(param => currentUrl.searchParams.append("fq", param));
-
-        // Reload the page with the updated query string
-        window.location.href = currentUrl.toString();
+        return url.toString();
       }
+
+      $(document).ready(function(){
+        var minYear = parseInt("${minYear}", 10) || 1800;
+        var currentYear = parseInt("${currentYear}", 10) || new Date().getFullYear();
+
+        var slider = document.getElementById('yearSlider');
+
+        noUiSlider.create(slider, {
+          start: [minYear, currentYear],
+          connect: true,
+          step: 1,
+          range: {
+            'min': minYear,
+            'max': currentYear
+          },
+          format: {
+            to: value => Math.round(value),
+            from: value => Number(value)
+          }
+        });
+
+        slider.noUiSlider.on('update', function(values) {
+          document.getElementById('startYear').value = values[0];
+          document.getElementById('finishYear').value = values[1];
+
+          document.getElementById('startDisplay').innerText = values[0];
+          document.getElementById('endDisplay').innerText = values[1];
+        });
+
+        document.getElementById('applyYearRange').addEventListener('click', function(e) {
+          e.preventDefault();
+          window.location.href = buildYearRangeUrl();
+        });
+
+      });
     </script>
 
 <asset:javascript src="ala/images-client.js"/>
@@ -154,6 +172,10 @@
         google.load('maps','3.5');
     </g:if>
 </asset:script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nouislider@15.7.0/dist/nouislider.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/nouislider@15.7.0/dist/nouislider.min.js"></script>
+
 </head>
 
 <body class="occurrence-search-">
