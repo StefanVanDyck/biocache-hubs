@@ -87,7 +87,25 @@
 </script>
 
     <script>
-      function buildYearRangeUrl() {
+      function getYearRangeFromUrl() {
+        var url = new URL(window.location.href);
+        var fqParams = url.searchParams.getAll('fq');
+
+        for (var i = 0; i < fqParams.length; i++) {
+          var match = fqParams[i].match(/year:\[(\d+)\s+TO\s+(\d+)\]/);
+          if (match) {
+            return {
+              start: parseInt(match[1], 10),
+              end: parseInt(match[2], 10)
+            };
+          }
+        }
+
+        return null;
+      }
+
+
+      function buildYearRangeFilterUrl() {
         var startYear = document.getElementById('startYear').value;
         var endYear = document.getElementById('finishYear').value;
 
@@ -114,18 +132,25 @@
       }
 
       $(document).ready(function(){
-        var minYear = parseInt("${minYear}", 10) || 1800;
-        var currentYear = parseInt("${currentYear}", 10) || new Date().getFullYear();
+        // defaults from GSP
+        var defaultMin = parseInt("${minYear}", 10);
+        var defaultMax = parseInt("${currentYear}", 10);
+
+        // check URL for year fq filter
+        var rangeFromUrl = getYearRangeFromUrl();
+
+        var startYear = rangeFromUrl ? rangeFromUrl.start : defaultMin;
+        var endYear   = rangeFromUrl ? rangeFromUrl.end   : defaultMax;
 
         var slider = document.getElementById('yearSlider');
 
         noUiSlider.create(slider, {
-          start: [minYear, currentYear],
+          start: [startYear, endYear],
           connect: true,
           step: 1,
           range: {
-            'min': minYear,
-            'max': currentYear
+            'min': defaultMin,
+            'max': defaultMax
           },
           format: {
             to: value => Math.round(value),
@@ -143,7 +168,7 @@
 
         document.getElementById('applyYearRange').addEventListener('click', function(e) {
           e.preventDefault();
-          window.location.href = buildYearRangeUrl();
+          window.location.href = buildYearRangeFilterUrl();
         });
 
       });

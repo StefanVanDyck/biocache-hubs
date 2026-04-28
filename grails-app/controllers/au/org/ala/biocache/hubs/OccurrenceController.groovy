@@ -190,7 +190,7 @@ class OccurrenceController {
                             processingTime      : (System.currentTimeMillis() - start),
                             wsTime              : wsTime,
                             vlaanderenWKT       : grailsApplication.config.getProperty('vbp.vlaanderenWKT', String, ''),
-                            minYear: 1800,
+                            minYear: 1735, // the year of the beginning of modern biological classification, i.e. the publication of Linnaeus's Systema Naturae in 1735
                             currentYear: Calendar.instance.get(Calendar.YEAR)
                     ]
 
