@@ -165,4 +165,12 @@
   display: block;
 }
 
+#yearSlider {
+ margin: 0 10px;
+}
+
+/* selected range */
+#yearSlider .noUi-connect {
+  background: #9C346A;
+}
 

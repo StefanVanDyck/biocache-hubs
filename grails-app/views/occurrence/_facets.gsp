@@ -106,7 +106,7 @@
             </div>
         </g:each>
         <div>
-            <label>Year range:</label>
+            <label><g:message code="year.range.label" default="Year range"/>:</label>
             <div id="yearSlider"></div>
 
             <!-- Hidden inputs for form submission -->
@@ -115,11 +115,11 @@
 
             <!-- Optional display -->
             <p>
-                From <span id="startDisplay"></span> to <span id="endDisplay"></span>
+            <g:message code="year.range.display.from" default="From"/> <span id="startDisplay"></span> <g:message code="year.range.display.to" default="to"/> <span id="endDisplay"></span>
             </p>
         </div>
         <a href="#" id="applyYearRange" class="btn btn-primary">
-            Apply year range
+            <g:message code="year.range.apply" default="Apply year range"/>
         </a>
         ${alatag.logMsg(msg:"After grouped facets facets.gsp")}
     </div>
