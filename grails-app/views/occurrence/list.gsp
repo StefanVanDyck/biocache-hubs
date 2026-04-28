@@ -172,6 +172,10 @@
         google.load('maps','3.5');
     </g:if>
 </asset:script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nouislider@15.7.0/dist/nouislider.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/nouislider@15.7.0/dist/nouislider.min.js"></script>
+
 </head>
 
 <body class="occurrence-search-">
