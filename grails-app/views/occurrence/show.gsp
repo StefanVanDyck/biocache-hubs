@@ -189,35 +189,35 @@
                     <div id="recordHeadingLine2">
                         <g:if test="${record.processed.identification.identificationVerificationStatus}">
                             <div>
-                                <g:message code="show.headingbar04.title" default="Identification Verification Status:"/>
+                                <span class="recordHeadingLine2Label"><g:message code="show.headingbar04.title" default="Identification Verification Status:"/></span>
                                 <span id="identificationVerificationStatus">${record.processed.identification.identificationVerificationStatus}</span>
                             </div>
                         </g:if>
                         <g:elseif test="${record.raw.identification.identificationVerificationStatus}">
                             <div>
-                                <g:message code="show.headingbar04.title" default="Identification Verification Status:"/>
+                                <span class="recordHeadingLine2Label"><g:message code="show.headingbar04.title" default="Identification Verification Status:"/></span>
                                 <span id="identificationVerificationStatus">${record.raw.identification.identificationVerificationStatus}</span>
                             </div>
                         </g:elseif>
                         <g:if test="${record.processed.location.coordinateUncertaintyInMeters}">
                             <div>
-                                <g:message code="show.headingbar05.title" default="Coordinate uncertainty:"/>
+                                <span class="recordHeadingLine2Label"><g:message code="show.headingbar05.title" default="Coordinate uncertainty:"/></span>
                                 <span id="coordinateUncertaintyInMeters">${record.processed.location.coordinateUncertaintyInMeters}</span>
                             </div>
                         </g:if>
                         <div>
-                            <g:message code="show.headingbar01.title" default="Occurrence record"/>
+                            <span class="recordHeadingLine2Label"><g:message code="show.headingbar01.title" default="Occurrence record"/></span>
                             <span id="recordId">${recordId}</span>
                         </div>
                         <g:if test="${record.raw.occurrence.samplingProtocol}">
                             <div>
-                                <g:message code="show.headingbar06.samplingprotocol.title" default="Sampling protocol"/>
+                                <span class="recordHeadingLine2Label"><g:message code="show.headingbar06.samplingprotocol.title" default="Sampling protocol"/></span>
                                 <span id="samplingProtocol">${record.raw.occurrence.samplingProtocol}</span>
                             </div>
                         </g:if>
                         <g:if test="${record.raw.occurrence.samplingEffort}">
                             <div>
-                                <g:message code="show.headingbar07.samplingeffort.title" default="Sampling effort"/>
+                                <span class="recordHeadingLine2Label"><g:message code="show.headingbar07.samplingeffort.title" default="Sampling effort"/></span>
                                 <span id="samplingEffort">${record.raw.occurrence.samplingEffort}</span>
                             </div>
                         </g:if>
