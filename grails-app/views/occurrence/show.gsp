@@ -205,8 +205,22 @@
                                 <span id="coordinateUncertaintyInMeters">${record.processed.location.coordinateUncertaintyInMeters}</span>
                             </div>
                         </g:if>
-                        <g:message code="show.headingbar01.title" default="Occurrence record"/>
-                        <span id="recordId">${recordId}</span>
+                        <div>
+                            <g:message code="show.headingbar01.title" default="Occurrence record"/>
+                            <span id="recordId">${recordId}</span>
+                        </div>
+                        <g:if test="${record.raw.occurrence.samplingProtocol}">
+                            <div>
+                                <g:message code="show.headingbar06.samplingprotocol.title" default="Sampling protocol"/>
+                                <span id="samplingProtocol">${record.raw.occurrence.samplingProtocol}</span>
+                            </div>
+                        </g:if>
+                        <g:if test="${record.raw.occurrence.samplingEffort}">
+                            <div>
+                                <g:message code="show.headingbar07.samplingeffort.title" default="Sampling effort"/>
+                                <span id="samplingEffort">${record.raw.occurrence.samplingEffort}</span>
+                            </div>
+                        </g:if>
                     </div>
                 </div>
             </div>
