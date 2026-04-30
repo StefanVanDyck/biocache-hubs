@@ -77,6 +77,22 @@
                 </div>
             </g:if>
         </alatag:ifDataQualityEnabled>
+        <div>
+            <label><g:message code="year.range.label" default="Year range"/>:</label>
+            <div id="yearSlider"></div>
+
+            <!-- Hidden inputs for form submission -->
+            <input type="hidden" name="startYear" id="startYear">
+            <input type="hidden" name="finishYear" id="finishYear">
+
+            <!-- Optional display -->
+            <p>
+                <g:message code="year.range.display.from" default="From"/> <span id="startDisplay"></span> <g:message code="year.range.display.to" default="to"/> <span id="endDisplay"></span>
+            </p>
+        </div>
+        <a href="#" id="applyYearRange" class="btn btn-primary">
+            <g:message code="year.range.apply" default="Apply year range"/>
+        </a>
         <g:set var="facetMax" value="${10}"/><g:set var="i" value="${1}"/>
         <g:each var="group" in="${groupedFacetsRequested}">
             <g:set var="keyCamelCase" value="${group.key.replaceAll(/\s+/,'')}"/>
@@ -105,22 +121,6 @@
                 </g:each>
             </div>
         </g:each>
-        <div>
-            <label><g:message code="year.range.label" default="Year range"/>:</label>
-            <div id="yearSlider"></div>
-
-            <!-- Hidden inputs for form submission -->
-            <input type="hidden" name="startYear" id="startYear">
-            <input type="hidden" name="finishYear" id="finishYear">
-
-            <!-- Optional display -->
-            <p>
-            <g:message code="year.range.display.from" default="From"/> <span id="startDisplay"></span> <g:message code="year.range.display.to" default="to"/> <span id="endDisplay"></span>
-            </p>
-        </div>
-        <a href="#" id="applyYearRange" class="btn btn-primary">
-            <g:message code="year.range.apply" default="Apply year range"/>
-        </a>
         ${alatag.logMsg(msg:"After grouped facets facets.gsp")}
     </div>
 </div><!--end facets-->
