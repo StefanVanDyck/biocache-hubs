@@ -199,6 +199,30 @@
                                 <span id="identificationVerificationStatus">${record.raw.identification.identificationVerificationStatus}</span>
                             </div>
                         </g:elseif>
+                        <g:if test="${record.raw.occurrence.samplingProtocol}">
+                            <div>
+                                <span class="recordHeadingLine2Label"><g:message code="show.headingbar06.samplingprotocol.title" default="Sampling protocol"/></span>
+                                <span id="samplingProtocol">${record.raw.occurrence.samplingProtocol}</span>
+                            </div>
+                        </g:if>
+                        <g:else>
+                                <div>
+                                    <span class="recordHeadingLine2Label"><g:message code="show.headingbar06.samplingprotocol.title" default="Sampling protocol"/></span>
+                                    <span id="samplingProtocol"><g:message code="show.headingbar06.samplingprotocol.unknown" default="Unknown"/></span>
+                                </div>
+                        </g:else>
+                        <g:if test="${record.raw.occurrence.samplingEffort}">
+                            <div>
+                                <span class="recordHeadingLine2Label"><g:message code="show.headingbar07.samplingeffort.title" default="Sampling effort"/></span>
+                                <span id="samplingEffort">${record.raw.occurrence.samplingEffort}</span>
+                            </div>
+                        </g:if>
+                        <g:else>
+                            <div>
+                                <span class="recordHeadingLine2Label"><g:message code="show.headingbar07.samplingeffort.title" default="Sampling effort"/></span>
+                                <span id="samplingEffort"><g:message code="show.headingbar07.samplingeffort.unknown" default="Unknown"/></span>
+                            </div>
+                        </g:else>
                         <g:if test="${record.processed.location.coordinateUncertaintyInMeters}">
                             <div>
                                 <span class="recordHeadingLine2Label"><g:message code="show.headingbar05.title" default="Coordinate uncertainty:"/></span>
@@ -209,18 +233,6 @@
                             <span class="recordHeadingLine2Label"><g:message code="show.headingbar01.title" default="Occurrence record"/></span>
                             <span id="recordId">${recordId}</span>
                         </div>
-                        <g:if test="${record.raw.occurrence.samplingProtocol}">
-                            <div>
-                                <span class="recordHeadingLine2Label"><g:message code="show.headingbar06.samplingprotocol.title" default="Sampling protocol"/></span>
-                                <span id="samplingProtocol">${record.raw.occurrence.samplingProtocol}</span>
-                            </div>
-                        </g:if>
-                        <g:if test="${record.raw.occurrence.samplingEffort}">
-                            <div>
-                                <span class="recordHeadingLine2Label"><g:message code="show.headingbar07.samplingeffort.title" default="Sampling effort"/></span>
-                                <span id="samplingEffort">${record.raw.occurrence.samplingEffort}</span>
-                            </div>
-                        </g:if>
                     </div>
                 </div>
             </div>
