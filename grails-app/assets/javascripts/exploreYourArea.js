@@ -125,7 +125,7 @@ function init() {
     // Register onChange event on radius drop-down - will re-submit form
     $('select#radius').change(
         function(e) {
-            MAP_VAR.radius = parseInt($(this).val());
+            MAP_VAR.radius = parseFloat($(this).val());
             radius = MAP_VAR.radius * 1000;
             circle.setRadius(radius);
             MAP_VAR.zoom = zoomForRadius[radius];
