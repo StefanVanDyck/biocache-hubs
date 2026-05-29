@@ -36,6 +36,8 @@ var geocoder, marker, circle, markerInfowindow, lastInfoWindow, taxon, taxonGuid
 var points = [], infoWindows = [], speciesGroup = "ALL_SPECIES"; speciesListDrUid = "";
 var coordinatePrecision = 4; // roughly 11m at equator || 5 = 1.1 m at equator
 var zoomForRadius = {
+    250: 16,
+    500: 15,
     1000: 14,
     5000: 12,
     10000: 11
@@ -43,7 +45,9 @@ var zoomForRadius = {
 var radiusForZoom = {
     11: 10,
     12: 5,
-    14: 1
+    14: 1,
+    15: 0.5,
+    16: 0.25
 };
 
 /**
