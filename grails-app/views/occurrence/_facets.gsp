@@ -79,13 +79,32 @@
         </alatag:ifDataQualityEnabled>
         <div>
             <label><g:message code="year.range.label" default="Year range"/>:</label>
+
+            <div class="year-inputs">
+                <label>
+                    <g:message code="year.range.display.from" default="From"/>
+                    <input type="number"
+                           id="startYearInput"
+                           min="${minYear}"
+                           max="${currentYear}">
+                </label>
+
+                <label>
+                    <g:message code="year.range.display.to" default="To"/>
+                    <input type="number"
+                           id="endYearInput"
+                           min="${minYear}"
+                           max="${currentYear}">
+                </label>
+            </div>
+
             <div id="yearSlider"></div>
 
             <!-- Hidden inputs for form submission -->
             <input type="hidden" name="startYear" id="startYear">
             <input type="hidden" name="finishYear" id="finishYear">
 
-            <!-- Optional display -->
+            <!-- Range display -->
             <p>
                 <g:message code="year.range.display.from" default="From"/> <span id="startDisplay"></span> <g:message code="year.range.display.to" default="to"/> <span id="endDisplay"></span>
             </p>
