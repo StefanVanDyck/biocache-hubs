@@ -159,11 +159,40 @@
         });
 
         slider.noUiSlider.on('update', function(values) {
-          document.getElementById('startYear').value = values[0];
-          document.getElementById('finishYear').value = values[1];
+          var start = parseInt(values[0], 10);
+          var end = parseInt(values[1], 10);
 
-          document.getElementById('startDisplay').innerText = values[0];
-          document.getElementById('endDisplay').innerText = values[1];
+          // hidden fields for submit
+          $('#startYear').val(start);
+          $('#finishYear').val(end);
+
+          // visible inputs
+          $('#startYearInput').val(start);
+          $('#endYearInput').val(end);
+        });
+
+        $('#startYearInput').on('change', function() {
+          var start = parseInt(this.value, 10);
+          var end = parseInt($('#endYearInput').val(), 10);
+
+          if (start > end) {
+            start = end;
+            $(this).val(start);
+          }
+
+          slider.noUiSlider.set([start, null]);
+        });
+
+        $('#endYearInput').on('change', function() {
+          var end = parseInt(this.value, 10);
+          var start = parseInt($('#startYearInput').val(), 10);
+
+          if (end < start) {
+            end = start;
+            $(this).val(end);
+          }
+
+          slider.noUiSlider.set([null, end]);
         });
 
         document.getElementById('applyYearRange').addEventListener('click', function(e) {
