@@ -255,11 +255,17 @@ class AdvancedSearchParams implements Validateable {
         String value = ""
         // TODO check input dates are valid
         if (startDate) {
+            if(startDate.matches("\\d{4}")){
+                startDate = startDate + "-01-01"
+            }
             value = "[" + startDate + "T00:00:00Z TO "
         } else {
             value = "[* TO "
         }
         if (endDate) {
+            if(endDate.matches("\\d{4}")){
+                endDate = endDate + "-01-01"
+            }
             value = value + endDate + "T00:00:00Z]"
         } else {
             value = value + "*]"
