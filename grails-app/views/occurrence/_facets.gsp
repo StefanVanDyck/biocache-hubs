@@ -104,10 +104,6 @@
             <input type="hidden" name="startYear" id="startYear">
             <input type="hidden" name="finishYear" id="finishYear">
 
-            <!-- Range display -->
-            <p>
-                <g:message code="year.range.display.from" default="From"/> <span id="startDisplay"></span> <g:message code="year.range.display.to" default="to"/> <span id="endDisplay"></span>
-            </p>
         </div>
         <a href="#" id="applyYearRange" class="btn btn-primary">
             <g:message code="year.range.apply" default="Apply year range"/>
