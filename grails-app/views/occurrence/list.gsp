@@ -143,63 +143,64 @@
         var endYear   = rangeFromUrl ? rangeFromUrl.end   : defaultMax;
 
         var slider = document.getElementById('yearSlider');
+        if(slider) {
+          noUiSlider.create(slider, {
+            start: [startYear, endYear],
+            connect: true,
+            step: 1,
+            range: {
+              'min': defaultMin,
+              'max': defaultMax
+            },
+            format: {
+              to: value => Math.round(value),
+              from: value => Number(value)
+            }
+          });
 
-        noUiSlider.create(slider, {
-          start: [startYear, endYear],
-          connect: true,
-          step: 1,
-          range: {
-            'min': defaultMin,
-            'max': defaultMax
-          },
-          format: {
-            to: value => Math.round(value),
-            from: value => Number(value)
-          }
-        });
+          slider.noUiSlider.on('update', function(values) {
+            var start = parseInt(values[0], 10);
+            var end = parseInt(values[1], 10);
 
-        slider.noUiSlider.on('update', function(values) {
-          var start = parseInt(values[0], 10);
-          var end = parseInt(values[1], 10);
+            // hidden fields for submit
+            $('#startYear').val(start);
+            $('#finishYear').val(end);
 
-          // hidden fields for submit
-          $('#startYear').val(start);
-          $('#finishYear').val(end);
+            // visible inputs
+            $('#startYearInput').val(start);
+            $('#endYearInput').val(end);
+          });
 
-          // visible inputs
-          $('#startYearInput').val(start);
-          $('#endYearInput').val(end);
-        });
+          $('#startYearInput').on('change', function() {
+            var start = parseInt(this.value, 10);
+            var end = parseInt($('#endYearInput').val(), 10);
 
-        $('#startYearInput').on('change', function() {
-          var start = parseInt(this.value, 10);
-          var end = parseInt($('#endYearInput').val(), 10);
+            if (start > end) {
+              start = end;
+              $(this).val(start);
+            }
 
-          if (start > end) {
-            start = end;
-            $(this).val(start);
-          }
+            slider.noUiSlider.set([start, null]);
+          });
 
-          slider.noUiSlider.set([start, null]);
-        });
+          $('#endYearInput').on('change', function() {
+            var end = parseInt(this.value, 10);
+            var start = parseInt($('#startYearInput').val(), 10);
 
-        $('#endYearInput').on('change', function() {
-          var end = parseInt(this.value, 10);
-          var start = parseInt($('#startYearInput').val(), 10);
+            if (end < start) {
+              end = start;
+              $(this).val(end);
+            }
 
-          if (end < start) {
-            end = start;
-            $(this).val(end);
-          }
+            slider.noUiSlider.set([null, end]);
+          });
 
-          slider.noUiSlider.set([null, end]);
-        });
+          document.getElementById('applyYearRange').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = buildYearRangeFilterUrl();
+          });
 
-        document.getElementById('applyYearRange').addEventListener('click', function(e) {
-          e.preventDefault();
-          window.location.href = buildYearRangeFilterUrl();
-        });
-
+        }
       });
     </script>
 
