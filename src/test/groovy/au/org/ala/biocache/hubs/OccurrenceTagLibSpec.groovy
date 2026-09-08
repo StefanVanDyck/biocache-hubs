@@ -45,6 +45,22 @@ class OccurrenceTagLibSpec extends Specification implements TagLibUnitTest<Occur
             html == text
     }
 
+    void "test Darwin Core link for facet field"() {
+        when:
+            def html = applyTemplate('<alatag:dwcFacetLink fieldCode="basis_of_record"/>')
+
+        then:
+            html == '<a href="https://dwc.tdwg.org/list/#dwc_basisOfRecord"><i class="dwc-logo"></i></a>'
+    }
+
+    void "does not render Darwin Core link for non-Darwin Core facet field"() {
+        when:
+            def html = applyTemplate('<alatag:dwcFacetLink fieldCode="species_group"/>')
+
+        then:
+            html == ''
+    }
+
     void "test sanitizeBodyText LSID text"() {
         given:
             def text = "urn:lsid:biocol.org:col:34978"
