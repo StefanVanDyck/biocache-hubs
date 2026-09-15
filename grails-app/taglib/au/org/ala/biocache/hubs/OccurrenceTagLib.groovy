@@ -120,6 +120,22 @@ class OccurrenceTagLib {
     }
 
     /**
+     * Render the Darwin Core link used next to occurrence field labels.
+     *
+     * @attr fieldCode REQUIRED facet field name
+     */
+    def dwcFacetLink = { attrs ->
+        def fieldCode = attrs.fieldCode?.toString()
+        def dwcTerm = fieldCode?.contains('_') ? fieldCode.split('_').collect { part ->
+            part ? part[0].toUpperCase() + part.substring(1) : part
+        }.join('') : fieldCode
+
+        if (dwcTerm && DWC_TERMS.contains(dwcTerm.toLowerCase())) {
+            out << "<a href=\"https://dwc.tdwg.org/list/#dwc_${dwcTerm}\"><i class=\"dwc-logo\"></i></a>"
+        }
+    }
+
+    /**
      * Format a dynamic field name.
      *
      * @param fieldName

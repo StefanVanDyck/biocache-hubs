@@ -122,7 +122,7 @@
                    <%--  Tests for when to display a facet --%>
                     <g:if test="${facetResult && ! sr.activeFacetMap?.containsKey(facetResult.fieldName ) }">
                         <g:set var="fieldDisplayName" value="${alatag.formatDynamicFacetName(fieldName:"${facetResult.fieldName}")}"/>
-                        <h4><span class="FieldName">${fieldDisplayName?:facetResult.fieldName}</span></h4>
+                        <h4><span class="FieldName">${fieldDisplayName?:facetResult.fieldName}<alatag:dwcFacetLink fieldCode="${facetResult.fieldName}"/></span></h4>
                         <div class="subnavlist" style="clear:left" id="facet_${facetResult.fieldName}">
                             <div id="spinner_${facetResult.fieldName}" class="spinner" >
                                 <asset:image src="spinner.gif" id="spinner" class="spinner" alt="spinner icon"/>
