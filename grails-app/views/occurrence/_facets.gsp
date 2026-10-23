@@ -109,7 +109,7 @@
             <g:message code="year.range.apply" default="Apply year range"/>
         </a>
         <form id="coordinateUncertaintyRangeFilter">
-            <h4 class="tooltips" title="${g.message(code: 'uncertainty.range.help', default: 'Choose a range in whole metres from 0 to 10,000. Records without an uncertainty value are excluded when applied.')}"><g:message code="uncertainty.range.label" default="Coordinate uncertainty (metres)"/></h4>
+            <label class="tooltips" title="${g.message(code: 'uncertainty.range.help', default: 'Choose a range in whole metres from 0 to 10,000. Records without an uncertainty value are excluded when applied.')}"><g:message code="uncertainty.range.label" default="Coordinate uncertainty (metres)"/>:</label>
             <p id="coordinateUncertaintyRangeHelp" class="sr-only"><g:message code="uncertainty.range.help" default="Choose a range in whole metres from 0 to 10,000. Records without an uncertainty value are excluded when applied."/></p>
             <div class="uncertainty-inputs">
                 <label for="minimumCoordinateUncertainty"><g:message code="year.range.display.from" default="From"/></label>
