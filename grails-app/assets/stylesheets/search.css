@@ -1265,16 +1265,40 @@ a.copyLink {
   }
 }
 
-#yearSlider {
+#yearSlider,
+#coordinateUncertaintySlider {
   margin: 5px 10px;
 }
 
 /* selected range */
-#yearSlider .noUi-connect {
+#yearSlider .noUi-connect,
+#coordinateUncertaintySlider .noUi-connect {
   background: #9C346A;
 }
 
 #startDisplay,
 #endDisplay {
   font-weight: bold;
+}
+
+#coordinateUncertaintyRangeFilter {
+  margin-top: 15px;
+}
+
+.uncertainty-inputs {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 5px;
+}
+
+.uncertainty-inputs input {
+  width: 100%;
+}
+
+#coordinateUncertaintyRangeError {
+  display: block;
+}
+
+#coordinateUncertaintyRangeError[hidden] {
+  display: none;
 }

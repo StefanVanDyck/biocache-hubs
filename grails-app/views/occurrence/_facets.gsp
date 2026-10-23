@@ -108,6 +108,27 @@
         <a href="#" id="applyYearRange" class="btn btn-primary">
             <g:message code="year.range.apply" default="Apply year range"/>
         </a>
+        <form id="coordinateUncertaintyRangeFilter">
+            <h4><g:message code="uncertainty.range.label" default="Coordinate uncertainty (metres)"/></h4>
+            <p id="coordinateUncertaintyRangeHelp"><g:message code="uncertainty.range.help" default="Choose a range in whole metres from 0 to 10,000. Records without an uncertainty value are excluded when applied."/></p>
+            <div class="uncertainty-inputs">
+                <label for="minimumCoordinateUncertainty"><g:message code="year.range.display.from" default="From"/></label>
+                <input type="number" id="minimumCoordinateUncertainty" min="0" max="10000" step="1" required
+                       aria-describedby="coordinateUncertaintyRangeHelp">
+                <label for="maximumCoordinateUncertainty"><g:message code="year.range.display.to" default="To"/></label>
+                <input type="number" id="maximumCoordinateUncertainty" min="0" max="10000" step="1" required
+                       aria-describedby="coordinateUncertaintyRangeHelp">
+            </div>
+            <div id="coordinateUncertaintySlider"
+                 data-min-label="${g.message(code: 'uncertainty.range.minimum', default: 'Minimum coordinate uncertainty (metres)')}"
+                 data-max-label="${g.message(code: 'uncertainty.range.maximum', default: 'Maximum coordinate uncertainty (metres)')}"></div>
+            <button type="submit" class="btn btn-primary">
+                <g:message code="uncertainty.range.apply" default="Apply uncertainty range"/>
+            </button>
+            <span id="coordinateUncertaintyRangeError" class="text-danger" role="alert" hidden>
+                <g:message code="uncertainty.range.invalid" default="Enter a minimum and maximum in whole metres between 0 and 10,000, with the minimum no greater than the maximum."/>
+            </span>
+        </form>
         <g:set var="facetMax" value="${10}"/><g:set var="i" value="${1}"/>
         <g:each var="group" in="${groupedFacetsRequested}">
             <g:set var="keyCamelCase" value="${group.key.replaceAll(/\s+/,'')}"/>

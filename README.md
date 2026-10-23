@@ -7,6 +7,13 @@ This application/plugin provides a web UI for a back-end service called [**bioca
 An example Grails application that uses this plugin, is the [**generic-hub**](https://github.com/AtlasOfLivingAustralia/generic-hub) app. There are other implementations listed in the [ALA Github repository](https://github.com/AtlasOfLivingAustralia?query=-hub) (all implementations have a suffix '-hub').
 
 ## Updates
+The occurrence search sidebar includes a coordinate uncertainty range filter with
+a slider and numeric inputs from 0 to 10,000 whole metres. Applying it adds an inclusive
+`coordinateUncertaintyInMeters:[minimum TO maximum]` filter, preserves other
+search filters, and resets pagination. Records without an uncertainty value are
+excluded. Existing range filters are restored when the page loads, with decimal
+endpoints rounded to the nearest metre in the controls.
+
 8.x support Grails 6.2.3 and Java 17
 5.x support OIDC authentication
 
@@ -48,4 +55,3 @@ Use these as reference:
    * https://github.com/AtlasOfLivingAustralia/ala-hub/blob/77ad912b6007afb21e5ee9d46cd068ba2040eb9f/grails-app/assets/stylesheets/alaBs.css#L11
    * https://github.com/AtlasOfLivingAustralia/ala-hub/blob/c6c999d7e87de985bfc65e1fe6fe5cd13396212f/grails-app/assets/javascripts/alaBs.js#L11
    
-
