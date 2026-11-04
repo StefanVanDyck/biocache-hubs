@@ -129,6 +129,18 @@
                 <g:message code="uncertainty.range.invalid" default="Enter a minimum and maximum in whole metres between 0 and 10,000, with the minimum no greater than the maximum."/>
             </span>
         </form>
+        <form id="basisOfRecordFilter">
+            <label for="basisOfRecordFilterSelect"><g:message code="basisOfRecord.filter.label" default="Record type"/>:</label>
+            <select id="basisOfRecordFilterSelect" class="form-control">
+                <option value=""><g:message code="basisOfRecord.filter.placeholder" default="Select a record type"/></option>
+                <g:each var="recordType" in="${['HumanObservation', 'LivingSpecimen', 'MachineObservation', 'MaterialCitation', 'Occurrence', 'PreservedSpecimen']}">
+                    <option value="${recordType}"><g:message code="basisOfRecord.${recordType}" default="${recordType}"/></option>
+                </g:each>
+            </select>
+            <button type="submit" class="btn btn-primary">
+                <g:message code="basisOfRecord.filter.apply" default="Apply record type"/>
+            </button>
+        </form>
         <g:set var="facetMax" value="${10}"/><g:set var="i" value="${1}"/>
         <g:each var="group" in="${groupedFacetsRequested}">
             <g:set var="keyCamelCase" value="${group.key.replaceAll(/\s+/,'')}"/>

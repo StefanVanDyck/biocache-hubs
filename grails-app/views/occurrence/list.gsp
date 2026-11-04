@@ -209,6 +209,7 @@
 <asset:javascript src="listThirdParty.js"/>
 <asset:javascript src="search.js"/>
 <asset:javascript src="coordinateUncertaintyFilter.js"/>
+<asset:javascript src="basisOfRecordFilter.js"/>
 <asset:javascript src="mapCommon.js"/>
 <asset:javascript src="ala/ala-charts.js"/>
 
