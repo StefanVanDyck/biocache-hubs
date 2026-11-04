@@ -5,9 +5,28 @@ $(function () {
     }
 
     var select = document.getElementById('basisOfRecordFilterSelect');
-    var fieldFilter = /^(?:basis_of_record|basisOfRecord):/i;
+    var recordTypeClause = /^-?(?:basis_of_record|basisOfRecord):(?:"[^"]+"|[^\s()]+)$/i;
     var url = new URL(window.location.href);
     var selectedValue = null;
+
+    function isRecordTypeFilter(filter) {
+        var expression = filter.trim();
+        if (expression.charAt(0) === '-') {
+            expression = expression.substring(1).trim();
+        }
+        if (expression.charAt(0) === '(' && expression.charAt(expression.length - 1) === ')') {
+            expression = expression.substring(1, expression.length - 1).trim();
+        }
+
+        if (/^\*:\*\s+-\s*(?:basis_of_record|basisOfRecord):(?:"[^"]+"|[^\s()]+)$/i.test(expression)) {
+            return true;
+        }
+
+        var clauses = expression.split(/\s+OR\s+/i);
+        return clauses.length > 0 && clauses.every(function (clause) {
+            return recordTypeClause.test(clause.trim());
+        });
+    }
 
     url.searchParams.getAll('fq').some(function (filter) {
         var match = filter.match(/^(?:basis_of_record|basisOfRecord):(?:"([^"]+)"|([^ ]+))$/i);
@@ -29,7 +48,7 @@ $(function () {
 
         var nextUrl = new URL(window.location.href);
         var filters = nextUrl.searchParams.getAll('fq').filter(function (filter) {
-            return !fieldFilter.test(filter);
+            return !isRecordTypeFilter(filter);
         });
         nextUrl.searchParams.delete('fq');
         filters.forEach(function (filter) {
