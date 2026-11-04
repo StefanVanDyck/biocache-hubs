@@ -39,6 +39,7 @@ $(function () {
             nextUrl.searchParams.append('fq', 'basis_of_record:' + select.value);
         }
         nextUrl.searchParams.delete('start');
+        nextUrl.searchParams.delete('offset');
         window.location.href = nextUrl.toString();
     });
 });
