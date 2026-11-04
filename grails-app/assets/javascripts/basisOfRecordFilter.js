@@ -24,7 +24,10 @@ $(function () {
 
         var clauses = expression.split(/\s+OR\s+/i);
         return clauses.length > 0 && clauses.every(function (clause) {
-            return recordTypeClause.test(clause.trim());
+            clause = clause.trim();
+            return clauses.length === 1
+                ? recordTypeClause.test(clause)
+                : isRecordTypeFilter(clause);
         });
     }
 
