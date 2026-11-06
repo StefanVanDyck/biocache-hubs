@@ -35,6 +35,7 @@
     <g:set var="biocacheServiceUrl" value="${alatag.getBiocacheAjaxUrl()}"/>
     <g:set var="regionVlaanderenFq" value="${grailsApplication.config.getProperty('regionVlaanderen.query')}"/>
     <g:set var="vlaanderenFilterEnabled" value="${(params.list('fq') ?: []).contains(regionVlaanderenFq)}"/>
+    <g:set var="resultContextDisplay" value="${vlaanderenFilterEnabled ? g.message(code: 'list.vbp.flanders.button.label', default: 'Flanders') : queryDisplay}"/>
     var BC_CONF = {
         contextPath: "${request.contextPath}",
             serverName: "<g:createLink absolute="true" uri="" />",
@@ -461,7 +462,7 @@
                     <g:render template="sandboxUploadSourceLinks" model="[dataResourceUid: selectedDataResource]"/>
                     <alatag:resultCount totalRecords="${sr.totalRecords}" qualityTotalCount="${qualityTotalCount}" />
                     <span class="queryDisplay"><strong>
-                        <g:set var="queryToShow"><alatag:sanitizeContent>${raw(queryDisplay)}</alatag:sanitizeContent></g:set>
+                        <g:set var="queryToShow"><alatag:sanitizeContent>${raw(resultContextDisplay)}</alatag:sanitizeContent></g:set>
                         ${raw(queryToShow) ?: params.taxa ?: params.q}
                     </strong></span>&nbsp;&nbsp;
                     <g:if test="${params.taxa && queryDisplay.startsWith("text:")}">
